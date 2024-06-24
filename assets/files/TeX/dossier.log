@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.16.0 (TeX Live 2023)  (format=lualatex 2023.5.8)  24 JUN 2024 11:33
+This is LuaHBTeX, Version 1.16.0 (TeX Live 2023)  (format=lualatex 2023.5.8)  24 JUN 2024 14:39
  restricted system commands enabled.
  file:line:error style messages enabled.
 **dossier.tex
@@ -2250,11 +2250,7 @@ LaTeX Font Info:    Font shape `TU/Inconsolata-LGC(0)/m/n' will be
 (Font)              scaled to size 19.62825pt on input line 28.
 LaTeX Font Info:    Font shape `TU/Inconsolata-LGC(0)/b/n' will be
 (Font)              scaled to size 22.7135pt on input line 28.
-(./sections/part1/summary.tex
-
-LaTeX Warning: Reference `sec:proin' on page 4 undefined on input line 46.
-
-) [4
+(./sections/part1/summary.tex) [4
 
 ] [5
 
@@ -2315,13 +2311,13 @@ Chapter 3.
 ]
 Chapter 4.
 (./sections/part3/validation_tests.tex
-<images/Iris_validation_test.png, id=167, 1341.01pt x 423.5825pt>
+<images/Iris_validation_test.png, id=155, 1341.01pt x 423.5825pt>
 File: images/Iris_validation_test.png Graphic file (type png)
 <use images/Iris_validation_test.png>
 Package luatex.def Info: images/Iris_validation_test.png  used on input line 11
 .
 (luatex.def)             Requested size: 384.1096pt x 121.32335pt.
-<images/Wine_validation_test.png, id=168, 1341.01pt x 423.5825pt>
+<images/Wine_validation_test.png, id=156, 1341.01pt x 423.5825pt>
 File: images/Wine_validation_test.png Graphic file (type png)
 <use images/Wine_validation_test.png>
 Package luatex.def Info: images/Wine_validation_test.png  used on input line 21
@@ -2331,7 +2327,7 @@ Package luatex.def Info: images/Wine_validation_test.png  used on input line 21
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/Breast_validation_test.png, id=169, 1341.01pt x 423.5825pt>
+<images/Breast_validation_test.png, id=157, 1341.01pt x 423.5825pt>
 File: images/Breast_validation_test.png Graphic file (type png)
 <use images/Breast_validation_test.png>
 Package luatex.def Info: images/Breast_validation_test.png  used on input line 
@@ -2343,7 +2339,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 [10
 
 <./images/Iris_validation_test.png>]
-<images/MNIST_validation_test.png, id=180, 1341.01pt x 423.5825pt>
+<images/MNIST_validation_test.png, id=167, 1341.01pt x 423.5825pt>
 File: images/MNIST_validation_test.png Graphic file (type png)
 <use images/MNIST_validation_test.png>
 Package luatex.def Info: images/MNIST_validation_test.png  used on input line 4
@@ -2363,7 +2359,7 @@ Chapter 5.
 ]
 Chapter 6.
 (./sections/part5/members.tex
-<../../img/team/romero.png, id=227, 144.54pt x 144.7809pt>
+<../../img/team/romero.png, id=215, 144.54pt x 144.7809pt>
 File: ../../img/team/romero.png Graphic file (type png)
 <use ../../img/team/romero.png>
 Package luatex.def Info: ../../img/team/romero.png  used on input line 7.
@@ -2373,7 +2369,7 @@ Package luatex.def Info: ../../img/team/romero.png  used on input line 7.
 File: mt-TU-empty.cfg 2021/06/22 v1.1 microtype config. file: fonts with nonsta
 ndard glyph set (RS)
 )
-<../../img/team/salmeron.png, id=229, 301.125pt x 301.125pt>
+<../../img/team/salmeron.png, id=217, 301.125pt x 301.125pt>
 File: ../../img/team/salmeron.png Graphic file (type png)
 <use ../../img/team/salmeron.png>
 Package luatex.def Info: ../../img/team/salmeron.png  used on input line 22.
@@ -2438,40 +2434,37 @@ Package logreq Info: Writing requests to 'dossier.run.xml'.
 ))
 
 Here is how much of LuaTeX's memory you used:
- 52891 strings out of 478285
- 125007,2373549 words of node,token memory allocated
- 1460 words of node memory still in use:
-   32 hlist, 2 vlist, 14 rule, 1 local_par, 4 glue, 4 kern, 1 penalty, 3 glyph, 
-89 attribute, 73 glue_spec, 82 attribute_list, 3 write, 24 pdf_literal, 24 pdf_c
+ 52878 strings out of 478285
+ 156270,2373549 words of node,token memory allocated
+ 1445 words of node memory still in use:
+   31 hlist, 2 vlist, 14 rule, 1 local_par, 4 glue, 4 kern, 1 penalty, 3 glyph, 
+87 attribute, 73 glue_spec, 81 attribute_list, 3 write, 24 pdf_literal, 24 pdf_c
 olorstack nodes
-   avail lists: 1:11,2:11373,3:7343,4:1613,5:384,6:157,7:6486,8:18,9:1969,10:19,
-11:534
- 70840 multiletter control sequences out of 65536+600000
- 77 fonts using 6382335 bytes
+   avail lists: 1:6,2:11375,3:7342,4:1615,5:384,6:159,7:6934,8:5,9:1971,10:19,11
+:720
+ 70832 multiletter control sequences out of 65536+600000
+ 76 fonts using 6250647 bytes
  114i,16n,127p,1951b,2111s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/opentype/public/fontawesome5/FontAweso
 me5Free-Solid-900.otf></usr/local/texlive/2023/texmf-dist/fonts/opentype/public/
 lm/lmroman9-regular.otf></usr/local/texlive/2023/texmf-dist/fonts/opentype/publi
 c/lm/lmroman8-regular.otf></usr/local/texlive/2023/texmf-dist/fonts/opentype/pub
-lic/lm/lmroman10-italic.otf></usr/local/texlive/2023/texmf-dist/fonts/opentype/p
-ublic/lm/lmroman10-bold.otf></usr/local/texlive/2023/texmf-dist/fonts/opentype/p
-ublic/lm/lmroman10-regular.otf></usr/local/texlive/2023/texmf-dist/fonts/opentyp
-e/public/lm/lmsans10-regular.otf></usr/local/texlive/2023/texmf-dist/fonts/opent
-ype/public/lm/lmsans10-bold.otf><./template/generic/fonts/inconsolata/Inconsolat
-a-LGC.otf><./template/generic/fonts/inconsolata/Inconsolata-LGC-Bold.otf></usr/l
-ocal/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/loc
-al/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/
-texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/tex
-live/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texliv
-e/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2
-023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2023/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2023/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2023/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on dossier.pdf (23 pages, 668601 bytes).
+lic/lm/lmroman10-bold.otf></usr/local/texlive/2023/texmf-dist/fonts/opentype/pub
+lic/lm/lmroman10-regular.otf></usr/local/texlive/2023/texmf-dist/fonts/opentype/
+public/lm/lmsans10-regular.otf></usr/local/texlive/2023/texmf-dist/fonts/opentyp
+e/public/lm/lmsans10-bold.otf><./template/generic/fonts/inconsolata/Inconsolata-
+LGC.otf><./template/generic/fonts/inconsolata/Inconsolata-LGC-Bold.otf></usr/loc
+al/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local
+/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/te
+xlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texli
+ve/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/
+2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2023
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2023/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
+Output written on dossier.pdf (23 pages, 648909 bytes).
 
-PDF statistics: 517 PDF objects out of 1000 (max. 8388607)
- 401 compressed objects within 5 object streams
- 120 named destinations out of 1000 (max. 131072)
+PDF statistics: 496 PDF objects out of 1000 (max. 8388607)
+ 386 compressed objects within 4 object streams
+ 115 named destinations out of 1000 (max. 131072)
  504 words of extra memory for PDF output out of 10000 (max. 100000000)
 
