@@ -40,8 +40,7 @@
 \contentsline {chapter}{\numberline {7}Funds requirements and applications}{19}{chapter.7}%
 \contentsline {section}{\numberline {7.1}Budget and revenue}{19}{section.7.1}%
 \contentsline {subsection}{\numberline {7.1.1}Budget}{19}{subsection.7.1.1}%
-\contentsline {subsection}{\numberline {7.1.2}Euismod sodales}{19}{subsection.7.1.2}%
-\contentsline {subsection}{\numberline {7.1.3}Pellentesque a nulla}{19}{subsection.7.1.3}%
+\contentsline {subsection}{\numberline {7.1.2}Revenue}{19}{subsection.7.1.2}%
 \contentsline {section}{\numberline {7.2}Sed ultrices}{20}{section.7.2}%
 \contentsline {subsection}{\numberline {7.2.1}Donec pellentesque}{20}{subsection.7.2.1}%
 \contentsline {subsection}{\numberline {7.2.2}Euismod sodales}{20}{subsection.7.2.2}%
