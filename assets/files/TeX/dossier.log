@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.16.0 (TeX Live 2023)  (format=lualatex 2023.5.8)  24 JUN 2024 15:27
+This is LuaHBTeX, Version 1.16.0 (TeX Live 2023)  (format=lualatex 2023.5.8)  24 JUN 2024 16:44
  restricted system commands enabled.
  file:line:error style messages enabled.
 **dossier.tex
@@ -2298,7 +2298,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 47--48
  []
 
 
-Overfull \hbox (13.18423pt too wide) in paragraph at lines 55--71
+Overfull \hbox (11.18423pt too wide) in paragraph at lines 55--71
  [][] 
  []
 
@@ -2381,10 +2381,14 @@ Package luatex.def Info: ../../img/team/salmeron.png  used on input line 22.
 
 ]
 Chapter 7.
-(./sections/part6/needs.tex) [19
+(./sections/part6/needs.tex
+Overfull \hbox (44.28073pt too wide) in paragraph at lines 10--30
+[][] 
+ []
 
-] (./sections/part6/application.tex) [20]
-[21
+) [19
+
+] (./sections/part6/application.tex) [20] [21
 
 ]
 Chapter 8.
@@ -2434,15 +2438,15 @@ Package logreq Info: Writing requests to 'dossier.run.xml'.
 ))
 
 Here is how much of LuaTeX's memory you used:
- 52885 strings out of 478285
+ 52876 strings out of 478285
  156265,2373549 words of node,token memory allocated
  1445 words of node memory still in use:
    31 hlist, 2 vlist, 14 rule, 1 local_par, 4 glue, 4 kern, 1 penalty, 3 glyph, 
 87 attribute, 73 glue_spec, 81 attribute_list, 3 write, 24 pdf_literal, 24 pdf_c
 olorstack nodes
-   avail lists: 1:6,2:11375,3:7343,4:1615,5:435,6:159,7:9390,8:5,9:1970,10:19,11
+   avail lists: 1:6,2:11375,3:7343,4:1615,5:434,6:159,7:9390,8:5,9:1970,10:19,11
 :982
- 70838 multiletter control sequences out of 65536+600000
+ 70834 multiletter control sequences out of 65536+600000
  76 fonts using 6250647 bytes
  114i,15n,127p,1951b,2111s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/opentype/public/fontawesome5/FontAweso
@@ -2461,10 +2465,10 @@ ve/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/
 2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2023
 /texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2023/tex
 mf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on dossier.pdf (24 pages, 653307 bytes).
+Output written on dossier.pdf (24 pages, 655125 bytes).
 
-PDF statistics: 500 PDF objects out of 1000 (max. 8388607)
- 389 compressed objects within 4 object streams
- 116 named destinations out of 1000 (max. 131072)
+PDF statistics: 497 PDF objects out of 1000 (max. 8388607)
+ 385 compressed objects within 4 object streams
+ 111 named destinations out of 1000 (max. 131072)
  504 words of extra memory for PDF output out of 10000 (max. 100000000)
 
