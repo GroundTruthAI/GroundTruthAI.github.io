@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.16.0 (TeX Live 2023)  (format=lualatex 2023.5.8)  24 JUN 2024 17:40
+This is LuaHBTeX, Version 1.16.0 (TeX Live 2023)  (format=lualatex 2023.5.8)  24 JUN 2024 17:46
  restricted system commands enabled.
  file:line:error style messages enabled.
 **dossier.tex
@@ -1698,19 +1698,7 @@ LaTeX Warning: Label `ch:hendrerit' multiply defined.
 LaTeX Warning: Label `ch:hendrerit' multiply defined.
 
 
-LaTeX Warning: Label `sec:sed-ultrices' multiply defined.
-
-
-LaTeX Warning: Label `sec:sed-ultrices' multiply defined.
-
-
 LaTeX Warning: Label `ch:hendrerit' multiply defined.
-
-
-LaTeX Warning: Label `ch:hendrerit' multiply defined.
-
-
-LaTeX Warning: Label `sec:sed-ultrices' multiply defined.
 
 
 LaTeX Warning: Label `sec:sed-ultrices' multiply defined.
@@ -2150,62 +2138,22 @@ Overfull \hbox (21.50003pt too wide) in paragraph at lines 26--26
  []
 
 
+Overfull \hbox (21.50003pt too wide) in paragraph at lines 29--29
+[][][][][][][]  
+ []
+
+
 Overfull \hbox (21.50003pt too wide) in paragraph at lines 30--30
 [][][][][][][]  
  []
 
 
-Overfull \hbox (21.50003pt too wide) in paragraph at lines 34--34
+Overfull \hbox (21.50003pt too wide) in paragraph at lines 31--31
 [][][][][][][]  
  []
 
 
-Overfull \hbox (21.50003pt too wide) in paragraph at lines 35--35
-[][][][][][][]  
- []
-
-
-Overfull \hbox (21.50003pt too wide) in paragraph at lines 36--36
-[][][][][][][]  
- []
-
-
-Overfull \hbox (21.50003pt too wide) in paragraph at lines 39--39
-[][][][][][][]  
- []
-
-
-Overfull \hbox (21.50003pt too wide) in paragraph at lines 40--40
-[][][][][][][]  
- []
-
-
-Overfull \hbox (21.50003pt too wide) in paragraph at lines 41--41
-[][][][][][][]  
- []
-
-
-Overfull \hbox (21.50003pt too wide) in paragraph at lines 44--44
-[][][][][][][]  
- []
-
-
-Overfull \hbox (21.50003pt too wide) in paragraph at lines 48--48
-[][][][][][][]  
- []
-
-
-Overfull \hbox (21.50003pt too wide) in paragraph at lines 49--49
-[][][][][][][]  
- []
-
-
-Overfull \hbox (21.50003pt too wide) in paragraph at lines 50--50
-[][][][][][][]  
- []
-
-
-Overfull \hbox (21.50003pt too wide) in paragraph at lines 51--51
+Overfull \hbox (21.50003pt too wide) in paragraph at lines 32--32
 [][][][][][][]  
  []
 
@@ -2311,13 +2259,13 @@ Chapter 3.
 ]
 Chapter 4.
 (./sections/part3/validation_tests.tex
-<images/Iris_validation_test.png, id=159, 1341.01pt x 423.5825pt>
+<images/Iris_validation_test.png, id=143, 1341.01pt x 423.5825pt>
 File: images/Iris_validation_test.png Graphic file (type png)
 <use images/Iris_validation_test.png>
 Package luatex.def Info: images/Iris_validation_test.png  used on input line 11
 .
 (luatex.def)             Requested size: 384.1096pt x 121.32335pt.
-<images/Wine_validation_test.png, id=160, 1341.01pt x 423.5825pt>
+<images/Wine_validation_test.png, id=144, 1341.01pt x 423.5825pt>
 File: images/Wine_validation_test.png Graphic file (type png)
 <use images/Wine_validation_test.png>
 Package luatex.def Info: images/Wine_validation_test.png  used on input line 21
@@ -2327,7 +2275,7 @@ Package luatex.def Info: images/Wine_validation_test.png  used on input line 21
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/Breast_validation_test.png, id=161, 1341.01pt x 423.5825pt>
+<images/Breast_validation_test.png, id=145, 1341.01pt x 423.5825pt>
 File: images/Breast_validation_test.png Graphic file (type png)
 <use images/Breast_validation_test.png>
 Package luatex.def Info: images/Breast_validation_test.png  used on input line 
@@ -2339,7 +2287,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 [11
 
 <./images/Iris_validation_test.png>]
-<images/MNIST_validation_test.png, id=173, 1341.01pt x 423.5825pt>
+<images/MNIST_validation_test.png, id=156, 1341.01pt x 423.5825pt>
 File: images/MNIST_validation_test.png Graphic file (type png)
 <use images/MNIST_validation_test.png>
 Package luatex.def Info: images/MNIST_validation_test.png  used on input line 4
@@ -2351,15 +2299,8 @@ images/MNIST_validation_test.png>]
 
 ]
 Chapter 5.
-(./sections/part4/strategy.tex) [14
-
-] (./sections/part4/customers.tex) [15]
-[16
-
-]
-Chapter 6.
 (./sections/part5/members.tex
-<../../img/team/romero.png, id=219, 144.54pt x 144.7809pt>
+<../../img/team/romero.png, id=173, 144.54pt x 144.7809pt>
 File: ../../img/team/romero.png Graphic file (type png)
 <use ../../img/team/romero.png>
 Package luatex.def Info: ../../img/team/romero.png  used on input line 7.
@@ -2369,18 +2310,18 @@ Package luatex.def Info: ../../img/team/romero.png  used on input line 7.
 File: mt-TU-empty.cfg 2021/06/22 v1.1 microtype config. file: fonts with nonsta
 ndard glyph set (RS)
 )
-<../../img/team/salmeron.png, id=221, 301.125pt x 301.125pt>
+<../../img/team/salmeron.png, id=175, 301.125pt x 301.125pt>
 File: ../../img/team/salmeron.png Graphic file (type png)
 <use ../../img/team/salmeron.png>
 Package luatex.def Info: ../../img/team/salmeron.png  used on input line 22.
 (luatex.def)             Requested size: 106.69783pt x 106.70024pt.
 )
-[17
+[14
 
-<../../img/team/romero.png><../../img/team/salmeron.png>] [18
+<../../img/team/romero.png><../../img/team/salmeron.png>] [15
 
 ]
-Chapter 7.
+Chapter 6.
 (./sections/part6/needs.tex
 Overfull \hbox (44.28073pt too wide) in paragraph at lines 10--30
 [][] 
@@ -2391,48 +2332,16 @@ Overfull \hbox (40.36067pt too wide) in paragraph at lines 36--48
 [][] 
  []
 
-) [19
-
-] (./sections/part6/application.tex) [20] [21
-
-]
-Chapter 8.
-(./sections/appendices/consectetur.tex) [22
-
-]
-Chapter 9.
-(./sections/appendices/adipiscing.tex
-
-LaTeX Warning: Reference `sec:vestibulum' on page 23 undefined on input line 6.
-
-
-) [23
-
-] (./dossier.lof)
-\tf@lof=\write7
-
-\openout7 = dossier.lof
- (./dossier.lot)
-\tf@lot=\write8
-
-\openout8 = dossier.lot
- [24
-
-
-]
-
-LaTeX Warning: Empty bibliography on input line 109.
-
+)
 
 Package caption Warning: Unused \captionsetup[lstlisting] on input line 24.
 See the caption package documentation for explanation.
 
-(./dossier.aux)
+[16
+
+] (./dossier.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
-
-
-LaTeX Warning: There were undefined references.
 
 
 LaTeX Warning: There were multiply-defined labels.
@@ -2443,17 +2352,17 @@ Package logreq Info: Writing requests to 'dossier.run.xml'.
 ))
 
 Here is how much of LuaTeX's memory you used:
- 52880 strings out of 478285
- 156265,2373549 words of node,token memory allocated
- 1445 words of node memory still in use:
-   31 hlist, 2 vlist, 14 rule, 1 local_par, 4 glue, 4 kern, 1 penalty, 3 glyph, 
-87 attribute, 73 glue_spec, 81 attribute_list, 3 write, 24 pdf_literal, 24 pdf_c
-olorstack nodes
-   avail lists: 1:6,2:11375,3:7343,4:1615,5:515,6:159,7:9390,8:5,9:1970,10:19,11
+ 52643 strings out of 478285
+ 156270,2373549 words of node,token memory allocated
+ 1467 words of node memory still in use:
+   31 hlist, 2 vlist, 14 rule, 1 local_par, 4 glue, 5 kern, 1 penalty, 1 margin_
+kern, 4 glyph, 89 attribute, 73 glue_spec, 82 attribute_list, 3 write, 24 pdf_li
+teral, 24 pdf_colorstack nodes
+   avail lists: 1:6,2:11372,3:7342,4:1615,5:510,6:120,7:9389,8:3,9:1970,10:19,11
 :982
- 70838 multiletter control sequences out of 65536+600000
+ 70708 multiletter control sequences out of 65536+600000
  76 fonts using 6250647 bytes
- 114i,15n,127p,1951b,2111s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 114i,15n,127p,1951b,1975s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/opentype/public/lm/lmroman6-regular.ot
 f></usr/local/texlive/2023/texmf-dist/fonts/opentype/public/fontawesome5/FontAwe
 some5Free-Solid-900.otf></usr/local/texlive/2023/texmf-dist/fonts/opentype/publi
@@ -2464,17 +2373,12 @@ ublic/lm/lmroman10-regular.otf></usr/local/texlive/2023/texmf-dist/fonts/opentyp
 e/public/lm/lmsans10-regular.otf></usr/local/texlive/2023/texmf-dist/fonts/opent
 ype/public/lm/lmsans10-bold.otf><./template/generic/fonts/inconsolata/Inconsolat
 a-LGC.otf><./template/generic/fonts/inconsolata/Inconsolata-LGC-Bold.otf></usr/l
-ocal/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/loc
-al/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/
-texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/tex
-live/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texliv
-e/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/20
-23/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2023/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on dossier.pdf (24 pages, 657230 bytes).
+ocal/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/loca
+l/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb>
+Output written on dossier.pdf (16 pages, 602263 bytes).
 
-PDF statistics: 506 PDF objects out of 1000 (max. 8388607)
- 390 compressed objects within 4 object streams
- 111 named destinations out of 1000 (max. 131072)
- 504 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 345 PDF objects out of 1000 (max. 8388607)
+ 256 compressed objects within 3 object streams
+ 57 named destinations out of 1000 (max. 131072)
+ 440 words of extra memory for PDF output out of 10000 (max. 100000000)
 
