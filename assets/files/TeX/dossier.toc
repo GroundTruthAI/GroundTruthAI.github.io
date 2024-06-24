@@ -32,7 +32,7 @@
 \contentsline {subsection}{\numberline {5.2.2}Euismod sodales}{14}{subsection.5.2.2}%
 \contentsline {subsection}{\numberline {5.2.3}Pellentesque a nulla}{14}{subsection.5.2.3}%
 \contentsline {part}{V\hspace {1em}Team}{15}{part.5}%
-\contentsline {chapter}{\numberline {6}Technology creators}{16}{chapter.6}%
+\contentsline {chapter}{\numberline {6}Technology inventors}{16}{chapter.6}%
 \contentsline {section}{\numberline {6.1}Members}{16}{section.6.1}%
 \contentsline {subsection}{\numberline {6.1.1}Ivan Romero, PhD}{16}{subsection.6.1.1}%
 \contentsline {subsection}{\numberline {6.1.2}Jose L. Salmeron, PhD}{16}{subsection.6.1.2}%
