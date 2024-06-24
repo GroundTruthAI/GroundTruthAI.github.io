@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.16.0 (TeX Live 2023)  (format=lualatex 2023.5.8)  24 JUN 2024 10:50
+This is LuaHBTeX, Version 1.16.0 (TeX Live 2023)  (format=lualatex 2023.5.8)  24 JUN 2024 11:33
  restricted system commands enabled.
  file:line:error style messages enabled.
 **dossier.tex
@@ -1981,7 +1981,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 17--17
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 17--17
- []\TU/Inconsolata-LGC(0)/m/sc/14.4 19/06/2024[]
+ []\TU/Inconsolata-LGC(0)/m/sc/14.4 June 24, 2024[]
  []
 
 LaTeX Font Info:    Font shape `TU/Inconsolata-LGC(0)/bx/n' in size <20.74> not
@@ -2376,7 +2376,7 @@ ndard glyph set (RS)
 <../../img/team/salmeron.png, id=229, 301.125pt x 301.125pt>
 File: ../../img/team/salmeron.png Graphic file (type png)
 <use ../../img/team/salmeron.png>
-Package luatex.def Info: ../../img/team/salmeron.png  used on input line 21.
+Package luatex.def Info: ../../img/team/salmeron.png  used on input line 22.
 (luatex.def)             Requested size: 106.69783pt x 106.70024pt.
 )
 [16
@@ -2438,7 +2438,7 @@ Package logreq Info: Writing requests to 'dossier.run.xml'.
 ))
 
 Here is how much of LuaTeX's memory you used:
- 52889 strings out of 478285
+ 52891 strings out of 478285
  125007,2373549 words of node,token memory allocated
  1460 words of node memory still in use:
    32 hlist, 2 vlist, 14 rule, 1 local_par, 4 glue, 4 kern, 1 penalty, 3 glyph, 
@@ -2446,31 +2446,32 @@ Here is how much of LuaTeX's memory you used:
 olorstack nodes
    avail lists: 1:11,2:11373,3:7343,4:1613,5:384,6:157,7:6486,8:18,9:1969,10:19,
 11:534
- 70838 multiletter control sequences out of 65536+600000
- 76 fonts using 6250647 bytes
+ 70840 multiletter control sequences out of 65536+600000
+ 77 fonts using 6382335 bytes
  114i,16n,127p,1951b,2111s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/opentype/public/fontawesome5/FontAweso
 me5Free-Solid-900.otf></usr/local/texlive/2023/texmf-dist/fonts/opentype/public/
-lm/lmroman8-regular.otf></usr/local/texlive/2023/texmf-dist/fonts/opentype/publi
-c/lm/lmroman10-italic.otf></usr/local/texlive/2023/texmf-dist/fonts/opentype/pub
-lic/lm/lmroman10-bold.otf></usr/local/texlive/2023/texmf-dist/fonts/opentype/pub
-lic/lm/lmroman10-regular.otf></usr/local/texlive/2023/texmf-dist/fonts/opentype/
-public/lm/lmsans10-regular.otf></usr/local/texlive/2023/texmf-dist/fonts/opentyp
-e/public/lm/lmsans10-bold.otf><./template/generic/fonts/inconsolata/Inconsolata-
-LGC.otf><./template/generic/fonts/inconsolata/Inconsolata-LGC-Bold.otf></usr/loc
-al/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local
-/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/te
-xlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texli
-ve/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/
-2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/202
-3/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2023/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2023/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2023/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on dossier.pdf (23 pages, 660426 bytes).
+lm/lmroman9-regular.otf></usr/local/texlive/2023/texmf-dist/fonts/opentype/publi
+c/lm/lmroman8-regular.otf></usr/local/texlive/2023/texmf-dist/fonts/opentype/pub
+lic/lm/lmroman10-italic.otf></usr/local/texlive/2023/texmf-dist/fonts/opentype/p
+ublic/lm/lmroman10-bold.otf></usr/local/texlive/2023/texmf-dist/fonts/opentype/p
+ublic/lm/lmroman10-regular.otf></usr/local/texlive/2023/texmf-dist/fonts/opentyp
+e/public/lm/lmsans10-regular.otf></usr/local/texlive/2023/texmf-dist/fonts/opent
+ype/public/lm/lmsans10-bold.otf><./template/generic/fonts/inconsolata/Inconsolat
+a-LGC.otf><./template/generic/fonts/inconsolata/Inconsolata-LGC-Bold.otf></usr/l
+ocal/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/loc
+al/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/
+texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/tex
+live/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texliv
+e/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2
+023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2023/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2023/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2023/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
+Output written on dossier.pdf (23 pages, 668601 bytes).
 
-PDF statistics: 509 PDF objects out of 1000 (max. 8388607)
- 397 compressed objects within 4 object streams
+PDF statistics: 517 PDF objects out of 1000 (max. 8388607)
+ 401 compressed objects within 5 object streams
  120 named destinations out of 1000 (max. 131072)
  504 words of extra memory for PDF output out of 10000 (max. 100000000)
 
