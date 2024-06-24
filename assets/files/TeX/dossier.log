@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.16.0 (TeX Live 2023)  (format=lualatex 2023.5.8)  24 JUN 2024 15:02
+This is LuaHBTeX, Version 1.16.0 (TeX Live 2023)  (format=lualatex 2023.5.8)  24 JUN 2024 15:13
  restricted system commands enabled.
  file:line:error style messages enabled.
 **dossier.tex
@@ -2293,12 +2293,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 19--20
 [6
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 28--29
+Underfull \hbox (badness 10000) in paragraph at lines 43--44
 
  []
 
 
-Overfull \hbox (13.18423pt too wide) in paragraph at lines 36--52
+Overfull \hbox (13.18423pt too wide) in paragraph at lines 51--67
  [][] 
  []
 
@@ -2440,11 +2440,11 @@ Here is how much of LuaTeX's memory you used:
    31 hlist, 2 vlist, 14 rule, 1 local_par, 4 glue, 4 kern, 1 penalty, 3 glyph, 
 87 attribute, 73 glue_spec, 81 attribute_list, 3 write, 24 pdf_literal, 24 pdf_c
 olorstack nodes
-   avail lists: 1:6,2:11375,3:7343,4:1615,5:434,6:159,7:9390,8:5,9:1970,10:19,11
+   avail lists: 1:6,2:11375,3:7343,4:1615,5:435,6:159,7:9390,8:5,9:1970,10:19,11
 :982
  70832 multiletter control sequences out of 65536+600000
  76 fonts using 6250647 bytes
- 114i,16n,127p,1951b,2111s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 114i,15n,127p,1951b,2111s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/opentype/public/fontawesome5/FontAweso
 me5Free-Solid-900.otf></usr/local/texlive/2023/texmf-dist/fonts/opentype/public/
 lm/lmroman9-regular.otf></usr/local/texlive/2023/texmf-dist/fonts/opentype/publi
@@ -2461,7 +2461,7 @@ ve/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/
 2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2023
 /texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2023/tex
 mf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on dossier.pdf (23 pages, 649741 bytes).
+Output written on dossier.pdf (23 pages, 651806 bytes).
 
 PDF statistics: 496 PDF objects out of 1000 (max. 8388607)
  386 compressed objects within 4 object streams
