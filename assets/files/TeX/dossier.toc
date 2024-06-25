@@ -19,15 +19,15 @@
 \contentsline {section}{\numberline {4.2}Tests done}{11}{section.4.2}%
 \contentsline {subsection}{\numberline {4.2.1}Iris Dataset}{11}{subsection.4.2.1}%
 \contentsline {subsection}{\numberline {4.2.2}Wine Dataset}{11}{subsection.4.2.2}%
-\contentsline {subsection}{\numberline {4.2.3}Breast Cancer Dataset}{11}{subsection.4.2.3}%
+\contentsline {subsection}{\numberline {4.2.3}Breast Cancer Dataset}{12}{subsection.4.2.3}%
 \contentsline {subsection}{\numberline {4.2.4}MNIST Dataset}{12}{subsection.4.2.4}%
-\contentsline {part}{IV\hspace {1em}Team}{13}{part.4}%
-\contentsline {chapter}{\numberline {5}Technology inventors}{14}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Members}{14}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}Ivan Romero, PhD}{14}{subsection.5.1.1}%
-\contentsline {subsection}{\numberline {5.1.2}Jose L. Salmeron, PhD}{14}{subsection.5.1.2}%
-\contentsline {part}{V\hspace {1em}Funding}{15}{part.5}%
-\contentsline {chapter}{\numberline {6}Funds requirements and applications}{16}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Budget}{16}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Revenue}{16}{section.6.2}%
+\contentsline {part}{IV\hspace {1em}Team}{14}{part.4}%
+\contentsline {chapter}{\numberline {5}Technology inventors}{15}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Members}{15}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Ivan Romero, PhD}{15}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Jose L. Salmeron, PhD}{15}{subsection.5.1.2}%
+\contentsline {part}{V\hspace {1em}Funding}{16}{part.5}%
+\contentsline {chapter}{\numberline {6}Funds requirements and applications}{17}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Budget}{17}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Revenue}{17}{section.6.2}%
 \contentsfinish 

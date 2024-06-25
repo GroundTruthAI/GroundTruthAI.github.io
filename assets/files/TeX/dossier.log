@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.16.0 (TeX Live 2023)  (format=lualatex 2023.5.8)  24 JUN 2024 17:46
+This is LuaHBTeX, Version 1.16.0 (TeX Live 2023)  (format=lualatex 2023.5.8)  25 JUN 2024 19:35
  restricted system commands enabled.
  file:line:error style messages enabled.
 **dossier.tex
@@ -1969,7 +1969,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 18--18
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 18--18
- []\TU/Inconsolata-LGC(0)/m/sc/14.4 June 24, 2024[]
+ []\TU/Inconsolata-LGC(0)/m/sc/14.4 June 25, 2024[]
  []
 
 LaTeX Font Info:    Font shape `TU/Inconsolata-LGC(0)/bx/n' in size <20.74> not
@@ -2259,43 +2259,31 @@ Chapter 3.
 ]
 Chapter 4.
 (./sections/part3/validation_tests.tex
-<images/Iris_validation_test.png, id=143, 1341.01pt x 423.5825pt>
-File: images/Iris_validation_test.png Graphic file (type png)
-<use images/Iris_validation_test.png>
-Package luatex.def Info: images/Iris_validation_test.png  used on input line 11
-.
-(luatex.def)             Requested size: 384.1096pt x 121.32335pt.
-<images/Wine_validation_test.png, id=144, 1341.01pt x 423.5825pt>
-File: images/Wine_validation_test.png Graphic file (type png)
-<use images/Wine_validation_test.png>
-Package luatex.def Info: images/Wine_validation_test.png  used on input line 21
-.
-(luatex.def)             Requested size: 384.1096pt x 121.32335pt.
+<images/iris.png, id=143, 697.60625pt x 674.52pt>
+File: images/iris.png Graphic file (type png)
+<use images/iris.png>
+Package luatex.def Info: images/iris.png  used on input line 16.
+(luatex.def)             Requested size: 256.07741pt x 247.60266pt.
+<images/wine.png, id=144, 697.60625pt x 674.52pt>
+File: images/wine.png Graphic file (type png)
+<use images/wine.png>
+Package luatex.def Info: images/wine.png  used on input line 39.
+(luatex.def)             Requested size: 256.07741pt x 247.60266pt.
+ [11
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<images/Breast_validation_test.png, id=145, 1341.01pt x 423.5825pt>
-File: images/Breast_validation_test.png Graphic file (type png)
-<use images/Breast_validation_test.png>
-Package luatex.def Info: images/Breast_validation_test.png  used on input line 
-31.
-(luatex.def)             Requested size: 384.1096pt x 121.32335pt.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[11
-
-<./images/Iris_validation_test.png>]
-<images/MNIST_validation_test.png, id=156, 1341.01pt x 423.5825pt>
-File: images/MNIST_validation_test.png Graphic file (type png)
-<use images/MNIST_validation_test.png>
-Package luatex.def Info: images/MNIST_validation_test.png  used on input line 4
-1.
-(luatex.def)             Requested size: 384.1096pt x 121.32335pt.
-) [12<./images/Wine_validation_test.png><./images/Breast_validation_test.png><./
-images/MNIST_validation_test.png>]
-[13
+<./images/iris.png>]
+<images/breast.png, id=153, 696.6025pt x 674.52pt>
+File: images/breast.png Graphic file (type png)
+<use images/breast.png>
+Package luatex.def Info: images/breast.png  used on input line 51.
+(luatex.def)             Requested size: 256.07741pt x 247.95259pt.
+ [12<./images/wine.png><./images/breast.png>]
+<images/mnist.png, id=162, 697.60625pt x 674.52pt>
+File: images/mnist.png Graphic file (type png)
+<use images/mnist.png>
+Package luatex.def Info: images/mnist.png  used on input line 75.
+(luatex.def)             Requested size: 256.07741pt x 247.60266pt.
+) [13<./images/mnist.png>] [14
 
 ]
 Chapter 5.
@@ -2316,9 +2304,9 @@ File: ../../img/team/salmeron.png Graphic file (type png)
 Package luatex.def Info: ../../img/team/salmeron.png  used on input line 22.
 (luatex.def)             Requested size: 106.69783pt x 106.70024pt.
 )
-[14
+[15
 
-<../../img/team/romero.png><../../img/team/salmeron.png>] [15
+<../../img/team/romero.png><../../img/team/salmeron.png>] [16
 
 ]
 Chapter 6.
@@ -2337,7 +2325,7 @@ Overfull \hbox (40.36067pt too wide) in paragraph at lines 36--48
 Package caption Warning: Unused \captionsetup[lstlisting] on input line 24.
 See the caption package documentation for explanation.
 
-[16
+[17
 
 ] (./dossier.aux)
 
@@ -2352,7 +2340,7 @@ Package logreq Info: Writing requests to 'dossier.run.xml'.
 ))
 
 Here is how much of LuaTeX's memory you used:
- 52643 strings out of 478285
+ 52646 strings out of 478285
  156270,2373549 words of node,token memory allocated
  1467 words of node memory still in use:
    31 hlist, 2 vlist, 14 rule, 1 local_par, 4 glue, 5 kern, 1 penalty, 1 margin_
@@ -2360,9 +2348,9 @@ kern, 4 glyph, 89 attribute, 73 glue_spec, 82 attribute_list, 3 write, 24 pdf_li
 teral, 24 pdf_colorstack nodes
    avail lists: 1:6,2:11372,3:7342,4:1615,5:510,6:120,7:9389,8:3,9:1970,10:19,11
 :982
- 70708 multiletter control sequences out of 65536+600000
+ 70714 multiletter control sequences out of 65536+600000
  76 fonts using 6250647 bytes
- 114i,15n,127p,1951b,1975s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 114i,16n,127p,1951b,1975s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/opentype/public/lm/lmroman6-regular.ot
 f></usr/local/texlive/2023/texmf-dist/fonts/opentype/public/fontawesome5/FontAwe
 some5Free-Solid-900.otf></usr/local/texlive/2023/texmf-dist/fonts/opentype/publi
@@ -2375,10 +2363,10 @@ ype/public/lm/lmsans10-bold.otf><./template/generic/fonts/inconsolata/Inconsolat
 a-LGC.otf><./template/generic/fonts/inconsolata/Inconsolata-LGC-Bold.otf></usr/l
 ocal/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/loca
 l/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb>
-Output written on dossier.pdf (16 pages, 602263 bytes).
+Output written on dossier.pdf (17 pages, 628768 bytes).
 
 PDF statistics: 345 PDF objects out of 1000 (max. 8388607)
- 256 compressed objects within 3 object streams
- 57 named destinations out of 1000 (max. 131072)
+ 255 compressed objects within 3 object streams
+ 54 named destinations out of 1000 (max. 131072)
  440 words of extra memory for PDF output out of 10000 (max. 100000000)
 
