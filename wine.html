@@ -146,6 +146,7 @@
 
               </div>
               <div class="swiper-pagination"></div>
+              <img src="assets/img/wine.png" alt="Accuracy and dataset distilled size" width="440" height="425">
             </div>
           </div>
 
@@ -164,6 +165,12 @@
                 </li>
                 <li class="list-group-item"><strong>Classes</strong>: 3 different wine cultivars</li>
                 <li class="list-group-item"><strong>Distilled dataset</strong>: <a href="assets/files/Wine_178_instances_distilled_to_25_instances.zip" download="Wine_178_instances_distilled_to_25_instances.zip"><i class="bi bi-box-arrow-in-down" style="color: #4233ff;"></i></a></li>
+                <li class="list-group-item"><strong>Details</strong> 
+                <p>The Wine dataset is derived from the results of a chemical analysis of wines grown in the same region in Italy but derived from three different cultivars. It contains 178 instances with 13 attributes including alcohol content, malic acid, ash, and others.</p>
+                  <p>This dataset is often used for classification problems and serves as an excellent test bed for validating data reduction techniques due to its moderate size and complexity.</p>
+                  <p>The figure shows the accuracy of a classifier trained on the original dataset of 178 instances, which achieves 97.8% accuracy. In comparison, a model trained on a reduced dataset of 25 instances achieves 95.6% accuracy.</p>
+                  <p>This demonstrates that the proposed solution effectively reduces the original dataset by 86% while maintaining a high classification accuracy of 95.6%.</p>
+                </li>
               </ul>
             </div>
           </div>
@@ -176,49 +183,6 @@
     </section><!-- /Portfolio Details Section -->
 
 
-  
-  <section id="portfolio-details" class="portfolio-details section">
-
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-      <div class="row gy-4">
-
-        <div class="col-lg-4">
-
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Dataset</th>
-              <th scope="col">Accuracy</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">Original</th>
-              <td>97.8%</td>
-            </tr>
-            <tr>
-              <th scope="row">Distilled</th>
-              <td>95.6%</td>
-            </tr>
-          </tbody>
-        </table>     
-
-      </div>
-
-      
-      <div class="col-lg-8">
-        <div class="chart-container">
-          <canvas id="chartjs-bar"></canvas>
-        </div>
-      </div>
-      
-
-    </div>
-
-  </div>
-
-  </section><!-- /Portfolio Details Section -->
 </main>
 
 <!-- Chart.js -->

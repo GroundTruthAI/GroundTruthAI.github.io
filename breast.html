@@ -146,6 +146,7 @@
 
               </div>
               <div class="swiper-pagination"></div>
+              <img src="assets/img/breast.png" alt="Accuracy and dataset distilled size" width="440" height="425">
             </div>
           </div>
 
@@ -164,6 +165,12 @@
                 </li>
                 <li class="list-group-item"><strong>Classes</strong>: Malignant, Benign</li>
                 <li class="list-group-item"><strong>Distilled dataset</strong>: <a href="assets/files/Breast_569_instances_distilled_to_31_instances.zip" download="Breast_569_instances_distilled_to_31_instances.zip"><i class="bi bi-box-arrow-in-down" style="color: #4233ff;"></i></a></li>
+                <li class="list-group-item"><strong>Details</strong> 
+                  <p>The Breast Cancer Wisconsin dataset, created by Dr. William H. Wolberg, is used for binary classification tasks in predicting the malignancy of breast cancer samples. It comprises 569 instances, each with 30 numeric features representing characteristics of cell nuclei present in a digitalized image of a fine needle aspirate of a breast mass.</p>
+                  <p>This dataset is critically important for medical research and diagnostics, making the preservation of data quality essential during size reduction.</p>
+                  <p>The figure displays the accuracy of a classifier trained on the original dataset of 569 instances, which achieves 96.5% accuracy. In comparison, a model trained on a reduced dataset of 31 instances achieves 95.1% accuracy.</p>
+                  <p>This proofs that the proposed solution effectively reduces the original dataset by 95% while maintaining a high classification accuracy of 95.1%.</p>
+                </li>
               </ul>
 
             </div>
@@ -176,48 +183,6 @@
 
     </section><!-- /Portfolio Details Section -->
 
-  
-  <section id="portfolio-details" class="portfolio-details section">
-
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-      <div class="row gy-4">
-
-        <div class="col-lg-4">
-
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Dataset</th>
-              <th scope="col">Accuracy</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">Original</th>
-              <td>96.5%</td>
-            </tr>
-            <tr>
-              <th scope="row">Distilled</th>
-              <td>95.1%</td>
-            </tr>
-          </tbody>
-        </table>     
-
-      </div>
-
-      
-      <div class="col-lg-8">
-        <div class="chart-container">
-          <canvas id="chartjs-bar"></canvas>
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-
-  </section><!-- /Portfolio Details Section -->
 </main>
 
 <!-- Chart.js -->

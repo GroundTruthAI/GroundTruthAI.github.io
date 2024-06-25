@@ -146,6 +146,7 @@
 
               </div>
               <div class="swiper-pagination"></div>
+              <img src="assets/img/mnist.png" alt="Accuracy and dataset distilled size" width="440" height="425">
             </div>
           </div>
 
@@ -164,6 +165,11 @@
                 </li>
                 <li class="list-group-item">Classes: <p>10 digits (0 to 9)</p></li>
                 <li class="list-group-item"><strong>Distilled dataset</strong>: <a href="assets/files/Mnis_60000_instances_distilled_to_4424_instances.zip" download="Mnis_60000_instances_distilled_to_4424_instances.zip"><i class="bi bi-box-arrow-in-down" style="color: #4233ff;"></i></a></li>
+                <li class="list-group-item"><strong>Details</strong> 
+                  <p>The MNIST dataset is a large collection of handwritten digits, commonly used for training various image processing systems. It includes 60,000 training examples and 10,000 testing examples, each represented by a 28x28 grayscale image of a digit (0-9).</p>
+                  <p>The high dimensionality and substantial size of the MNIST dataset present significant challenges for data size reduction, thus providing a rigorous test for our proposed method.</p>
+                  <p>The figure shows the accuracy of a classifier trained on the original dataset of 70,000 instances, achieving 97.7% accuracy. In comparison, a model trained on a reduced dataset of 4,424 instances achieves 93.7% accuracy.</p>
+                  <p>This demonstrates that the proposed solution effectively reduces the original dataset by 93% while maintaining a high classification accuracy of 93.7%.</p>
               </ul>
             </div>
           </div>
@@ -175,49 +181,6 @@
 
     </section><!-- /Portfolio Details Section -->
 
-  
-  <section id="portfolio-details" class="portfolio-details section">
-
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-      <div class="row gy-4">
-
-        <div class="col-lg-4">
-
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Dataset</th>
-              <th scope="col">Accuracy</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">Original</th>
-              <td>97.7%</td>
-            </tr>
-            <tr>
-              <th scope="row">Distilled</th>
-              <td>93.7%</td>
-            </tr>
-          </tbody>
-        </table>     
-
-      </div>
-
-      
-      <div class="col-lg-8">
-        <div class="chart-container">
-          <canvas id="chartjs-bar"></canvas>
-        </div>
-      </div>
-      
-
-    </div>
-
-  </div>
-
-  </section><!-- /Portfolio Details Section -->
 </main>
 
 <!-- Chart.js -->
