@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.16.0 (TeX Live 2023)  (format=lualatex 2023.5.8)  26 JUN 2024 22:34
+This is LuaHBTeX, Version 1.16.0 (TeX Live 2023)  (format=lualatex 2023.5.8)  27 JUN 2024 14:25
  restricted system commands enabled.
  file:line:error style messages enabled.
 **dossier.tex
@@ -1700,9 +1700,6 @@ LaTeX Warning: Label `ch:hendrerit' multiply defined.
 
 LaTeX Warning: Label `ch:hendrerit' multiply defined.
 
-
-LaTeX Warning: Label `sec:sed-ultrices' multiply defined.
-
 )
 \openout1 = dossier.aux
 
@@ -1969,7 +1966,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 18--18
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 18--18
- []\TU/Inconsolata-LGC(0)/m/sc/14.4 June 26, 2024[]
+ []\TU/Inconsolata-LGC(0)/m/sc/14.4 June 27, 2024[]
  []
 
 LaTeX Font Info:    Font shape `TU/Inconsolata-LGC(0)/bx/n' in size <20.74> not
@@ -2147,16 +2144,6 @@ Overfull \hbox (21.50003pt too wide) in paragraph at lines 30--30
 [][][][][][][]  
  []
 
-
-Overfull \hbox (21.50003pt too wide) in paragraph at lines 31--31
-[][][][][][][]  
- []
-
-
-Overfull \hbox (21.50003pt too wide) in paragraph at lines 32--32
-[][][][][][][]  
- []
-
 )
 \tf@toc=\write6
 
@@ -2259,12 +2246,12 @@ Chapter 3.
 ]
 Chapter 4.
 (./sections/part3/validation_tests.tex
-<images/iris.png, id=143, 696.6025pt x 674.52pt>
+<images/iris.png, id=139, 696.6025pt x 674.52pt>
 File: images/iris.png Graphic file (type png)
 <use images/iris.png>
 Package luatex.def Info: images/iris.png  used on input line 16.
 (luatex.def)             Requested size: 256.07741pt x 247.95259pt.
-<images/wine.png, id=144, 696.6025pt x 674.52pt>
+<images/wine.png, id=140, 696.6025pt x 674.52pt>
 File: images/wine.png Graphic file (type png)
 <use images/wine.png>
 Package luatex.def Info: images/wine.png  used on input line 39.
@@ -2272,13 +2259,13 @@ Package luatex.def Info: images/wine.png  used on input line 39.
  [11
 
 <./images/iris.png>]
-<images/breast.png, id=153, 696.6025pt x 674.52pt>
+<images/breast.png, id=149, 696.6025pt x 674.52pt>
 File: images/breast.png Graphic file (type png)
 <use images/breast.png>
 Package luatex.def Info: images/breast.png  used on input line 51.
 (luatex.def)             Requested size: 256.07741pt x 247.95259pt.
  [12<./images/wine.png><./images/breast.png>]
-<images/mnist.png, id=162, 696.6025pt x 674.52pt>
+<images/mnist.png, id=158, 696.6025pt x 674.52pt>
 File: images/mnist.png Graphic file (type png)
 <use images/mnist.png>
 Package luatex.def Info: images/mnist.png  used on input line 75.
@@ -2288,7 +2275,7 @@ Package luatex.def Info: images/mnist.png  used on input line 75.
 ]
 Chapter 5.
 (./sections/part5/members.tex
-<../../img/team/romero.png, id=173, 144.54pt x 144.7809pt>
+<../../img/team/romero.png, id=169, 144.54pt x 144.7809pt>
 File: ../../img/team/romero.png Graphic file (type png)
 <use ../../img/team/romero.png>
 Package luatex.def Info: ../../img/team/romero.png  used on input line 7.
@@ -2298,10 +2285,10 @@ Package luatex.def Info: ../../img/team/romero.png  used on input line 7.
 File: mt-TU-empty.cfg 2021/06/22 v1.1 microtype config. file: fonts with nonsta
 ndard glyph set (RS)
 )
-<../../img/team/salmeron.png, id=175, 301.125pt x 301.125pt>
+<../../img/team/salmeron.png, id=171, 301.125pt x 301.125pt>
 File: ../../img/team/salmeron.png Graphic file (type png)
 <use ../../img/team/salmeron.png>
-Package luatex.def Info: ../../img/team/salmeron.png  used on input line 22.
+Package luatex.def Info: ../../img/team/salmeron.png  used on input line 21.
 (luatex.def)             Requested size: 106.69783pt x 106.70024pt.
 )
 [15
@@ -2311,12 +2298,7 @@ Package luatex.def Info: ../../img/team/salmeron.png  used on input line 22.
 ]
 Chapter 6.
 (./sections/part6/needs.tex
-Overfull \hbox (44.28073pt too wide) in paragraph at lines 10--30
-[][] 
- []
-
-
-Overfull \hbox (40.36067pt too wide) in paragraph at lines 36--48
+Overfull \hbox (40.36067pt too wide) in paragraph at lines 8--20
 [][] 
  []
 
@@ -2340,15 +2322,15 @@ Package logreq Info: Writing requests to 'dossier.run.xml'.
 ))
 
 Here is how much of LuaTeX's memory you used:
- 52646 strings out of 478285
- 156270,2373549 words of node,token memory allocated
+ 52641 strings out of 478285
+ 156265,2373549 words of node,token memory allocated
  1467 words of node memory still in use:
    31 hlist, 2 vlist, 14 rule, 1 local_par, 4 glue, 5 kern, 1 penalty, 1 margin_
 kern, 4 glyph, 89 attribute, 73 glue_spec, 82 attribute_list, 3 write, 24 pdf_li
 teral, 24 pdf_colorstack nodes
-   avail lists: 1:6,2:11372,3:7342,4:1615,5:510,6:120,7:9389,8:3,9:1970,10:19,11
+   avail lists: 1:6,2:11372,3:7342,4:1615,5:428,6:109,7:9389,8:3,9:1971,10:19,11
 :982
- 70714 multiletter control sequences out of 65536+600000
+ 70712 multiletter control sequences out of 65536+600000
  76 fonts using 6250647 bytes
  114i,16n,127p,1951b,1975s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/opentype/public/lm/lmroman6-regular.ot
@@ -2361,12 +2343,14 @@ ublic/lm/lmroman10-regular.otf></usr/local/texlive/2023/texmf-dist/fonts/opentyp
 e/public/lm/lmsans10-regular.otf></usr/local/texlive/2023/texmf-dist/fonts/opent
 ype/public/lm/lmsans10-bold.otf><./template/generic/fonts/inconsolata/Inconsolat
 a-LGC.otf><./template/generic/fonts/inconsolata/Inconsolata-LGC-Bold.otf></usr/l
-ocal/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/loca
-l/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb>
-Output written on dossier.pdf (17 pages, 627478 bytes).
+ocal/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/loc
+al/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/
+texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texl
+ive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb>
+Output written on dossier.pdf (17 pages, 642208 bytes).
 
-PDF statistics: 345 PDF objects out of 1000 (max. 8388607)
- 255 compressed objects within 3 object streams
- 54 named destinations out of 1000 (max. 131072)
- 440 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 342 PDF objects out of 1000 (max. 8388607)
+ 250 compressed objects within 3 object streams
+ 51 named destinations out of 1000 (max. 131072)
+ 424 words of extra memory for PDF output out of 10000 (max. 100000000)
 
