@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.16.0 (TeX Live 2023)  (format=lualatex 2023.5.8)  27 JUN 2024 14:33
+This is LuaHBTeX, Version 1.16.0 (TeX Live 2023)  (format=lualatex 2023.5.8)  2 JUL 2024 15:09
  restricted system commands enabled.
  file:line:error style messages enabled.
 **dossier.tex
@@ -1966,7 +1966,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 18--18
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 18--18
- []\TU/Inconsolata-LGC(0)/m/sc/14.4 June 27, 2024[]
+ []\TU/Inconsolata-LGC(0)/m/sc/14.4 July 2, 2024[]
  []
 
 LaTeX Font Info:    Font shape `TU/Inconsolata-LGC(0)/bx/n' in size <20.74> not
@@ -2293,7 +2293,12 @@ Package luatex.def Info: ../../img/team/salmeron.png  used on input line 21.
 )
 [15
 
-<../../img/team/romero.png><../../img/team/salmeron.png>] [16
+<../../img/team/romero.png><../../img/team/salmeron.png>]
+Overfull \hbox (47.56364pt too wide) in paragraph at lines 82--82
+ |[] []\TU/Inconsolata-LGC(0)/m/n/48 ECO-NOMIC AND EN-VI-RON-
+ []
+
+[16
 
 ]
 Chapter 6.
@@ -2324,11 +2329,11 @@ Package logreq Info: Writing requests to 'dossier.run.xml'.
 Here is how much of LuaTeX's memory you used:
  52641 strings out of 478285
  156265,2373549 words of node,token memory allocated
- 1467 words of node memory still in use:
+ 1461 words of node memory still in use:
    31 hlist, 2 vlist, 14 rule, 1 local_par, 4 glue, 5 kern, 1 penalty, 1 margin_
-kern, 4 glyph, 89 attribute, 73 glue_spec, 82 attribute_list, 3 write, 24 pdf_li
+kern, 4 glyph, 87 attribute, 73 glue_spec, 81 attribute_list, 3 write, 24 pdf_li
 teral, 24 pdf_colorstack nodes
-   avail lists: 1:6,2:11372,3:7342,4:1615,5:428,6:109,7:9389,8:3,9:1971,10:19,11
+   avail lists: 1:6,2:11377,3:7342,4:1616,5:428,6:108,7:9389,8:3,9:1970,10:19,11
 :982
  70712 multiletter control sequences out of 65536+600000
  76 fonts using 6250647 bytes
@@ -2343,14 +2348,13 @@ ublic/lm/lmroman10-regular.otf></usr/local/texlive/2023/texmf-dist/fonts/opentyp
 e/public/lm/lmsans10-regular.otf></usr/local/texlive/2023/texmf-dist/fonts/opent
 ype/public/lm/lmsans10-bold.otf><./template/generic/fonts/inconsolata/Inconsolat
 a-LGC.otf><./template/generic/fonts/inconsolata/Inconsolata-LGC-Bold.otf></usr/l
-ocal/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/loc
-al/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/
-texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texl
-ive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb>
-Output written on dossier.pdf (17 pages, 642137 bytes).
+ocal/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/loca
+l/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/te
+xlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb>
+Output written on dossier.pdf (17 pages, 634978 bytes).
 
-PDF statistics: 342 PDF objects out of 1000 (max. 8388607)
- 250 compressed objects within 3 object streams
+PDF statistics: 338 PDF objects out of 1000 (max. 8388607)
+ 247 compressed objects within 3 object streams
  51 named destinations out of 1000 (max. 131072)
  424 words of extra memory for PDF output out of 10000 (max. 100000000)
 
