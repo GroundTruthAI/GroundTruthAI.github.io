@@ -1,1003 +1,887 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Ground Truth for AI</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ground Truth AI — Smart Data Savings</title>
+<meta name="author" content="Ground Truth AI">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================
+   Ground Truth AI — Smart Data Savings deck
+   Self-contained: works offline (system-font fallback).
+   Stage is a fixed 1600×900 canvas scaled to the viewport.
+   ========================================================== */
+:root{
+  --bg:#05080F; --bg2:#0A111E;
+  --panel:rgba(255,255,255,.035); --panel-2:rgba(255,255,255,.06);
+  --stroke:rgba(255,255,255,.09); --stroke-2:rgba(255,255,255,.16);
+  --text:#EAF0F8; --muted:#93A3BA; --dim:#5D6D85;
+  --save:#2EE6A6; --save-2:#9FF7CF; --cyan:#3CC8F5; --violet:#8B7BFF;
+  --cost:#FF6B81; --cost-2:#FFB36B; --amber:#FFC857;
+  --display:"Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --sans:"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono:"JetBrains Mono", "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  --ease:cubic-bezier(.2,.75,.2,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;overflow:hidden}
+/* language switch */
+html[data-lang="en"] body [lang="es"], html[data-lang="es"] body [lang="en"]{display:none!important}
 
-  <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+/* ---------- Stage ---------- */
+.stage{position:absolute;left:50%;top:50%;width:1600px;height:900px;transform-origin:center;
+  transform:translate(-50%,-50%);overflow:hidden;border-radius:6px;
+  background:
+    radial-gradient(900px 600px at 85% -10%, rgba(60,200,245,.10), transparent 60%),
+    radial-gradient(800px 600px at -5% 110%, rgba(46,230,166,.10), transparent 60%),
+    var(--bg);}
+.stage::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:64px 64px;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 40%, #000 20%, transparent 75%);
+          mask-image:radial-gradient(ellipse at 50% 40%, #000 20%, transparent 75%);}
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Questrial:wght@400&display=swap" rel="stylesheet">
+/* ---------- Slides ---------- */
+.slide{position:absolute;inset:0;padding:96px 112px 92px;display:flex;flex-direction:column;justify-content:center;
+  opacity:0;visibility:hidden;transform:translateX(48px);
+  transition:opacity .6s var(--ease), transform .7s var(--ease), visibility 0s linear .7s;}
+.slide.past{transform:translateX(-48px)}
+.slide.active{opacity:1;visibility:visible;transform:none;transition:opacity .6s var(--ease), transform .7s var(--ease), visibility 0s}
+.slide .glow{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;pointer-events:none;z-index:0}
+.slide > *:not(.glow){position:relative;z-index:1}
 
-  <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+/* reveal */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease), transform .8s var(--ease);transition-delay:calc(var(--i,0) * 85ms + 180ms)}
+.active .rv{opacity:1;transform:none}
 
-  <!-- Main CSS File -->
-  <link href="assets/css/main.css" rel="stylesheet">
+/* ---------- Type ---------- */
+h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:-.025em;line-height:1.03;font-weight:800}
+h1{font-size:92px}
+h2{font-size:60px}
+h3{font-size:24px;letter-spacing:-.01em;line-height:1.15;font-weight:700}
+p{margin:0;line-height:1.5}
+.lead{font-size:24px;color:var(--muted);line-height:1.5;max-width:960px;margin-top:22px}
+.lead b,.lead strong{color:var(--text);font-weight:600}
+.small{font-size:15px;color:var(--dim)}
+.kicker{display:inline-flex;align-items:center;gap:12px;font-family:var(--mono);font-size:15px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--save);margin-bottom:24px}
+.kicker::before{content:"";width:34px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--save),var(--cyan))}
+.g{background:linear-gradient(100deg,var(--save) 10%,var(--cyan) 90%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.gc{background:linear-gradient(100deg,var(--cost) 10%,var(--cost-2) 90%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.gv{background:linear-gradient(100deg,var(--violet),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+.mono{font-family:var(--mono)}
 
-  <!-- =======================================================
-  * Template Name: EasyFolio
-  * Template URL: https://bootstrapmade.com/easyfolio-bootstrap-portfolio-template/
-  * Updated: Feb 21 2025 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+/* ---------- Brand ---------- */
+.brand{display:inline-flex;align-items:center;gap:12px;font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:-.01em;color:var(--text)}
+.brand b{font-weight:800;color:var(--save)}
+.brand svg{width:30px;height:30px}
+.top{position:absolute!important;top:44px;left:112px;right:112px;display:flex;justify-content:space-between;align-items:center;z-index:2}
+.foot{position:absolute!important;left:112px;right:112px;bottom:36px;display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:13px;color:var(--dim);letter-spacing:.06em;text-transform:uppercase}
+.foot .brand{font-size:15px;gap:8px;color:var(--muted);text-transform:none;letter-spacing:0;font-family:var(--display)} .foot .brand svg{width:18px;height:18px}
+.foot .pg{color:var(--muted)}
+
+/* ---------- Components ---------- */
+.card{background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.02));border:1px solid var(--stroke);border-radius:22px;padding:30px;
+  backdrop-filter:blur(8px);position:relative;overflow:hidden}
+.card p{color:var(--muted);font-size:18px;margin-top:10px}
+.card.hl{border-color:rgba(46,230,166,.45);background:linear-gradient(180deg,rgba(46,230,166,.12),rgba(46,230,166,.03));box-shadow:0 30px 80px -40px rgba(46,230,166,.5)}
+.ic{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;margin-bottom:20px;
+  background:linear-gradient(135deg,rgba(46,230,166,.18),rgba(60,200,245,.10));border:1px solid rgba(46,230,166,.3)}
+.ic svg{width:25px;height:25px;stroke:var(--save);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ic.cost{background:linear-gradient(135deg,rgba(255,107,129,.18),rgba(255,179,107,.08));border-color:rgba(255,107,129,.35)}
+.ic.cost svg{stroke:var(--cost)}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;font-family:var(--mono);font-size:14px;font-weight:700;
+  background:rgba(46,230,166,.12);color:var(--save);border:1px solid rgba(46,230,166,.35);letter-spacing:.02em}
+.chip.cost{background:rgba(255,107,129,.10);color:var(--cost);border-color:rgba(255,107,129,.35)}
+.chip.ghost{background:var(--panel);color:var(--muted);border-color:var(--stroke)}
+.grid{display:grid;gap:22px}
+.g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)} .g5{grid-template-columns:repeat(5,1fr)}
+.stat .num{font-family:var(--display);font-weight:800;font-size:76px;letter-spacing:-.04em;line-height:1}
+.stat .num .u{font-size:.5em;margin-left:2px;letter-spacing:-.02em}
+.stat .lbl{color:var(--muted);font-size:18px;margin-top:12px;line-height:1.4}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--stroke-2),transparent);margin:30px 0}
+.note{font-size:15px;color:var(--dim);margin-top:26px;line-height:1.5}
+.src{font-family:var(--mono);font-size:12.5px;color:var(--dim);margin-top:14px;line-height:1.5;letter-spacing:.01em}
+.src b{color:var(--muted);font-weight:700}
+.refs{display:grid;grid-template-columns:1fr 1fr;gap:9px 28px;margin-top:34px}
+.refs .r{padding:10px 16px;border-radius:14px;background:var(--panel);border:1px solid var(--stroke);font-size:14px;color:var(--muted);line-height:1.45}
+.refs .r b{color:var(--text);font-weight:600;display:block;font-size:16px;margin-bottom:2px}
+.refs .r a{color:var(--cyan);text-decoration:none;font-family:var(--mono);font-size:12px;word-break:break-all}
+.refs .r .fig{color:var(--save);font-family:var(--mono);font-weight:700;font-size:13px}
+
+/* bars */
+.bar{height:12px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden;position:relative}
+.bar i{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:999px;background:linear-gradient(90deg,var(--save),var(--cyan));
+  transition:width 1.4s var(--ease);transition-delay:calc(var(--i,0) * 85ms + 450ms)}
+.bar i.cost{background:linear-gradient(90deg,var(--cost),var(--cost-2))}
+.bar i.dimfill{background:rgba(255,255,255,.18)}
+.active .bar i{width:var(--w)}
+
+/* ---------- Cover ---------- */
+.cover h1{font-size:96px}
+.cover .sub{font-size:25px;color:var(--muted);max-width:760px;margin-top:30px;line-height:1.5}
+.hero-stats{display:flex;gap:46px;margin-top:52px}
+.hero-stats .stat .num{font-size:60px}
+.hero-stats .stat .lbl{font-size:16px;max-width:200px;margin-top:8px}
+.distill-viz{position:absolute!important;right:70px;top:120px;width:620px;height:640px}
+.distill-viz svg{width:100%;height:100%;overflow:visible}
+.distill-viz circle.dot{transition:transform 2.2s var(--ease), opacity 2s var(--ease), fill 1.2s;transition-delay:var(--d,0s)}
+.active .distill-viz circle.dot.gone{transform:translate(var(--dx),var(--dy));opacity:0}
+.active .distill-viz circle.dot.keep{transform:translate(var(--kx),var(--ky));fill:var(--save)}
+.distill-viz .core{opacity:0;transform-origin:310px 320px;transform:scale(.3);transition:opacity 1.2s var(--ease) 1.6s, transform 1.4s var(--ease) 1.6s}
+.active .distill-viz .core{opacity:1;transform:none}
+.distill-viz .ring{fill:none;stroke:rgba(255,255,255,.08);stroke-dasharray:3 7}
+.viz-lbl{font-family:var(--mono);font-size:14px;letter-spacing:.12em;text-transform:uppercase;fill:var(--dim)}
+.lang{display:flex;gap:4px;background:var(--panel);border:1px solid var(--stroke);border-radius:999px;padding:4px}
+.lang button{all:unset;cursor:pointer;font-family:var(--mono);font-size:13px;font-weight:700;padding:6px 13px;border-radius:999px;color:var(--muted)}
+.lang button.on{background:var(--save);color:#04150E}
+
+/* ---------- Agenda ---------- */
+.agenda{display:grid;grid-template-columns:1fr 1fr;gap:14px 26px;margin-top:46px}
+.agenda .it{display:flex;align-items:center;gap:22px;padding:22px 26px;border-radius:18px;background:var(--panel);border:1px solid var(--stroke)}
+.agenda .n{font-family:var(--mono);font-weight:700;font-size:18px;color:var(--dim);width:34px}
+.agenda .t{font-size:23px;font-weight:600;flex:1}
+.agenda .d{font-size:15px;color:var(--muted);display:block;font-weight:400;margin-top:4px}
+.agenda .it.hl{border-color:rgba(46,230,166,.45);background:linear-gradient(90deg,rgba(46,230,166,.13),rgba(46,230,166,.02))}
+.agenda .it.hl .n{color:var(--save)}
+
+/* ---------- Problem ---------- */
+.prob{display:grid;grid-template-columns:1.25fr 1fr 1fr;grid-template-rows:auto auto;gap:20px;margin-top:34px}
+.prob .card.big{grid-row:span 2;display:flex;flex-direction:column;justify-content:space-between}
+.prob .card.big .num{font-size:130px}
+.prob .stat .num{font-size:64px}
+.waste{display:flex;gap:4px;margin-top:22px;flex-wrap:wrap}
+.waste span{width:20px;height:20px;border-radius:5px;background:rgba(255,107,129,.28)}
+.waste span.ok{background:var(--save);box-shadow:0 0 12px rgba(46,230,166,.6)}
+
+/* ---------- Cost chain ---------- */
+.chain{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;margin-top:48px;position:relative}
+.chain .card{padding:26px 24px;display:flex;flex-direction:column}
+.chain .card h3{font-size:22px}
+.chain .card p{font-size:16px;flex:1}
+.chain .save{margin-top:22px;padding-top:18px;border-top:1px dashed var(--stroke-2);display:flex;align-items:baseline;gap:10px}
+.chain .save .v{font-family:var(--display);font-size:40px;font-weight:800;letter-spacing:-.03em}
+.chain .save .k{font-size:14px;color:var(--muted);line-height:1.3}
+.chain .arrow{position:absolute;top:50%;width:18px;height:18px;margin-left:-9px;color:var(--dim);font-size:18px;display:grid;place-items:center;transform:translateY(-50%)}
+.root{margin-top:28px;display:flex;align-items:center;gap:22px;padding:22px 30px;border-radius:18px;
+  background:linear-gradient(90deg,rgba(46,230,166,.16),rgba(60,200,245,.06));border:1px solid rgba(46,230,166,.4)}
+.root .big{font-family:var(--display);font-size:28px;font-weight:800}
+.root p{color:var(--muted);font-size:19px}
+
+/* ---------- Tech ---------- */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+.mods{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.mods .card{padding:26px}
+.mods .card h3{font-size:22px}
+.mods .card p{font-size:16px}
+.pills{display:flex;gap:10px;flex-wrap:wrap;margin-top:34px}
+
+/* ---------- Distillation ---------- */
+.dbar{margin-top:50px}
+.dbar .row{display:grid;grid-template-columns:240px 1fr 180px;gap:26px;align-items:center;margin-bottom:22px}
+.dbar .row .l{font-size:19px;color:var(--muted)}
+.dbar .row .l b{display:block;color:var(--text);font-size:22px}
+.dbar .bar{height:54px;border-radius:14px}
+.dbar .bar i{border-radius:14px}
+.dbar .row .v{font-family:var(--display);font-weight:800;font-size:44px;text-align:right;letter-spacing:-.03em}
+
+/* ---------- Section ---------- */
+.section{justify-content:center}
+.section .huge{font-family:var(--display);font-weight:800;font-size:300px;line-height:.85;letter-spacing:-.06em}
+.section h2{font-size:72px;max-width:1100px}
+
+/* ---------- Savings dashboard ---------- */
+.sv{display:grid;grid-template-columns:1fr 360px;gap:40px;margin-top:30px;align-items:stretch}
+.svrows{display:flex;flex-direction:column;gap:11px}
+.svr{display:grid;grid-template-columns:300px 1fr 130px;gap:26px;align-items:center;padding:11px 24px;border-radius:16px;background:var(--panel);border:1px solid var(--stroke)}
+.svr .l{font-size:20px;font-weight:600}
+.svr .l small{display:block;font-weight:400;font-size:14px;color:var(--muted);margin-top:3px}
+.svr .bars{display:flex;flex-direction:column;gap:7px}
+.svr .bar{height:10px}
+.svr .v{font-family:var(--display);font-weight:800;font-size:36px;text-align:right;letter-spacing:-.03em}
+.legend{display:flex;gap:22px;font-size:14px;color:var(--muted);margin-top:16px;font-family:var(--mono)}
+.legend > span:not(.nolegend)::before{content:"";display:inline-block;width:22px;height:8px;border-radius:9px;margin-right:8px;vertical-align:middle;background:rgba(255,255,255,.18)}
+.legend > span.a::before{background:linear-gradient(90deg,var(--save),var(--cyan))}
+.money{display:flex;flex-direction:column;justify-content:center;text-align:left}
+.money .num{font-size:96px}
+
+/* ---------- Energy ---------- */
+.gauges{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.gauge{text-align:center;padding:30px 20px}
+.gauge svg{width:220px;height:220px;transform:rotate(-90deg)}
+.gauge .trk{fill:none;stroke:rgba(255,255,255,.07);stroke-width:16}
+.gauge .val{fill:none;stroke:url(#gg);stroke-width:16;stroke-linecap:round;stroke-dasharray:565.5;stroke-dashoffset:565.5;transition:stroke-dashoffset 1.8s var(--ease) .5s}
+.active .gauge .val{stroke-dashoffset:var(--off)}
+.gauge .inner{position:relative;margin-top:-220px;height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.gauge .inner .num{font-size:66px}
+.gauge h3{margin-top:24px;font-size:22px}
+.gauge p{font-size:16px;margin-top:6px}
+
+/* ---------- Market funnel ---------- */
+.funnel{display:flex;flex-direction:column;gap:14px;margin-top:44px;align-items:center}
+.fstep{display:grid;grid-template-columns:1fr auto;align-items:center;padding:22px 34px;border-radius:18px;border:1px solid var(--stroke);background:var(--panel)}
+.fstep .l{font-size:20px;font-weight:600}
+.fstep .l small{display:block;font-size:15px;color:var(--muted);font-weight:400;margin-top:4px}
+.fstep .v{font-family:var(--display);font-weight:800;font-size:46px;letter-spacing:-.03em;margin-left:30px}
+.fstep.hl{border-color:rgba(46,230,166,.5);background:linear-gradient(90deg,rgba(46,230,166,.18),rgba(60,200,245,.06))}
+
+/* ---------- Calculator ---------- */
+.calc{display:grid;grid-template-columns:560px 1fr;gap:34px;margin-top:30px}
+.calc .card{padding:28px 30px}
+.field{margin-bottom:20px}
+.field .row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px}
+.field label{font-size:17px;font-weight:600}
+.field output{font-family:var(--mono);font-size:17px;font-weight:700;color:var(--save)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:999px;outline:none;cursor:pointer;
+  background:linear-gradient(90deg,var(--save) 0,var(--cyan) var(--p,50%),rgba(255,255,255,.1) var(--p,50%))}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;border:5px solid var(--save);box-shadow:0 0 0 6px rgba(46,230,166,.15)}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#fff;border:5px solid var(--save)}
+.seg{display:inline-flex;gap:4px;background:var(--panel);border:1px solid var(--stroke);border-radius:12px;padding:4px}
+.seg button{all:unset;cursor:pointer;font-size:15px;font-weight:600;padding:8px 16px;border-radius:9px;color:var(--muted)}
+.seg button.on{background:rgba(46,230,166,.16);color:var(--save);box-shadow:inset 0 0 0 1px rgba(46,230,166,.45)}
+.ctrls{display:flex;gap:14px;align-items:center;margin-bottom:24px;flex-wrap:wrap}
+.res .total{font-family:var(--display);font-weight:800;font-size:104px;letter-spacing:-.045em;line-height:1}
+.res .sub3{display:flex;gap:40px;margin-top:18px}
+.res .sub3 div{font-size:15px;color:var(--muted)}
+.res .sub3 b{display:block;font-family:var(--display);font-size:34px;color:var(--text);letter-spacing:-.02em;margin-top:2px}
+.brk{margin-top:26px;display:flex;flex-direction:column;gap:13px}
+.brk .r{display:grid;grid-template-columns:220px 1fr 130px;gap:18px;align-items:center;font-size:16px}
+.brk .r span:first-child{color:var(--muted)}
+.brk .r b{font-family:var(--mono);text-align:right;font-size:16px}
+.brk .bar i{transition:width .6s var(--ease)!important;transition-delay:0s!important}
+
+/* ---------- Results table ---------- */
+.rt{width:100%;border-collapse:separate;border-spacing:0 12px;margin-top:30px}
+.rt th{font-family:var(--mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);text-align:left;font-weight:700;padding:0 22px}
+.rt td{padding:20px 22px;background:var(--panel);border-top:1px solid var(--stroke);border-bottom:1px solid var(--stroke);font-size:20px}
+.rt td:first-child{border-left:1px solid var(--stroke);border-radius:16px 0 0 16px;font-weight:700}
+.rt td:last-child{border-right:1px solid var(--stroke);border-radius:0 16px 16px 0}
+.rt td small{display:block;font-weight:400;color:var(--muted);font-size:14px;margin-top:3px}
+.rt .redc{display:grid;grid-template-columns:1fr 70px;gap:16px;align-items:center}
+.rt .redc b{font-family:var(--display);font-size:26px;color:var(--save)}
+.rt .acc{font-family:var(--mono)}
+.rt .delta{font-family:var(--mono);color:var(--amber)}
+
+/* ---------- Use cases ---------- */
+.uc .card{display:flex;flex-direction:column}
+.uc .card p{flex:1;font-size:17px}
+.uc .card .chip{margin-top:20px;align-self:flex-start}
+
+/* ---------- Steps ---------- */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:46px;position:relative}
+.steps::before{content:"";position:absolute;left:30px;right:30px;top:31px;height:2px;background:linear-gradient(90deg,var(--save),var(--cyan),var(--violet));opacity:.5}
+.step .dot{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:20px;
+  background:var(--bg2);border:2px solid var(--save);color:var(--save);position:relative;box-shadow:0 0 0 8px var(--bg)}
+.step h3{margin-top:24px;font-size:23px}
+.step p{color:var(--muted);font-size:17px;margin-top:10px}
+.collab{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:40px}
+.collab .card{padding:22px 24px}
+.collab .card h3{font-size:19px}
+.collab .card p{font-size:15px;margin-top:6px}
+
+/* ---------- Controls (outside stage) ---------- */
+#progress{position:fixed;left:0;top:0;height:3px;width:0;z-index:50;background:linear-gradient(90deg,var(--save),var(--cyan));box-shadow:0 0 14px rgba(46,230,166,.7);transition:width .45s var(--ease)}
+.nav{position:fixed;right:18px;top:14px;display:flex;gap:8px;align-items:center;z-index:50;opacity:0;transition:opacity .4s;padding:6px;border-radius:14px;background:rgba(5,8,15,.7);backdrop-filter:blur(8px)}
+.nav:hover,body.ui .nav{opacity:1}
+.static *{transition:none!important;animation:none!important}
+.nav button{all:unset;cursor:pointer;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.06);border:1px solid var(--stroke);color:var(--text);font-size:15px}
+.nav .cnt{font-family:var(--mono);font-size:13px;color:var(--muted);min-width:64px;text-align:center}
+
+/* ---------- Print / PDF export: one slide per page ---------- */
+@media print{
+  @page{size:1600px 900px;margin:0}
+  html,body{overflow:visible;height:auto;background:var(--bg)}
+  .stage{position:relative;left:0;top:0;transform:none!important;overflow:visible;border-radius:0;background:none}
+  .stage::before{display:none}
+  .slide{position:relative;width:1600px;height:900px;opacity:1;visibility:visible;transform:none;page-break-after:always;break-after:page;
+    background:radial-gradient(900px 600px at 85% -10%, rgba(60,200,245,.10), transparent 60%),radial-gradient(800px 600px at -5% 110%, rgba(46,230,166,.10), transparent 60%),var(--bg);
+    -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .rv{opacity:1!important;transform:none!important}
+  .bar i{width:var(--w)!important}
+  .gauge .val{stroke-dashoffset:var(--off)!important}
+  .distill-viz .core{opacity:1;transform:none}
+  .nav,#progress,.lang{display:none!important}
+}
+</style>
 </head>
+<body>
+<div id="progress"></div>
 
-<body class="index-page">
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2EE6A6"/><stop offset="1" stop-color="#3CC8F5"/></linearGradient>
+    <radialGradient id="coreg"><stop offset="0" stop-color="#9FF7CF"/><stop offset=".45" stop-color="#2EE6A6"/><stop offset="1" stop-color="#2EE6A6" stop-opacity="0"/></radialGradient>
+    <symbol id="logo" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="none" stroke="#2EE6A6" stroke-width="2" stroke-dasharray="2 3.2"/><circle cx="16" cy="16" r="8.5" fill="none" stroke="#3CC8F5" stroke-width="2"/><circle cx="16" cy="16" r="3.6" fill="#2EE6A6"/></symbol>
+  </defs>
+</svg>
 
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+<main class="stage" id="stage">
 
-      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
-        <!-- <img src="assets/img/logo.webp" alt=""> -->
-        <h1 class="sitename">Ground Truth for AI</h1>
-      </a>
-
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="#hero" class="active">Home</a></li>
-          <li><a href="#products">Overview</a></li>
-          <!--li><a href="#portfolio">Portfolio</a></li-->
-          <li class="dropdown"><a href="#"><span>Products</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li><a href="data-drift.html">Data drift detection</a></li>
-              <li><a href="customer-segmentation.html">Customer segmentation</a></li>
-              <li><a href="recommender-systems.html">Recommender Systems</a></li>
-              <li><a href="fraud-detection.html">Fraud Detection</a></li>
-              <li class="dropdown"><a href="#"><span>Dataset Distillation</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="distillation.html">Information</a></li>
-                  <li><a href="#">Validation tests</a></li>
-                  <li><a href="#">Success stories</a></li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-          <!--li><a href="#resume">Resume</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#contact">Contact</a></li-->
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-
-      <div class="header-social-links">
-        <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
-        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-      </div>
-
+<!-- ================= 1 · COVER ================= -->
+<section class="slide cover" data-title="Cover">
+  <div class="glow" style="width:620px;height:620px;right:60px;top:120px;background:radial-gradient(circle,rgba(46,230,166,.35),transparent 65%)"></div>
+  <div class="top">
+    <span class="brand"><svg><use href="#logo"/></svg><span>Ground<b>Truth</b> AI</span></span>
+    <div class="lang" role="group" aria-label="Language"><button data-lang-set="en" class="on">EN</button><button data-lang-set="es">ES</button></div>
+  </div>
+  <div style="max-width:860px">
+    <div class="kicker rv"><span lang="en">Dataset Distillation · Confidential</span><span lang="es">Destilación de Datos · Confidencial</span></div>
+    <h1 class="rv"><span lang="en">Less data.<br>Same intelligence.<br><span class="g">Radical savings.</span></span><span lang="es">Menos datos.<br>Misma inteligencia.<br><span class="g">Ahorro radical.</span></span></h1>
+    <p class="sub rv"><span lang="en">A multimodal intelligence engine that distills data down to its essence — cutting storage, compute, energy and time across the entire AI lifecycle.</span><span lang="es">Un motor de inteligencia multimodal que destila los datos hasta su esencia — y recorta almacenamiento, cómputo, energía y tiempo en todo el ciclo de vida de la IA.</span></p>
+    <div class="hero-stats">
+      <div class="stat rv"><div class="num g"><span class="count" data-to="95">95</span><span class="u">%</span></div><div class="lbl"><span lang="en">less data volume</span><span lang="es">menos volumen de datos</span></div></div>
+      <div class="stat rv"><div class="num g"><span class="count" data-to="90">90</span><span class="u">%</span></div><div class="lbl"><span lang="en">lower storage cost</span><span lang="es">menos coste de almacenamiento</span></div></div>
+      <div class="stat rv"><div class="num g"><span class="count" data-to="86">86</span><span class="u">%</span></div><div class="lbl"><span lang="en">less energy to train models</span><span lang="es">menos energía para entrenar modelos</span></div></div>
     </div>
-  </header>
+  </div>
+  <div class="distill-viz" aria-hidden="true">
+    <svg viewBox="0 0 620 640" id="vizsvg">
+      <circle class="ring" cx="310" cy="320" r="270"/>
+      <circle class="ring" cx="310" cy="320" r="190"/>
+      <g id="dots"></g>
+      <g class="core">
+        <circle cx="310" cy="320" r="120" fill="url(#coreg)" opacity=".55"/>
+        <circle cx="310" cy="320" r="46" fill="none" stroke="#2EE6A6" stroke-width="2"/>
+        <text x="310" y="332" text-anchor="middle" style="font-family:var(--display);font-weight:800;font-size:36px;fill:#EAF0F8">5%</text>
+      </g>
+      <text class="viz-lbl" x="310" y="626" text-anchor="middle"><tspan lang="en">raw data → distilled core</tspan><tspan lang="es">datos brutos → núcleo destilado</tspan></text>
+    </svg>
+  </div>
+  <div class="foot"><span>Jose L. Salmeron, PhD</span><span class="pg"></span></div>
+</section>
 
-  <main class="main">
+<!-- ================= 2 · WHAT'S INSIDE ================= -->
+<section class="slide" data-title="Agenda">
+  <div class="kicker rv"><span lang="en">What's inside</span><span lang="es">Qué incluye</span></div>
+  <h2 class="rv"><span lang="en">What we'll cover — and <span class="g">what you'll save</span></span><span lang="es">Qué veremos — y <span class="g">cuánto ahorrarás</span></span></h2>
+  <div class="agenda">
+    <div class="it rv"><span class="n">01</span><span class="t"><span lang="en">The hidden cost of data</span><span lang="es">El coste oculto de los datos</span><span class="d"><span lang="en">Why more data is costing you more</span><span lang="es">Por qué más datos te cuestan más</span></span></span></div>
+    <div class="it rv hl"><span class="n">05</span><span class="t"><span lang="en">Where the savings come from</span><span lang="es">De dónde sale el ahorro</span><span class="d"><span lang="en">Storage, cloud, training, energy, people</span><span lang="es">Almacenamiento, cloud, entrenamiento, energía, personas</span></span></span><span class="chip"><span lang="en">SAVINGS</span><span lang="es">AHORRO</span></span></div>
+    <div class="it rv"><span class="n">02</span><span class="t"><span lang="en">The technology</span><span lang="es">La tecnología</span><span class="d"><span lang="en">A multimodal intelligence engine</span><span lang="es">Un motor de inteligencia multimodal</span></span></span></div>
+    <div class="it rv hl"><span class="n">06</span><span class="t"><span lang="en">Your savings, calculated</span><span lang="es">Tu ahorro, calculado</span><span class="d"><span lang="en">Live simulator with your numbers</span><span lang="es">Simulador en vivo con tus cifras</span></span></span><span class="chip">ROI</span></div>
+    <div class="it rv"><span class="n">03</span><span class="t"><span lang="en">Dataset Distillation</span><span lang="es">Destilación de Datos</span><span class="d"><span lang="en">Intelligent concentration, not compression</span><span lang="es">Concentración inteligente, no compresión</span></span></span></div>
+    <div class="it rv"><span class="n">07</span><span class="t"><span lang="en">Where it pays off</span><span lang="es">Dónde se rentabiliza</span><span class="d"><span lang="en">Cloud, data center, edge, on-device AI</span><span lang="es">Cloud, data center, edge, IA en dispositivo</span></span></span></div>
+    <div class="it rv"><span class="n">04</span><span class="t"><span lang="en">Validated results</span><span lang="es">Resultados validados</span><span class="d"><span lang="en">Up to 95% less data, accuracy intact</span><span lang="es">Hasta 95% menos datos, precisión intacta</span></span></span></div>
+    <div class="it rv"><span class="n">08</span><span class="t"><span lang="en">How we work together</span><span lang="es">Cómo trabajamos juntos</span><span class="d"><span lang="en">From pilot to measured savings</span><span lang="es">Del piloto al ahorro medido</span></span></span></div>
+  </div>
+  <div class="foot"><span class="brand"><svg><use href="#logo"/></svg><span>Ground<b>Truth</b> AI</span></span><span class="pg"></span></div>
+</section>
 
-    <!-- Hero Section -->
-    <section id="hero" class="hero section">
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="row align-items-center content">
-          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
-            <h2>Ground Truth for the AI Revolution</h2>
-            <p class="lead">Transforming AI effectiveness with revolutionary technology that optimizes datasets, prevents drift, and delivers unparalleled accuracy across multiple applications.</p>
-            <div class="cta-buttons" data-aos="fade-up" data-aos-delay="300">
-              <a href="#products" class="btn btn-primary">View our services</a>
-              <!--a href="#contact" class="btn btn-outline">Let's Connect</a-->
-            </div>
-            <div class="hero-stats" data-aos="fade-up" data-aos-delay="400">
-              <div class="stat-item">
-                <span class="stat-number">25+</span>
-                <span class="stat-label">Years Experience</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-number">100+</span>
-                <span class="stat-label">Projects Completed</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-number">50+</span>
-                <span class="stat-label">Happy Clients</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="hero-image">
-              <img src="assets/img/profile/profile-1.webp" alt="Portfolio Hero Image" class="img-fluid" data-aos="zoom-out" data-aos-delay="300">
-              <div class="shape-1"></div>
-              <div class="shape-2"></div>
-            </div>
-          </div>
-        </div>
-
+<!-- ================= 3 · THE HIDDEN COST ================= -->
+<section class="slide" data-title="Problem">
+  <div class="glow" style="width:520px;height:520px;left:-120px;top:240px;background:radial-gradient(circle,rgba(255,107,129,.22),transparent 65%)"></div>
+  <div class="kicker rv" style="color:var(--cost)"><span lang="en">01 · The hidden cost of data</span><span lang="es">01 · El coste oculto de los datos</span></div>
+  <h2 class="rv"><span lang="en">You pay for every byte.<br><span class="gc">Even the useless ones.</span></span><span lang="es">Pagas por cada byte.<br><span class="gc">Incluso por los inútiles.</span></span></h2>
+  <div class="prob">
+    <div class="card big rv">
+      <div>
+        <div class="stat"><div class="num gc"><span class="count" data-to="85">85</span><span class="u">%</span></div></div>
+        <p style="font-size:21px;color:var(--text);margin-top:14px"><span lang="en">of stored data is dark or ROT — redundant, obsolete or trivial.</span><span lang="es">de los datos almacenados es oscuro o ROT — redundante, obsoleto o trivial.</span></p>
+        <p><span lang="en">Only 15% is business-critical. Yet you store, back up, move and process all of it.</span><span lang="es">Solo el 15% es crítico para el negocio. Y aun así lo almacenas, replicas, mueves y procesas todo.</span></p>
       </div>
+      <div class="waste" id="waste"></div>
+    </div>
+    <div class="card rv"><div class="stat"><div class="num gc">$<span class="count" data-to="650">650</span><span class="u">k</span></div><div class="lbl"><span lang="en">per year to store non-critical data — average mid-size company with 1&nbsp;PB</span><span lang="es">al año en almacenar datos no críticos — empresa mediana con 1&nbsp;PB</span></div></div></div>
+    <div class="card rv"><div class="stat"><div class="num gc"><span class="count" data-to="38">38</span><span class="u">%</span></div><div class="lbl"><span lang="en">of data scientists' time goes to preparing and cleaning data</span><span lang="es">del tiempo de los data scientists se va en preparar y limpiar datos</span></div></div></div>
+    <div class="card rv"><div class="stat"><div class="num gc"><span class="count" data-to="91">91</span><span class="u">%</span></div><div class="lbl"><span lang="en">of ML models degrade as time passes since their last training</span><span lang="es">de los modelos ML se degradan con el tiempo tras su último entrenamiento</span></div></div></div>
+    <div class="card rv"><div class="stat"><div class="num gc"><span class="count" data-to="410">410</span><span class="u">×</span></div><div class="lbl"><span lang="en">Transformer model growth every 2 years — GPU memory only 2×</span><span lang="es">crecen los modelos Transformer cada 2 años — la memoria GPU solo 2×</span></div></div></div>
+  </div>
+  <p class="note rv" style="margin-top:20px"><span lang="en">U.S. data centers used <b style="color:var(--text)">4.4%</b> of the country's electricity in 2023 — and could reach 6.7–12% by 2028. More data creates the illusion of insight, and a bill that grows faster than the value.</span><span lang="es">Los data centers de EE.&nbsp;UU. consumieron el <b style="color:var(--text)">4,4%</b> de la electricidad del país en 2023 — y podrían llegar al 6,7–12% en 2028. Más datos crean la ilusión de conocimiento, y una factura que crece más rápido que el valor.</span></p>
+  <p class="src rv"><span lang="en">Sources</span><span lang="es">Fuentes</span>: Veritas Global Databerg Report (2016) · Anaconda State of Data Science (2022) · Vela et al., Scientific Reports (2022) · Gholami et al., "AI and Memory Wall", IEEE Micro (2024) · LBNL / U.S. DOE (2024)</p>
+  <div class="foot"><span class="brand"><svg><use href="#logo"/></svg><span>Ground<b>Truth</b> AI</span></span><span class="pg"></span></div>
+</section>
 
-    </section><!-- /Hero Section -->
+<!-- ================= 4 · COST CHAIN ================= -->
+<section class="slide" data-title="Cost chain">
+  <div class="kicker rv"><span lang="en">The multiplier effect</span><span lang="es">El efecto multiplicador</span></div>
+  <h2 class="rv"><span lang="en">Each redundant byte is paid for <span class="gc">five times</span></span><span lang="es">Cada byte redundante se paga <span class="gc">cinco veces</span></span></h2>
+  <p class="lead rv"><span lang="en">Distillation acts at the root: remove the redundancy once, and the saving <b>propagates through every link</b> of the chain.</span><span lang="es">La destilación actúa en la raíz: eliminas la redundancia una vez y el ahorro <b>se propaga por cada eslabón</b> de la cadena.</span></p>
+  <div class="chain">
+    <div class="card rv"><span class="ic"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg></span>
+      <h3><span lang="en">Store</span><span lang="es">Almacenar</span></h3><p><span lang="en">Disks, tiers, licenses by volume.</span><span lang="es">Discos, niveles, licencias por volumen.</span></p>
+      <div class="save"><span class="v g">−90%</span><span class="k"><span lang="en">storage cost</span><span lang="es">coste de almacenamiento</span></span></div></div>
+    <div class="card rv"><span class="ic"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M4 16V5a2 2 0 0 1 2-2h11"/></svg></span>
+      <h3><span lang="en">Back up &amp; replicate</span><span lang="es">Copiar y replicar</span></h3><p><span lang="en">Every copy multiplies the waste.</span><span lang="es">Cada copia multiplica el desperdicio.</span></p>
+      <div class="save"><span class="v g">−95%</span><span class="k"><span lang="en">backup &amp; replication</span><span lang="es">backup y réplica</span></span></div></div>
+    <div class="card rv"><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/><path d="M5 6v12"/></svg></span>
+      <h3><span lang="en">Move</span><span lang="es">Mover</span></h3><p><span lang="en">Bandwidth, egress, edge-to-cloud links.</span><span lang="es">Ancho de banda, egress, enlaces edge-cloud.</span></p>
+      <div class="save"><span class="v g" style="font-size:26px;white-space:nowrap"><span lang="en">At source</span><span lang="es">En origen</span></span><span class="k"><span lang="en">distilled before it travels</span><span lang="es">se destila antes de viajar</span></span></div></div>
+    <div class="card rv"><span class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></svg></span>
+      <h3><span lang="en">Compute &amp; train</span><span lang="es">Procesar y entrenar</span></h3><p><span lang="en">Cloud bills, GPU hours, retraining.</span><span lang="es">Factura cloud, horas GPU, reentrenos.</span></p>
+      <div class="save"><span class="v g">−80%</span><span class="k"><span lang="en">cloud processing bill</span><span lang="es">factura de proceso cloud</span></span></div></div>
+    <div class="card rv"><span class="ic"><svg viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
+      <h3><span lang="en">Power &amp; cool</span><span lang="es">Energía y refrigeración</span></h3><p><span lang="en">kWh, cooling, CO₂ footprint.</span><span lang="es">kWh, refrigeración, huella de CO₂.</span></p>
+      <div class="save"><span class="v g">−86%</span><span class="k"><span lang="en">training energy</span><span lang="es">energía de entrenamiento</span></span></div></div>
+  </div>
+  <div class="root rv"><span class="big g"><span lang="en">Distill once.</span><span lang="es">Destila una vez.</span></span><p><span lang="en">Save in storage, backups, network, compute and energy — simultaneously, every month.</span><span lang="es">Ahorra en almacenamiento, copias, red, cómputo y energía — a la vez, cada mes.</span></p></div>
+  <p class="src rv"><span lang="en">Savings per link: Ground Truth AI internal figures; energy estimated with Schneider Electric data. To be confirmed in each pilot.</span><span lang="es">Ahorro por eslabón: cifras internas de Ground Truth AI; energía estimada con datos de Schneider Electric. A confirmar en cada piloto.</span></p>
+  <div class="foot"><span class="brand"><svg><use href="#logo"/></svg><span>Ground<b>Truth</b> AI</span></span><span class="pg"></span></div>
+</section>
 
-        <!-- Services Section -->
-    <section id="products" class="services section">
+<!-- ================= 5 · TECHNOLOGY ================= -->
+<section class="slide" data-title="Technology">
+  <div class="glow" style="width:560px;height:560px;right:-60px;top:160px;background:radial-gradient(circle,rgba(139,123,255,.28),transparent 65%)"></div>
+  <div class="split">
+    <div>
+      <div class="kicker rv"><span lang="en">02 · The technology</span><span lang="es">02 · La tecnología</span></div>
+      <h2 class="rv"><span lang="en">A <span class="gv">multimodal</span> intelligence engine</span><span lang="es">Un motor de inteligencia <span class="gv">multimodal</span></span></h2>
+      <p class="lead rv"><span lang="en">Most systems <i>process</i> data. Ground Truth AI <b>interprets its meaning</b>: it fuses heterogeneous signals, extracts the strategic signal from the noise and detects not just <i>what</i> is happening, but <i>why</i>.</span><span lang="es">La mayoría de sistemas <i>procesan</i> datos. Ground Truth AI <b>interpreta su significado</b>: fusiona señales heterogéneas, extrae la señal estratégica del ruido y detecta no solo <i>qué</i> ocurre, sino <i>por qué</i>.</span></p>
+      <div class="pills rv"><span class="chip ghost">Cloud</span><span class="chip ghost">Edge</span><span class="chip ghost"><span lang="en">Mobile / IoT</span><span lang="es">Móvil / IoT</span></span><span class="chip ghost"><span lang="en">Real-time</span><span lang="es">Tiempo real</span></span><span class="chip ghost">On-device</span></div>
+    </div>
+    <div class="mods">
+      <div class="card rv"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg></span><h3><span lang="en">Text</span><span lang="es">Texto</span></h3><p><span lang="en">Semantics, sentiment and intent (in development).</span><span lang="es">Semántica, sentimiento e intención (en desarrollo).</span></p></div>
+      <div class="card rv"><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg></span><h3><span lang="en">Image</span><span lang="es">Imagen</span></h3><p><span lang="en">Patterns and visual recognition.</span><span lang="es">Patrones y reconocimiento visual.</span></p></div>
+      <div class="card rv"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg></span><h3><span lang="en">Behavior</span><span lang="es">Comportamiento</span></h3><p><span lang="en">Interaction, timing and navigation.</span><span lang="es">Interacción, ritmo y navegación.</span></p></div>
+      <div class="card rv"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg></span><h3><span lang="en">Time series</span><span lang="es">Series temporales</span></h3><p><span lang="en">Trends, drift and anomalies.</span><span lang="es">Tendencias, deriva y anomalías.</span></p></div>
+    </div>
+  </div>
+  <div class="foot"><span class="brand"><svg><use href="#logo"/></svg><span>Ground<b>Truth</b> AI</span></span><span class="pg"></span></div>
+</section>
 
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Products</h2>
-        <div class="title-shape">
-          <svg viewBox="0 0 200 20" xmlns="http://www.w3.org/2000/svg">
-            <path d="M 0,10 C 40,0 60,20 100,10 C 140,0 160,20 200,10" fill="none" stroke="currentColor" stroke-width="2"></path>
-          </svg>
-        </div>
-        <p>Our proprietary algorithm is designed to uncover latent patterns, cleanse noise, and preserve signal at every stage of the pipeline. From initial ingestion to real-time application, our approach puts data quality and intelligence first.</p>
-      </div><!-- End Section Title -->
+<!-- ================= 6 · DISTILLATION ================= -->
+<section class="slide" data-title="Distillation">
+  <div class="kicker rv"><span lang="en">03 · Dataset Distillation</span><span lang="es">03 · Destilación de Datos</span></div>
+  <h2 class="rv"><span lang="en">Not compression.<br><span class="g">Intelligent concentration.</span></span><span lang="es">No es compresión.<br><span class="g">Es concentración inteligente.</span></span></h2>
+  <p class="lead rv"><span lang="en">It identifies and keeps only the strategically relevant information — removing noise and redundancy <b>without losing predictive power</b>.</span><span lang="es">Identifica y conserva solo la información estratégicamente relevante — eliminando ruido y redundancia <b>sin perder capacidad predictiva</b>.</span></p>
+  <div class="dbar">
+    <div class="row rv"><span class="l"><b><span lang="en">Raw dataset</span><span lang="es">Dataset original</span></b><span lang="en">what you pay for today</span><span lang="es">lo que pagas hoy</span></span><div class="bar"><i class="dimfill" style="--w:100%"></i></div><span class="v" style="color:var(--muted)">100%</span></div>
+    <div class="row rv"><span class="l"><b><span lang="en">Distilled core</span><span lang="es">Núcleo destilado</span></b><span lang="en">what you actually need</span><span lang="es">lo que realmente necesitas</span></span><div class="bar"><i style="--w:5%"></i></div><span class="v g">5%</span></div>
+    <div class="row rv"><span class="l"><b><span lang="en">Predictive value</span><span lang="es">Valor predictivo</span></b><span lang="en">retained after distillation</span><span lang="es">retenido tras destilar</span></span><div class="bar"><i style="--w:97%"></i></div><span class="v g">≈100%</span></div>
+  </div>
+  <div class="grid g3" style="margin-top:18px">
+    <div class="card rv"><h3 style="display:flex;align-items:center;gap:14px"><span class="ic" style="margin:0;width:42px;height:42px"><svg viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></span><span lang="en">Lighter &amp; faster</span><span lang="es">Más ligero y rápido</span></h3><p><span lang="en">Lower compute cost and far faster model training.</span><span lang="es">Menor coste de cómputo y entrenamiento mucho más rápido.</span></p></div>
+    <div class="card rv"><h3 style="display:flex;align-items:center;gap:14px"><span class="ic" style="margin:0;width:42px;height:42px"><svg viewBox="0 0 24 24"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/></svg></span><span lang="en">Edge-ready</span><span lang="es">Listo para el edge</span></h3><p><span lang="en">AI in low-resource environments: laptop, edge, IoT.</span><span lang="es">IA en entornos de bajos recursos: portátil, edge, IoT.</span></p></div>
+    <div class="card rv"><h3 style="display:flex;align-items:center;gap:14px"><span class="ic" style="margin:0;width:42px;height:42px"><svg viewBox="0 0 24 24"><path d="M12 3v18M7 21h10M3 7h18"/><path d="m6 7-3 7c.9.6 1.9 1 3 1s2.1-.4 3-1L6 7zM18 7l-3 7c.9.6 1.9 1 3 1s2.1-.4 3-1l-3-7z"/></svg></span><span lang="en">Less bias</span><span lang="es">Menos sesgo</span></h3><p><span lang="en">Systematically removes irrelevant or skewed signals.</span><span lang="es">Elimina de forma sistemática señales irrelevantes o sesgadas.</span></p></div>
+  </div>
+  <div class="foot"><span class="brand"><svg><use href="#logo"/></svg><span>Ground<b>Truth</b> AI</span></span><span class="pg"></span></div>
+</section>
 
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
+<!-- ================= 7 · VALIDATED RESULTS ================= -->
+<section class="slide" data-title="Validation">
+  <div class="kicker rv"><span lang="en">04 · Validated results · 4 benchmark datasets</span><span lang="es">04 · Resultados validados · 4 datasets de referencia</span></div>
+  <h2 class="rv"><span lang="en">Savings <span class="g">without sacrificing accuracy</span></span><span lang="es">Ahorro <span class="g">sin sacrificar precisión</span></span></h2>
+  <table class="rt">
+    <thead><tr>
+      <th>Dataset</th>
+      <th style="width:430px"><span lang="en">Data reduction</span><span lang="es">Reducción de datos</span></th>
+      <th><span lang="en">Original acc.</span><span lang="es">Precisión orig.</span></th>
+      <th><span lang="en">Distilled acc.</span><span lang="es">Precisión destil.</span></th>
+      <th><span lang="en">Change</span><span lang="es">Variación</span></th>
+    </tr></thead>
+    <tbody>
+      <tr class="rv"><td>Iris<small>Tabular · Deep Learning</small></td><td><div class="redc"><div class="bar"><i style="--w:95%"></i></div><b>95%</b></div></td><td class="acc" data-num>97.4%</td><td class="acc" data-num>94.7%</td><td class="delta" data-num>−2.7 pp</td></tr>
+      <tr class="rv"><td>Wine<small>Tabular · Deep Learning</small></td><td><div class="redc"><div class="bar"><i style="--w:86%"></i></div><b>86%</b></div></td><td class="acc" data-num>97.8%</td><td class="acc" data-num>95.6%</td><td class="delta" data-num>−2.2 pp</td></tr>
+      <tr class="rv"><td>Breast Cancer<small>Tabular · Deep Learning</small></td><td><div class="redc"><div class="bar"><i style="--w:95%"></i></div><b>95%</b></div></td><td class="acc" data-num>96.5%</td><td class="acc" data-num>95.1%</td><td class="delta" data-num>−1.4 pp</td></tr>
+      <tr class="rv"><td>MNIST<small><span lang="en">Image</span><span lang="es">Imagen</span> · CNN</small></td><td><div class="redc"><div class="bar"><i style="--w:93%"></i></div><b>93%</b></div></td><td class="acc" data-num>96.5%</td><td class="acc" data-num>93.7%</td><td class="delta" data-num>−2.8 pp</td></tr>
+    </tbody>
+  </table>
+  <div class="grid g2" style="margin-top:12px;grid-template-columns:1fr 1fr 1.6fr;display:grid;gap:22px">
+    <div class="stat rv"><div class="num g" style="font-size:56px">86–95<span class="u">%</span></div><div class="lbl"><span lang="en">less data across all four benchmarks</span><span lang="es">menos datos en los cuatro benchmarks</span></div></div>
+    <div class="stat rv"><div class="num" style="font-size:56px;color:var(--amber)">≤&nbsp;<span data-num>2.8</span><span class="u">pp</span></div><div class="lbl"><span lang="en">maximum accuracy change vs. baseline</span><span lang="es">variación máxima de precisión frente a la base</span></div></div>
+    <p class="note rv" style="margin-top:6px;align-self:center"><span lang="en">Internal experiments on standard benchmarks, tabular and image data with deep learning models. Measured results, not projections. Every point of data removed is cost you stop paying.</span><span lang="es">Experimentos internos sobre benchmarks estándar, datos tabulares e imagen con modelos de deep learning. Resultados medidos, no proyecciones. Cada punto de datos eliminado es coste que dejas de pagar.</span></p>
+  </div>
+  <div class="foot"><span class="brand"><svg><use href="#logo"/></svg><span>Ground<b>Truth</b> AI</span></span><span class="pg"></span></div>
+</section>
 
-        <div class="row align-items-center">
-          <div class="col-lg-4 mb-5 mb-lg-0">
-            <h2 class="fw-bold mb-4 servies-title">We believe data isn’t just a byproduct of business—it’s its foundation.</h2>
-            <p class="mb-4">Our goal is to elevate data itself, turning raw inputs into trustworthy, relevant, and actionable insight.</p>
-            <a href="#" class="btn btn-outline-primary">See all services</a>
-          </div>
-          <div class="col-lg-8">
-            <div class="row g-4">
+<!-- ================= 8 · SECTION: SAVINGS ================= -->
+<section class="slide section" data-title="Savings">
+  <div class="glow" style="width:900px;height:700px;left:-200px;top:60px;background:radial-gradient(circle,rgba(46,230,166,.28),transparent 62%)"></div>
+  <div class="kicker rv"><span lang="en">05 · Where the savings come from</span><span lang="es">05 · De dónde sale el ahorro</span></div>
+  <div class="huge g rv">−95%</div>
+  <h2 class="rv" style="margin-top:30px"><span lang="en">less data means less of <span class="g">everything that data costs</span>.</span><span lang="es">menos datos significa menos de <span class="g">todo lo que esos datos cuestan</span>.</span></h2>
+  <div class="foot"><span class="brand"><svg><use href="#logo"/></svg><span>Ground<b>Truth</b> AI</span></span><span class="pg"></span></div>
+</section>
 
-              <div class="col-md-6" data-aos="fade-up" data-aos-delay="300">
-                <div class="service-item">
-                  <i class="bi bi-arrows-angle-expand icon"></i>
-                  <h3><a href="data-drift.html">Data Drift Detection</a></h3>
-                  <p>Early warning system that identifies subtle changes in data patterns before they impact model performance.</p>
-                </div>
-              </div><!-- End Service Item -->
-
-              <div class="col-md-6" data-aos="fade-up" data-aos-delay="400">
-                <div class="service-item">
-                  <i class="bi bi-border-all icon"></i>
-                  <h3><a href="customer-segmentation.html">Precise Customer Segmentation</a></h3>
-                  <p>Identify meaningful customer segments based on behavior patterns that traditional analytics miss.</p>
-                </div>
-              </div><!-- End Service Item -->
-
-              <div class="col-md-6" data-aos="fade-up" data-aos-delay="500">
-                <div class="service-item">
-                  <i class="bi bi-bookmark-star icon"></i>
-                  <h3><a href="recommender-systems.html">Enhanced Recommendation Systems</a></h3>
-                  <p>Deliver more relevant and personalized recommendations by understanding the core patterns in user preferences.</p>
-                </div>
-              </div><!-- End Service Item -->
-
-              <div class="col-md-6" data-aos="fade-up" data-aos-delay="500">
-              <div class="service-item">
-                  <i class="bi bi-columns-gap icon"></i>
-                  <h3><a href="fraud-detection.html">Advanced Fraud Detection</a></h3>
-                  <p>Identify subtle patterns of fraudulent activity with greater accuracy and fewer false positives.</p>
-                </div>
-              </div><!-- End Service Item -->
-
-                            <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
-              <div class="service-item">
-                  <i class="bi bi-database-down icon"></i>
-                  <h3><a href="service-details.html">Dataset distillation</a></h3>
-                  <p>Distilling massively datasets into compact, high-value representations—removing redundancy, reducing storage and compute costs, and increasing model efficiency.</p>
-                </div>
-              </div><!-- End Service Item -->
-                            <div class="col-md-6" data-aos="fade-up" data-aos-delay="500">
-              <div class="service-item">
-                  <i class="bi bi-bounding-box-circles icon"></i>
-                  <h3><a href="service-details.html">Additional Applications</a></h3>
-                  <p>Our Ground Truth technology can be customized for various other industry-specific applications.</p>
-                </div>
-              </div><!-- End Service Item -->
-
-            </div>
-          </div>
-        </div>
-
+<!-- ================= 9 · SAVINGS DASHBOARD ================= -->
+<section class="slide" data-title="Savings breakdown">
+  <div class="kicker rv"><span lang="en">Savings, line by line</span><span lang="es">Ahorro, partida a partida</span></div>
+  <h2 class="rv" style="font-size:54px"><span lang="en">Your data bill, <span class="g">before and after</span></span><span lang="es">Tu factura de datos, <span class="g">antes y después</span></span></h2>
+  <div class="sv">
+    <div>
+      <div class="svrows">
+        <div class="svr rv"><span class="l"><span lang="en">Storage</span><span lang="es">Almacenamiento</span><small><span lang="en">capacity, tiers, licenses</span><span lang="es">capacidad, niveles, licencias</span></small></span><div class="bars"><div class="bar"><i class="dimfill" style="--w:100%"></i></div><div class="bar"><i style="--w:10%"></i></div></div><span class="v g">−90%</span></div>
+        <div class="svr rv"><span class="l"><span lang="en">Backup &amp; replication</span><span lang="es">Backup y réplica</span><small><span lang="en">copies, DR, retention</span><span lang="es">copias, DR, retención</span></small></span><div class="bars"><div class="bar"><i class="dimfill" style="--w:100%"></i></div><div class="bar"><i style="--w:5%"></i></div></div><span class="v g">−95%</span></div>
+        <div class="svr rv"><span class="l"><span lang="en">Cloud processing</span><span lang="es">Procesamiento cloud</span><small><span lang="en">compute &amp; infrastructure usage</span><span lang="es">cómputo y uso de infraestructura</span></small></span><div class="bars"><div class="bar"><i class="dimfill" style="--w:100%"></i></div><div class="bar"><i style="--w:20%"></i></div></div><span class="v g">−80%</span></div>
+        <div class="svr rv"><span class="l"><span lang="en">Model training time</span><span lang="es">Tiempo de entrenamiento</span><small><span lang="en">GPU hours per training cycle</span><span lang="es">horas GPU por ciclo</span></small></span><div class="bars"><div class="bar"><i class="dimfill" style="--w:100%"></i></div><div class="bar"><i style="--w:5%"></i></div></div><span class="v g">−95%</span></div>
+        <div class="svr rv"><span class="l"><span lang="en">Data admin &amp; prep</span><span lang="es">Admin. y preparación</span><small><span lang="en">team hours on data wrangling</span><span lang="es">horas del equipo con los datos</span></small></span><div class="bars"><div class="bar"><i class="dimfill" style="--w:100%"></i></div><div class="bar"><i style="--w:30%"></i></div></div><span class="v g">−70%</span></div>
+        <div class="svr rv"><span class="l"><span lang="en">Time to insight</span><span lang="es">Tiempo hasta el insight</span><small><span lang="en">reports in minutes, not days</span><span lang="es">informes en minutos, no días</span></small></span><div class="bars"><div class="bar"><i class="dimfill" style="--w:100%"></i></div><div class="bar"><i style="--w:5%"></i></div></div><span class="v g">−95%</span></div>
       </div>
+      <div class="legend rv"><span><span lang="en">Today</span><span lang="es">Hoy</span></span><span class="a"><span lang="en">With distillation</span><span lang="es">Con destilación</span></span><span style="margin-left:auto;color:var(--dim)" class="nolegend"><span lang="en">Ground Truth AI internal figures</span><span lang="es">Cifras internas de Ground Truth AI</span></span></div>
+    </div>
+    <div class="card hl money rv">
+      <div class="kicker" style="margin-bottom:10px"><span lang="en">Average saving</span><span lang="es">Ahorro medio</span></div>
+      <div class="stat"><div class="num g">$<span class="count" data-to="120">120</span><span class="u">k</span></div></div>
+      <p style="font-size:20px;color:var(--text)"><span lang="en">per year, on storage alone.</span><span lang="es">al año, solo en almacenamiento.</span></p>
+      <div class="divider" style="margin:26px 0"></div>
+      <p><span lang="en">Add cloud processing, training, backups and team time — the total saving multiplies.</span><span lang="es">Suma proceso cloud, entrenamiento, copias y tiempo del equipo — y el ahorro total se multiplica.</span></p>
+      <p style="margin-top:18px;color:var(--save);font-weight:600"><span lang="en">→ Calculate yours with the live simulator</span><span lang="es">→ Calcula el tuyo con el simulador en vivo</span></p>
+    </div>
+  </div>
+  <div class="foot"><span class="brand"><svg><use href="#logo"/></svg><span>Ground<b>Truth</b> AI</span></span><span class="pg"></span></div>
+</section>
 
-    </section><!-- /Services Section -->
-
-
-    <!-- About Section -->
-    <!--section id="about" class="about section light-background">
-
-      <!-- Section Title -->
-      <!--div class="container section-title" data-aos="fade-up">
-        <h2>About the startup</h2>
-        <div class="title-shape">
-          <svg viewBox="0 0 200 20" xmlns="http://www.w3.org/2000/svg">
-            <path d="M 0,10 C 40,0 60,20 100,10 C 140,0 160,20 200,10" fill="none" stroke="currentColor" stroke-width="2"></path>
-          </svg>
-        </div>
-        <p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur vel illum qui dolorem</p>
-      </div><!-- End Section Title -->
-
-      <!--div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="row align-items-center">
-          <div class="col-lg-6 position-relative" data-aos="fade-right" data-aos-delay="200">
-            <div class="about-image">
-              <img src="assets/img/profile/profile-square-2.webp" alt="Profile Image" class="img-fluid rounded-4">
-            </div>
-          </div>
-
-          <div class="col-lg-6" data-aos="fade-left" data-aos-delay="300">
-            <div class="about-content">
-              <span class="subtitle">About Me</span>
-
-              <h2>UI/UX Designer &amp; Web Developer</h2>
-
-              <p class="lead mb-4">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
-
-              <p class="mb-4">Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet</p>
-
-              <div class="personal-info">
-                <div class="row g-4">
-                  <div class="col-6">
-                    <div class="info-item">
-                      <span class="label">Name</span>
-                      <span class="value">Eliot Johnson</span>
-                    </div>
-                  </div>
-
-                  <div class="col-6">
-                    <div class="info-item">
-                      <span class="label">Phone</span>
-                      <span class="value">+123 456 7890</span>
-                    </div>
-                  </div>
-
-                  <div class="col-6">
-                    <div class="info-item">
-                      <span class="label">Age</span>
-                      <span class="value">26 Years</span>
-                    </div>
-                  </div>
-
-                  <div class="col-6">
-                    <div class="info-item">
-                      <span class="label">Email</span>
-                      <span class="value">email@example.com</span>
-                    </div>
-                  </div>
-
-                  <div class="col-6">
-                    <div class="info-item">
-                      <span class="label">Occupation</span>
-                      <span class="value">Lorem Engineer</span>
-                    </div>
-                  </div>
-
-                  <div class="col-6">
-                    <div class="info-item">
-                      <span class="label">Nationality</span>
-                      <span class="value">Ipsum</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="signature mt-4">
-                <div class="signature-image">
-                  <img src="assets/img/misc/signature-1.webp" alt="" class="img-fluid">
-                </div>
-                <div class="signature-info">
-                  <h4>Eliot Johnson</h4>
-                  <p>Adipiscing Elit, Lorem Ipsum</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
+<!-- ================= 10 · ENERGY ================= -->
+<section class="slide" data-title="Energy">
+  <div class="split" style="grid-template-columns:1fr 1.05fr">
+    <div>
+      <div class="kicker rv"><span lang="en">Energy &amp; sustainability</span><span lang="es">Energía y sostenibilidad</span></div>
+      <h2 class="rv"><span lang="en">Lower bill.<br>Lower footprint.<br><span class="g">Same AI.</span></span><span lang="es">Menos factura.<br>Menos huella.<br><span class="g">Misma IA.</span></span></h2>
+      <p class="lead rv"><span lang="en">Less data to move, store and compute means <b>less energy per AI decision</b> — measured directly on the hardware. Savings that show up in the electricity bill <i>and</i> in the ESG report.</span><span lang="es">Menos datos que mover, almacenar y computar significa <b>menos energía por cada decisión de IA</b> — medida directamente sobre el hardware. Un ahorro que aparece en la factura eléctrica <i>y</i> en el informe ESG.</span></p>
+      <div class="pills rv"><span class="chip">↓ kWh</span><span class="chip">↓ CO₂</span><span class="chip">↓ <span lang="en">cooling</span><span lang="es">refrigeración</span></span><span class="chip">↑ ESG</span></div>
+      <p class="note rv"><span lang="en">Ground Truth AI internal measurements after data reduction; energy figures estimated with Schneider Electric data.</span><span lang="es">Mediciones internas de Ground Truth AI tras la reducción de datos; cifras de energía estimadas con datos de Schneider Electric.</span></p>
+    </div>
+    <div class="gauges">
+      <div class="card gauge rv">
+        <svg viewBox="0 0 220 220"><circle class="trk" cx="110" cy="110" r="90"/><circle class="val" cx="110" cy="110" r="90" style="--off:79.2"/></svg>
+        <div class="inner"><div class="num g" style="font-family:var(--display);font-weight:800;letter-spacing:-.04em"><span class="count" data-to="86">86</span><span style="font-size:.5em">%</span></div></div>
+        <h3><span lang="en">Workstation training</span><span lang="es">Entrenamiento en workstation</span></h3>
+        <p><span lang="en">energy saved per training run</span><span lang="es">energía ahorrada por entrenamiento</span></p>
       </div>
-
-    </section><!-- /About Section -->
-
-    <!-- Skills Section -->
-    <!--section id="skills" class="skills section">
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="row g-4 skills-animation">
-
-          <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
-            <div class="skill-box">
-              <h3>HTML</h3>
-              <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem.</p>
-              <span class="text-end d-block">90%</span>
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
-            <div class="skill-box">
-              <h3>CSS</h3>
-              <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur.</p>
-              <span class="text-end d-block">90%</span>
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
-            <div class="skill-box">
-              <h3>JavaScript</h3>
-              <p>Neque porro quisquam est qui dolorem ipsum quia dolor.</p>
-              <span class="text-end d-block">80%</span>
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="400">
-            <div class="skill-box">
-              <h3>Photoshop</h3>
-              <p>Quis autem vel eum iure reprehenderit qui in ea voluptate.</p>
-              <span class="text-end d-block">55%</span>
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100">
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section><!-- /Skills Section -->
-
-    <!-- Resume Section -->
-    <!--section id="resume" class="resume section">
-
-      <!-- Section Title -->
-      <!--div class="container section-title" data-aos="fade-up">
-        <h2>Resume</h2>
-        <div class="title-shape">
-          <svg viewBox="0 0 200 20" xmlns="http://www.w3.org/2000/svg">
-            <path d="M 0,10 C 40,0 60,20 100,10 C 140,0 160,20 200,10" fill="none" stroke="currentColor" stroke-width="2"></path>
-          </svg>
-        </div>
-        <p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur vel illum qui dolorem</p>
-      </div><!-- End Section Title -->
-
-      <!--div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="row">
-          <div class="col-12">
-            <div class="resume-wrapper">
-              <div class="resume-block" data-aos="fade-up">
-                <h2>Work Experience</h2>
-                <p class="lead">Maecenas tempus tellus eget condimentum rhoncus sem quam semper libero sit amet adipiscing sem neque sed ipsum.</p>
-
-                <div class="timeline">
-                  <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
-                    <div class="timeline-left">
-                      <h4 class="company">Etiam Industries</h4>
-                      <span class="period">Jun, 2023 - Current</span>
-                    </div>
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-right">
-                      <h3 class="position">Project Lead</h3>
-                      <p class="description">Quia nobis sequi est occaecati aut. Repudiandae et iusto quae reiciendis et quis Eius vel ratione eius unde vitae rerum voluptates asperiores voluptatem Earum molestiae consequatur neque etlon sader mart dila</p>
-                    </div>
-                  </div>
-
-                  <div class="timeline-item" data-aos="fade-up" data-aos-delay="300">
-                    <div class="timeline-left">
-                      <h4 class="company">Nullam Corp</h4>
-                      <span class="period">2019 - 2023</span>
-                    </div>
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-right">
-                      <h3 class="position">Senior graphic design specialist</h3>
-                      <p class="description">
-                        Curabitur ullamcorper ultricies nisi nam eget dui etiam rhoncus maecenas tempus.
-                      </p>
-                      <ul>
-                        <li>Lead in the design, development, and implementation of the graphic, layout, and production communication materials</li>
-                        <li>Delegate tasks to the 7 members of the design team and provide counsel on all aspects of the project. </li>
-                        <li>Supervise the assessment of all graphic materials in order to ensure quality and accuracy of the design</li>
-                        <li>Oversee the efficient use of production project budgets ranging from $2,000 - $25,000</li>
-                      </ul>
-                      <p></p>
-                    </div>
-                  </div>
-
-                  <div class="timeline-item" data-aos="fade-up" data-aos-delay="400">
-                    <div class="timeline-left">
-                      <h4 class="company">Stepping Stone Ltd.</h4>
-                      <span class="period">2015-2019</span>
-                    </div>
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-right">
-                      <h3 class="position">Graphic design specialist</h3>
-                      <p class="description">Curabitur ullamcorper ultricies nisi nam eget dui etiam rhoncus maecenas tempus.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="resume-block" data-aos="fade-up" data-aos-delay="100">
-                <h2>My Education</h2>
-                <p class="lead">Maecenas tempus tellus eget condimentum rhoncus sem quam semper libero sit amet adipiscing.</p>
-
-                <div class="timeline">
-                  <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
-                    <div class="timeline-left">
-                      <h4 class="company">Vestibulum University</h4>
-                      <span class="period">2017-2019</span>
-                    </div>
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-right">
-                      <h3 class="position">Diploma in Consequat</h3>
-                      <p class="description">Curabitur ullamcorper ultricies nisi nam eget dui etiam rhoncus maecenas tempus.</p>
-                    </div>
-                  </div>
-
-                  <div class="timeline-item" data-aos="fade-up" data-aos-delay="300">
-                    <div class="timeline-left">
-                      <h4 class="company">Nullam Corp</h4>
-                      <span class="period">2019 - 2023</span>
-                    </div>
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-right">
-                      <h3 class="position">Master of Fine Arts &amp; Graphic Design</h3>
-                      <p class="description">Curabitur ullamcorper ultricies nisi nam eget dui etiam rhoncus maecenas tempus.</p>
-                    </div>
-                  </div>
-
-                  <div class="timeline-item" data-aos="fade-up" data-aos-delay="400">
-                    <div class="timeline-left">
-                      <h4 class="company">Vestibulum University</h4>
-                      <span class="period">2015-2019</span>
-                    </div>
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-right">
-                      <h3 class="position">Bachelor of Fine Arts &amp; Graphic Design</h3>
-                      <p class="description">Curabitur ullamcorper ultricies nisi nam eget dui etiam rhoncus maecenas tempus.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-    </section><!-- /Resume Section -->
-
-    <!-- Portfolio Section -->
-    <!--section id="portfolio" class="portfolio section">
-
-      <!-- Section Title -->
-      <!--div class="container section-title" data-aos="fade-up">
-        <h2>Portfolio</h2>
-        <div class="title-shape">
-          <svg viewBox="0 0 200 20" xmlns="http://www.w3.org/2000/svg">
-            <path d="M 0,10 C 40,0 60,20 100,10 C 140,0 160,20 200,10" fill="none" stroke="currentColor" stroke-width="2"></path>
-          </svg>
-        </div>
-        <p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur vel illum qui dolorem</p>
-      </div><!-- End Section Title -->
-
-      <!--div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
-
-          <div class="portfolio-filters-container" data-aos="fade-up" data-aos-delay="200">
-            <ul class="portfolio-filters isotope-filters">
-              <li data-filter="*" class="filter-active">All Work</li>
-              <li data-filter=".filter-web">Web Design</li>
-              <li data-filter=".filter-graphics">Graphics</li>
-              <li data-filter=".filter-motion">Motion</li>
-              <li data-filter=".filter-brand">Branding</li>
-            </ul>
-          </div>
-
-          <div class="row g-4 isotope-container" data-aos="fade-up" data-aos-delay="300">
-
-            <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-web">
-              <div class="portfolio-card">
-                <div class="portfolio-image">
-                  <img src="assets/img/portfolio/portfolio-1.webp" class="img-fluid" alt="" loading="lazy">
-                  <div class="portfolio-overlay">
-                    <div class="portfolio-actions">
-                      <a href="assets/img/portfolio/portfolio-1.webp" class="glightbox preview-link" data-gallery="portfolio-gallery-web"><i class="bi bi-eye"></i></a>
-                      <a href="portfolio-details.html" class="details-link"><i class="bi bi-arrow-right"></i></a>
-                    </div>
-                  </div>
-                </div>
-                <div class="portfolio-content">
-                  <span class="category">Web Design</span>
-                  <h3>Modern Dashboard Interface</h3>
-                  <p>Maecenas faucibus mollis interdum sed posuere consectetur est at lobortis.</p>
-                </div>
-              </div>
-            </div><!-- End Portfolio Item -->
-
-            <!--div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-graphics">
-              <div class="portfolio-card">
-                <div class="portfolio-image">
-                  <img src="assets/img/portfolio/portfolio-10.webp" class="img-fluid" alt="" loading="lazy">
-                  <div class="portfolio-overlay">
-                    <div class="portfolio-actions">
-                      <a href="assets/img/portfolio/portfolio-10.webp" class="glightbox preview-link" data-gallery="portfolio-gallery-graphics"><i class="bi bi-eye"></i></a>
-                      <a href="portfolio-details.html" class="details-link"><i class="bi bi-arrow-right"></i></a>
-                    </div>
-                  </div>
-                </div>
-                <div class="portfolio-content">
-                  <span class="category">Graphics</span>
-                  <h3>Creative Brand Identity</h3>
-                  <p>Vestibulum id ligula porta felis euismod semper at vulputate.</p>
-                </div>
-              </div>
-            </div><!-- End Portfolio Item -->
-
-            <!--div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-motion">
-              <div class="portfolio-card">
-                <div class="portfolio-image">
-                  <img src="assets/img/portfolio/portfolio-7.webp" class="img-fluid" alt="" loading="lazy">
-                  <div class="portfolio-overlay">
-                    <div class="portfolio-actions">
-                      <a href="assets/img/portfolio/portfolio-7.webp" class="glightbox preview-link" data-gallery="portfolio-gallery-motion"><i class="bi bi-eye"></i></a>
-                      <a href="portfolio-details.html" class="details-link"><i class="bi bi-arrow-right"></i></a>
-                    </div>
-                  </div>
-                </div>
-                <div class="portfolio-content">
-                  <span class="category">Motion</span>
-                  <h3>Product Animation Reel</h3>
-                  <p>Donec ullamcorper nulla non metus auctor fringilla dapibus.</p>
-                </div>
-              </div>
-            </div><!-- End Portfolio Item -->
-
-            <!--div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-brand">
-              <div class="portfolio-card">
-                <div class="portfolio-image">
-                  <img src="assets/img/portfolio/portfolio-4.webp" class="img-fluid" alt="" loading="lazy">
-                  <div class="portfolio-overlay">
-                    <div class="portfolio-actions">
-                      <a href="assets/img/portfolio/portfolio-4.webp" class="glightbox preview-link" data-gallery="portfolio-gallery-brand"><i class="bi bi-eye"></i></a>
-                      <a href="portfolio-details.html" class="details-link"><i class="bi bi-arrow-right"></i></a>
-                    </div>
-                  </div>
-                </div>
-                <div class="portfolio-content">
-                  <span class="category">Branding</span>
-                  <h3>Luxury Brand Package</h3>
-                  <p>Aenean lacinia bibendum nulla sed consectetur elit.</p>
-                </div>
-              </div>
-            </div><!-- End Portfolio Item -->
-
-            <!--div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-web">
-              <div class="portfolio-card">
-                <div class="portfolio-image">
-                  <img src="assets/img/portfolio/portfolio-2.webp" class="img-fluid" alt="" loading="lazy">
-                  <div class="portfolio-overlay">
-                    <div class="portfolio-actions">
-                      <a href="assets/img/portfolio/portfolio-2.webp" class="glightbox preview-link" data-gallery="portfolio-gallery-web"><i class="bi bi-eye"></i></a>
-                      <a href="portfolio-details.html" class="details-link"><i class="bi bi-arrow-right"></i></a>
-                    </div>
-                  </div>
-                </div>
-                <div class="portfolio-content">
-                  <span class="category">Web Design</span>
-                  <h3>E-commerce Platform</h3>
-                  <p>Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                </div>
-              </div>
-            </div><!-- End Portfolio Item -->
-
-            <!--div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-graphics">
-              <div class="portfolio-card">
-                <div class="portfolio-image">
-                  <img src="assets/img/portfolio/portfolio-11.webp" class="img-fluid" alt="" loading="lazy">
-                  <div class="portfolio-overlay">
-                    <div class="portfolio-actions">
-                      <a href="assets/img/portfolio/portfolio-11.webp" class="glightbox preview-link" data-gallery="portfolio-gallery-graphics"><i class="bi bi-eye"></i></a>
-                      <a href="portfolio-details.html" class="details-link"><i class="bi bi-arrow-right"></i></a>
-                    </div>
-                  </div>
-                </div>
-                <div class="portfolio-content">
-                  <span class="category">Graphics</span>
-                  <h3>Digital Art Collection</h3>
-                  <p>Cras mattis consectetur purus sit amet fermentum.</p>
-                </div>
-              </div>
-            </div><!-- End Portfolio Item -->
-
-          <!--/div><!-- End Portfolio Container -->
-
-        <!--/div>
-
-      </div>
-
-    </section><!-- /Portfolio Section -->
-
-    <!-- Testimonials Section -->
-    <!--section id="testimonials" class="testimonials section light-background">
-
-      <!-- Section Title -->
-      <!--div class="container section-title" data-aos="fade-up">
-        <h2>Testimonials</h2>
-        <div class="title-shape">
-          <svg viewBox="0 0 200 20" xmlns="http://www.w3.org/2000/svg">
-            <path d="M 0,10 C 40,0 60,20 100,10 C 140,0 160,20 200,10" fill="none" stroke="currentColor" stroke-width="2"></path>
-          </svg>
-        </div>
-        <p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur vel illum qui dolorem</p>
-      </div><!-- End Section Title -->
-
-      <!--div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="testimonials-slider swiper init-swiper">
-          <script type="application/json" class="swiper-config">
-            {
-              "slidesPerView": 1,
-              "loop": true,
-              "speed": 600,
-              "autoplay": {
-                "delay": 5000
-              },
-              "navigation": {
-                "nextEl": ".swiper-button-next",
-                "prevEl": ".swiper-button-prev"
-              }
-            }
-          </script>
-
-          <div class="swiper-wrapper">
-
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <div class="row">
-                  <div class="col-lg-8">
-                    <h2>Sed ut perspiciatis unde omnis</h2>
-                    <p>
-                      Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.
-                    </p>
-                    <p>
-                      Beatae magnam dolore quia ipsum. Voluptatem totam et qui dolore dignissimos. Amet quia sapiente laudantium nihil illo et assumenda sit cupiditate. Nam perspiciatis perferendis minus consequatur. Enim ut eos quo.
-                    </p>
-                    <div class="profile d-flex align-items-center">
-                      <img src="assets/img/person/person-m-7.webp" class="profile-img" alt="">
-                      <div class="profile-info">
-                        <h3>Saul Goodman</h3>
-                        <span>Client</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-4 d-none d-lg-block">
-                    <div class="featured-img-wrapper">
-                      <img src="assets/img/person/person-m-7.webp" class="featured-img" alt="">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div><!-- End Testimonial Item -->
-
-            <!--div class="swiper-slide">
-              <div class="testimonial-item">
-                <div class="row">
-                  <div class="col-lg-8">
-                    <h2>Nemo enim ipsam voluptatem</h2>
-                    <p>
-                      Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.
-                    </p>
-                    <p>
-                      Dolorem excepturi esse qui amet maxime quibusdam aut repellendus voluptatum. Corrupti enim a repellat cumque est laborum fuga consequuntur. Dolorem nostrum deleniti quas voluptatem iure dolorum rerum. Repudiandae doloribus ut repellat harum vero aut. Modi aut velit aperiam aspernatur odit ut vitae.
-                    </p>
-                    <div class="profile d-flex align-items-center">
-                      <img src="assets/img/person/person-f-8.webp" class="profile-img" alt="">
-                      <div class="profile-info">
-                        <h3>Sara Wilsson</h3>
-                        <span>Designer</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-4 d-none d-lg-block">
-                    <div class="featured-img-wrapper">
-                      <img src="assets/img/person/person-f-8.webp" class="featured-img" alt="">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div><!-- End Testimonial Item -->
-
-            <!--div class="swiper-slide">
-              <div class="testimonial-item">
-                <div class="row">
-                  <div class="col-lg-8">
-                    <h2>
-                      Labore nostrum eos impedit
-                    </h2>
-                    <p>
-                      Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.
-                    </p>
-                    <p>
-                      Itaque ut explicabo vero occaecati est quam rerum sed. Numquam tempora aut aut quaerat quia illum. Nobis quia autem odit ipsam numquam. Doloribus sit sint corporis eius totam fuga. Hic nostrum suscipit corrupti nam expedita adipisci aut optio.
-                    </p>
-                    <div class="profile d-flex align-items-center">
-                      <img src="assets/img/person/person-m-9.webp" class="profile-img" alt="">
-                      <div class="profile-info">
-                        <h3>Matt Brandon</h3>
-                        <span>Freelancer</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-4 d-none d-lg-block">
-                    <div class="featured-img-wrapper">
-                      <img src="assets/img/person/person-m-9.webp" class="featured-img" alt="">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div><!-- End Testimonial Item -->
-
-            <!--div class="swiper-slide">
-              <div class="testimonial-item">
-                <div class="row">
-                  <div class="col-lg-8">
-                    <h2>Impedit dolor facilis nulla</h2>
-                    <p>
-                      Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.
-                    </p>
-                    <p>
-                      Omnis aspernatur accusantium qui delectus praesentium repellendus. Facilis sint odio aspernatur voluptas commodi qui qui qui pariatur. Corrupti deleniti itaque quaerat ipsum deleniti culpa tempora tempore. Et consequatur exercitationem hic aspernatur nobis est voluptatibus architecto laborum.
-                    </p>
-                    <div class="profile d-flex align-items-center">
-                      <img src="assets/img/person/person-f-10.webp" class="profile-img" alt="">
-                      <div class="profile-info">
-                        <h3>Jena Karlis</h3>
-                        <span>Store Owner</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-4 d-none d-lg-block">
-                    <div class="featured-img-wrapper">
-                      <img src="assets/img/person/person-f-10.webp" class="featured-img" alt="">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div><!-- End Testimonial Item -->
-
-          <!--/div>
-
-          <div class="swiper-navigation w-100 d-flex align-items-center justify-content-center">
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section><!-- /Testimonials Section -->
-
-
-    <!-- Faq Section -->
-    <!--section id="faq" class="faq section">
-
-      <!-- Section Title -->
-      <!--div class="container section-title" data-aos="fade-up">
-        <h2>Frequently Asked Questions</h2>
-        <div class="title-shape">
-          <svg viewBox="0 0 200 20" xmlns="http://www.w3.org/2000/svg">
-            <path d="M 0,10 C 40,0 60,20 100,10 C 140,0 160,20 200,10" fill="none" stroke="currentColor" stroke-width="2"></path>
-          </svg>
-        </div>
-        <p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur vel illum qui dolorem</p>
-      </div><!-- End Section Title -->
-
-      <!--div class="container">
-
-        <div class="row justify-content-center">
-
-          <div class="col-lg-10" data-aos="fade-up" data-aos-delay="100">
-
-            <div class="faq-container">
-
-              <div class="faq-item faq-active">
-                <h3>Non consectetur a erat nam at lectus urna duis?</h3>
-                <div class="faq-content">
-                  <p>Feugiat pretium nibh ipsum consequat. Tempus iaculis urna id volutpat lacus laoreet non curabitur gravida. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non.</p>
-                </div>
-                <i class="faq-toggle bi bi-chevron-right"></i>
-              </div><!-- End Faq item-->
-
-              <!--div class="faq-item">
-                <h3>Feugiat scelerisque varius morbi enim nunc faucibus?</h3>
-                <div class="faq-content">
-                  <p>Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id interdum velit laoreet id donec ultrices. Fringilla phasellus faucibus scelerisque eleifend donec pretium. Est pellentesque elit ullamcorper dignissim. Mauris ultrices eros in cursus turpis massa tincidunt dui.</p>
-                </div>
-                <i class="faq-toggle bi bi-chevron-right"></i>
-              </div><!-- End Faq item-->
-
-              <!--div class="faq-item">
-                <h3>Dolor sit amet consectetur adipiscing elit pellentesque?</h3>
-                <div class="faq-content">
-                  <p>Eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis orci. Faucibus pulvinar elementum integer enim. Sem nulla pharetra diam sit amet nisl suscipit. Rutrum tellus pellentesque eu tincidunt. Lectus urna duis convallis convallis tellus. Urna molestie at elementum eu facilisis sed odio morbi quis</p>
-                </div>
-                <i class="faq-toggle bi bi-chevron-right"></i>
-              </div><!-- End Faq item-->
-
-              <!--div class="faq-item">
-                <h3>Ac odio tempor orci dapibus. Aliquam eleifend mi in nulla?</h3>
-                <div class="faq-content">
-                  <p>Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id interdum velit laoreet id donec ultrices. Fringilla phasellus faucibus scelerisque eleifend donec pretium. Est pellentesque elit ullamcorper dignissim. Mauris ultrices eros in cursus turpis massa tincidunt dui.</p>
-                </div>
-                <i class="faq-toggle bi bi-chevron-right"></i>
-              </div><!-- End Faq item-->
-
-              <!--div class="faq-item">
-                <h3>Tempus quam pellentesque nec nam aliquam sem et tortor?</h3>
-                <div class="faq-content">
-                  <p>Molestie a iaculis at erat pellentesque adipiscing commodo. Dignissim suspendisse in est ante in. Nunc vel risus commodo viverra maecenas accumsan. Sit amet nisl suscipit adipiscing bibendum est. Purus gravida quis blandit turpis cursus in</p>
-                </div>
-                <i class="faq-toggle bi bi-chevron-right"></i>
-              </div><!-- End Faq item-->
-
-              <!--div class="faq-item">
-                <h3>Perspiciatis quod quo quos nulla quo illum ullam?</h3>
-                <div class="faq-content">
-                  <p>Enim ea facilis quaerat voluptas quidem et dolorem. Quis et consequatur non sed in suscipit sequi. Distinctio ipsam dolore et.</p>
-                </div>
-                <i class="faq-toggle bi bi-chevron-right"></i>
-              </div><!-- End Faq item-->
-
-            <!--/div>
-
-          </div><!-- End Faq Column-->
-
-        <!--/div>
-
-      </div>
-
-    </section><!-- /Faq Section -->
-
-    <!-- Contact Section -->
-    <!--section id="contact" class="contact section light-background">
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="row g-5">
-          <div class="col-lg-6">
-            <div class="content" data-aos="fade-up" data-aos-delay="200">
-              <div class="section-category mb-3">Contact</div>
-              <h2 class="display-5 mb-4">Nemo enim ipsam voluptatem quia voluptas aspernatur</h2>
-              <p class="lead mb-4">Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.</p>
-
-              <div class="contact-info mt-5">
-                <div class="info-item d-flex mb-3">
-                  <i class="bi bi-envelope-at me-3"></i>
-                  <span>info@example.com</span>
-                </div>
-
-                <div class="info-item d-flex mb-3">
-                  <i class="bi bi-telephone me-3"></i>
-                  <span>+1 5589 55488 558</span>
-                </div>
-
-                <div class="info-item d-flex mb-4">
-                  <i class="bi bi-geo-alt me-3"></i>
-                  <span>A108 Adam Street, New York, NY 535022</span>
-                </div>
-
-                <a href="#" class="map-link d-inline-flex align-items-center">
-                  Open Map
-                  <i class="bi bi-arrow-right ms-2"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="contact-form card" data-aos="fade-up" data-aos-delay="300">
-              <div class="card-body p-4 p-lg-5">
-
-                <form action="forms/contact.php" method="post" class="php-email-form">
-                  <div class="row gy-4">
-
-                    <div class="col-12">
-                      <input type="text" name="name" class="form-control" placeholder="Your Name" required="">
-                    </div>
-
-                    <div class="col-12 ">
-                      <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
-                    </div>
-
-                    <div class="col-12">
-                      <input type="text" class="form-control" name="subject" placeholder="Subject" required="">
-                    </div>
-
-                    <div class="col-12">
-                      <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
-                    </div>
-
-                    <div class="col-12 text-center">
-                      <div class="loading">Loading</div>
-                      <div class="error-message"></div>
-                      <div class="sent-message">Your message has been sent. Thank you!</div>
-
-                      <button type="submit" class="btn btn-submit w-100">Submit Message</button>
-                    </div>
-
-                  </div>
-                </form>
-
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section><!-- /Contact Section -->
-
-  </main>
-
-  <footer id="footer" class="footer">
-
-    <div class="container">
-      <div class="copyright text-center ">
-        <p>© <span>Copyright</span> <strong class="px-1 sitename">EasyFolio</strong> <span>All Rights Reserved</span></p>
-      </div>
-      <div class="social-links d-flex justify-content-center">
-        <a href=""><i class="bi bi-twitter-x"></i></a>
-        <a href=""><i class="bi bi-facebook"></i></a>
-        <a href=""><i class="bi bi-instagram"></i></a>
-        <a href=""><i class="bi bi-linkedin"></i></a>
-      </div>
-      <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you've purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      <div class="card gauge rv">
+        <svg viewBox="0 0 220 220"><circle class="trk" cx="110" cy="110" r="90"/><circle class="val" cx="110" cy="110" r="90" style="--off:344.9"/></svg>
+        <div class="inner"><div class="num g" style="font-family:var(--display);font-weight:800;letter-spacing:-.04em"><span class="count" data-to="39">39</span><span style="font-size:.5em">%</span></div></div>
+        <h3><span lang="en">IoT / edge devices</span><span lang="es">Dispositivos IoT / edge</span></h3>
+        <p><span lang="en">energy saved at the point of capture</span><span lang="es">energía ahorrada en el punto de captura</span></p>
       </div>
     </div>
+  </div>
+  <div class="foot"><span class="brand"><svg><use href="#logo"/></svg><span>Ground<b>Truth</b> AI</span></span><span class="pg"></span></div>
+</section>
 
-  </footer>
+<!-- ================= 11 · SIZE OF THE PRIZE ================= -->
+<section class="slide" data-title="Market">
+  <div class="kicker rv"><span lang="en">The size of the prize</span><span lang="es">El tamaño de la oportunidad</span></div>
+  <h2 class="rv"><span lang="en"><span class="g">Billions</span> in energy that AI doesn't need to burn</span><span lang="es"><span class="g">Miles de millones</span> en energía que la IA no necesita quemar</span></h2>
+  <div class="funnel">
+    <div class="fstep rv" style="width:100%"><span class="l"><span lang="en">Global data-center electricity, 2024</span><span lang="es">Electricidad de data centers en el mundo, 2024</span><small><span lang="en">415&nbsp;TWh (IEA), heading to ~945&nbsp;TWh by 2030 · at $0.13/kWh (U.S. commercial average, EIA)</span><span lang="es">415&nbsp;TWh (AIE), camino de ~945&nbsp;TWh en 2030 · a 0,13&nbsp;$/kWh (media comercial EE.&nbsp;UU., EIA)</span></small></span><span class="v" style="color:var(--muted)">≈$54B</span></div>
+    <div class="fstep rv" style="width:88%"><span class="l"><span lang="en">Share driven by AI training</span><span lang="es">Parte que se va en entrenar IA</span><small><span lang="en">~28% of data-center demand in 2025 (McKinsey: 23.1 of 82.3&nbsp;GW)</span><span lang="es">~28% de la demanda de data centers en 2025 (McKinsey: 23,1 de 82,3&nbsp;GW)</span></small></span><span class="v gc" data-num>≈$15B</span></div>
+    <div class="fstep rv hl" style="width:76%"><span class="l"><span lang="en">Yearly savings for every 10% of training workloads distilled</span><span lang="es">Ahorro anual por cada 10% de cargas de entrenamiento destiladas</span><small><span lang="en">applying 80% energy saving — below the 86% measured, to cover overheads</span><span lang="es">aplicando un 80% de ahorro energético — por debajo del 86% medido, para cubrir overheads</span></small></span><span class="v g" data-num>≈$1.2B</span></div>
+  </div>
+  <p class="src rv" style="text-align:center;margin-top:22px"><span lang="en">Sources</span><span lang="es">Fuentes</span>: IEA, Energy and AI (2025) · U.S. EIA, Electric Power Annual (2024 prices) · McKinsey, "The future of AI workloads" (2025). <span lang="en">Training share based on capacity demand (GW); savings rate: Ground Truth AI internal figure.</span><span lang="es">Cuota de entrenamiento sobre demanda de capacidad (GW); tasa de ahorro: cifra interna de Ground Truth AI.</span></p>
+  <div class="foot"><span class="brand"><svg><use href="#logo"/></svg><span>Ground<b>Truth</b> AI</span></span><span class="pg"></span></div>
+</section>
 
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+<!-- ================= 12 · CALCULATOR ================= -->
+<section class="slide" data-title="Calculator">
+  <div class="kicker rv"><span lang="en">06 · Your savings, calculated</span><span lang="es">06 · Tu ahorro, calculado</span></div>
+  <h2 class="rv" style="font-size:52px"><span lang="en">Move the sliders. <span class="g">Watch the savings.</span></span><span lang="es">Mueve los controles. <span class="g">Mira el ahorro.</span></span></h2>
+  <div class="calc">
+    <div class="card rv">
+      <div class="ctrls">
+        <div class="seg" id="scen"><button data-s="target" class="on"><span lang="en">Expected</span><span lang="es">Esperado</span></button><button data-s="cons"><span lang="en">Conservative</span><span lang="es">Conservador</span></button></div>
+        <div class="seg" id="cur"><button data-c="USD" class="on">$</button><button data-c="EUR">€</button></div>
+      </div>
+      <div class="field"><div class="row"><label for="i-tb"><span lang="en">Data stored</span><span lang="es">Datos almacenados</span></label><output id="o-tb"></output></div><input type="range" id="i-tb" min="10" max="5000" step="10" value="500"></div>
+      <div class="field"><div class="row"><label for="i-ctb"><span lang="en">Storage + backup cost / TB / month</span><span lang="es">Coste almac. + backup / TB / mes</span></label><output id="o-ctb"></output></div><input type="range" id="i-ctb" min="5" max="200" step="1" value="40"></div>
+      <div class="field"><div class="row"><label for="i-proc"><span lang="en">Annual cloud processing spend</span><span lang="es">Gasto anual en proceso cloud</span></label><output id="o-proc"></output></div><input type="range" id="i-proc" min="0" max="5000000" step="10000" value="600000"></div>
+      <div class="field"><div class="row"><label for="i-train"><span lang="en">Annual AI training spend</span><span lang="es">Gasto anual en entrenar IA</span></label><output id="o-train"></output></div><input type="range" id="i-train" min="0" max="5000000" step="10000" value="400000"></div>
+      <div class="field" style="margin-bottom:0"><div class="row"><label for="i-prep"><span lang="en">Annual team cost on data prep</span><span lang="es">Coste anual del equipo en preparar datos</span></label><output id="o-prep"></output></div><input type="range" id="i-prep" min="0" max="3000000" step="10000" value="300000"></div>
+    </div>
+    <div class="card hl res rv">
+      <div class="kicker" style="margin-bottom:8px"><span lang="en">Estimated annual savings</span><span lang="es">Ahorro anual estimado</span></div>
+      <div class="total g" id="r-total">—</div>
+      <div class="sub3">
+        <div><span lang="en">Over 3 years</span><span lang="es">En 3 años</span><b id="r-3y">—</b></div>
+        <div><span lang="en">Data footprint</span><span lang="es">Huella de datos</span><b id="r-tb">—</b></div>
+        <div><span lang="en">Of current spend</span><span lang="es">Del gasto actual</span><b id="r-pct">—</b></div>
+      </div>
+      <div class="brk">
+        <div class="r"><span><span lang="en">Storage &amp; backup</span><span lang="es">Almac. y backup</span></span><div class="bar"><i id="b-sto"></i></div><b id="v-sto"></b></div>
+        <div class="r"><span><span lang="en">Cloud processing</span><span lang="es">Proceso cloud</span></span><div class="bar"><i id="b-proc"></i></div><b id="v-proc"></b></div>
+        <div class="r"><span><span lang="en">AI training</span><span lang="es">Entrenamiento IA</span></span><div class="bar"><i id="b-train"></i></div><b id="v-train"></b></div>
+        <div class="r"><span><span lang="en">Data prep &amp; admin</span><span lang="es">Prep. y admin.</span></span><div class="bar"><i id="b-prep"></i></div><b id="v-prep"></b></div>
+      </div>
+      <p class="note" id="r-note" style="margin-top:20px"></p>
+    </div>
+  </div>
+  <div class="foot"><span class="brand"><svg><use href="#logo"/></svg><span>Ground<b>Truth</b> AI</span></span><span class="pg"></span></div>
+</section>
 
-  <!-- Vendor JS Files -->
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
-  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
-  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+<!-- ================= 13 · WHERE IT PAYS OFF ================= -->
+<section class="slide uc" data-title="Use cases">
+  <div class="kicker rv"><span lang="en">07 · Where it pays off</span><span lang="es">07 · Dónde se rentabiliza</span></div>
+  <h2 class="rv"><span lang="en">Savings wherever <span class="g">data lives</span></span><span lang="es">Ahorro allí donde <span class="g">viven los datos</span></span></h2>
+  <p class="lead rv"><span lang="en">A software layer that rides on existing hardware and pipelines — making every server, device and service do more with less.</span><span lang="es">Una capa de software que se apoya en el hardware y los pipelines existentes — haciendo que cada servidor, dispositivo y servicio haga más con menos.</span></p>
+  <div class="grid g4" style="margin-top:40px">
+    <div class="card rv"><span class="ic"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 6h.01M6 18h.01"/></svg></span><h3><span lang="en">Data center &amp; cloud</span><span lang="es">Data center y cloud</span></h3><p><span lang="en">Same infrastructure, far more performance per watt and per euro. Lower TCO, higher value density per rack.</span><span lang="es">Misma infraestructura, mucho más rendimiento por vatio y por euro. Menor TCO, más valor por rack.</span></p><span class="chip">↓ TCO</span></div>
+    <div class="card rv"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/></svg></span><h3><span lang="en">Edge &amp; industrial IoT</span><span lang="es">Edge e IoT industrial</span></h3><p><span lang="en">Sensor data distilled at source: less bandwidth, less transmission cost, real-time decisions without shipping everything to the cloud.</span><span lang="es">Datos de sensores destilados en origen: menos ancho de banda, menos coste de transmisión, decisiones en tiempo real sin enviarlo todo a la nube.</span></p><span class="chip">−39% <span lang="en">energy</span><span lang="es">energía</span></span></div>
+    <div class="card rv"><span class="ic"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span><h3><span lang="en">On-device AI &amp; workstations</span><span lang="es">IA en dispositivo y workstations</span></h3><p><span lang="en">Local, private and fast AI: models trained on concentrated data fit on PCs and workstations.</span><span lang="es">IA local, privada y rápida: modelos entrenados con datos concentrados caben en PCs y workstations.</span></p><span class="chip">−86% <span lang="en">energy</span><span lang="es">energía</span></span></div>
+    <div class="card rv"><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><path d="M12 20h.01"/></svg></span><h3>Telecom</h3><p><span lang="en">Device logs distilled at the source before upload — cutting transmission and storage costs at network scale.</span><span lang="es">Logs de dispositivos destilados en origen antes de subirlos — recortando costes de transmisión y almacenamiento a escala de red.</span></p><span class="chip">↓ <span lang="en">transmission</span><span lang="es">transmisión</span></span></div>
+  </div>
+  <div class="foot"><span class="brand"><svg><use href="#logo"/></svg><span>Ground<b>Truth</b> AI</span></span><span class="pg"></span></div>
+</section>
 
-  <!-- Main JS File -->
-  <script src="assets/js/main.js"></script>
+<!-- ================= 14 · BONUS CAPABILITIES ================= -->
+<section class="slide" data-title="Extras">
+  <div class="kicker rv"><span lang="en">Same engine, extra value</span><span lang="es">Mismo motor, valor extra</span></div>
+  <h2 class="rv"><span lang="en">And on top: <span class="gv">more return</span> from the same engine</span><span lang="es">Y además: <span class="gv">más retorno</span> del mismo motor</span></h2>
+  <p class="lead rv"><span lang="en">Distillation is the core of value. These capabilities are an <b>extra</b> built on the same technology — each with its own impact on the bottom line.</span><span lang="es">La destilación es el núcleo de valor. Estas capacidades son un <b>extra</b> sobre la misma tecnología — cada una con su propio impacto en la cuenta de resultados.</span></p>
+  <div class="grid g4" style="margin-top:40px">
+    <div class="card rv"><h3><span lang="en">Drift detection</span><span lang="es">Detección de deriva</span></h3><p><span lang="en">24/7 radar on model performance, before degradation hits results.</span><span lang="es">Radar 24/7 del rendimiento de modelos, antes de que la degradación afecte a resultados.</span></p><div class="divider" style="margin:20px 0"></div><div class="stat"><div class="num g" style="font-size:46px">91%</div><div class="lbl" style="font-size:15px"><span lang="en">of ML models degrade over time</span><span lang="es">de los modelos ML se degradan con el tiempo</span></div></div></div>
+    <div class="card rv"><h3><span lang="en">Precise segmentation</span><span lang="es">Segmentación precisa</span></h3><p><span lang="en">Real-time behavioral profiles and intent-based targeting.</span><span lang="es">Perfiles de comportamiento en tiempo real y targeting por intención.</span></p><div class="divider" style="margin:20px 0"></div><div class="stat"><div class="num g" style="font-size:46px">−50%</div><div class="lbl" style="font-size:15px"><span lang="en">customer acquisition cost (up to) with personalization</span><span lang="es">coste de adquisición de clientes (hasta) con personalización</span></div></div></div>
+    <div class="card rv"><h3><span lang="en">Advanced recommendation</span><span lang="es">Recomendación avanzada</span></h3><p><span lang="en">Anticipatory, context-aware suggestions.</span><span lang="es">Sugerencias anticipatorias y contextuales.</span></p><div class="divider" style="margin:20px 0"></div><div class="stat"><div class="num g" style="font-size:46px">+5–15%</div><div class="lbl" style="font-size:15px"><span lang="en">revenue lift from personalization</span><span lang="es">más ingresos gracias a la personalización</span></div></div></div>
+    <div class="card rv"><h3><span lang="en">Fraud detection</span><span lang="es">Detección de fraude</span></h3><p><span lang="en">Anomalies in warranties, channel and supply chain.</span><span lang="es">Anomalías en garantías, canal y cadena de suministro.</span></p><div class="divider" style="margin:20px 0"></div><div class="stat"><div class="num g" style="font-size:46px">24/7</div><div class="lbl" style="font-size:15px"><span lang="en">losses caught before they hit</span><span lang="es">pérdidas detectadas antes de producirse</span></div></div></div>
+  </div>
+  <p class="src rv"><span lang="en">Sources</span><span lang="es">Fuentes</span>: Vela et al., "Temporal quality degradation in AI models", Scientific Reports 12, 11654 (2022) · McKinsey, "What is personalization?"</p>
+  <div class="foot"><span class="brand"><svg><use href="#logo"/></svg><span>Ground<b>Truth</b> AI</span></span><span class="pg"></span></div>
+</section>
 
+<!-- ================= 15 · HOW WE WORK ================= -->
+<section class="slide" data-title="Next steps">
+  <div class="kicker rv"><span lang="en">08 · How we work together</span><span lang="es">08 · Cómo trabajamos juntos</span></div>
+  <h2 class="rv"><span lang="en">From pilot to <span class="g">measured savings</span></span><span lang="es">Del piloto al <span class="g">ahorro medido</span></span></h2>
+  <div class="steps">
+    <div class="step rv"><div class="dot">1</div><h3><span lang="en">Cost baseline</span><span lang="es">Línea base de costes</span></h3><p><span lang="en">We map volumes and today's spend on storage, compute, training and energy.</span><span lang="es">Mapeamos volúmenes y el gasto actual en almacenamiento, cómputo, entrenamiento y energía.</span></p></div>
+    <div class="step rv"><div class="dot">2</div><h3><span lang="en">Pilot on real data</span><span lang="es">Piloto con datos reales</span></h3><p><span lang="en">Distillation on a real use case, with success criteria agreed from day one.</span><span lang="es">Destilación sobre un caso real, con criterios de éxito acordados desde el día uno.</span></p></div>
+    <div class="step rv"><div class="dot">3</div><h3><span lang="en">Measure the savings</span><span lang="es">Medir el ahorro</span></h3><p><span lang="en">Before vs. after: cost, energy, time and accuracy — in hard numbers.</span><span lang="es">Antes vs. después: coste, energía, tiempo y precisión — en cifras concretas.</span></p></div>
+    <div class="step rv"><div class="dot">4</div><h3><span lang="en">Scale &amp; integrate</span><span lang="es">Escalar e integrar</span></h3><p><span lang="en">Roll out across pipelines and platforms already in place.</span><span lang="es">Despliegue en los pipelines y plataformas ya existentes.</span></p></div>
+  </div>
+  <div class="collab">
+    <div class="card rv"><h3><span lang="en">Co-sell</span><span lang="es">Co-venta</span></h3><p><span lang="en">A value-add in your offerings.</span><span lang="es">Valor añadido en tu oferta.</span></p></div>
+    <div class="card rv"><h3><span lang="en">Integration / OEM</span><span lang="es">Integración / OEM</span></h3><p><span lang="en">Embedded in solutions and devices.</span><span lang="es">Embebido en soluciones y dispositivos.</span></p></div>
+    <div class="card rv"><h3><span lang="en">Reference architecture</span><span lang="es">Arquitectura de referencia</span></h3><p><span lang="en">A joint "Smart Data" blueprint.</span><span lang="es">Un blueprint conjunto «Smart Data».</span></p></div>
+    <div class="card hl rv"><h3><span lang="en">Flagship case</span><span lang="es">Caso insignia</span></h3><p><span lang="en">A measurable success story.</span><span lang="es">Un caso de éxito medible.</span></p></div>
+  </div>
+  <div class="foot"><span class="brand"><svg><use href="#logo"/></svg><span>Ground<b>Truth</b> AI</span></span><span class="pg"></span></div>
+</section>
+
+<!-- ================= 16 · CLOSING ================= -->
+<section class="slide cover" data-title="Closing">
+  <div class="glow" style="width:900px;height:900px;left:350px;top:-100px;background:radial-gradient(circle,rgba(46,230,166,.22),transparent 62%)"></div>
+  <div class="top"><span class="brand"><svg><use href="#logo"/></svg><span>Ground<b>Truth</b> AI</span></span></div>
+  <div class="kicker rv"><span lang="en">In summary</span><span lang="es">En resumen</span></div>
+  <h1 class="rv"><span lang="en">From volume to value.<br><span class="g">And to savings.</span></span><span lang="es">Del volumen al valor.<br><span class="g">Y al ahorro.</span></span></h1>
+  <p class="sub rv"><span lang="en">Ground Truth AI turns data into decisions — and data costs into savings — on every device, in every data center, for every customer.</span><span lang="es">Ground Truth AI convierte los datos en decisiones — y el coste de los datos en ahorro — en cada dispositivo, cada centro de datos y cada cliente.</span></p>
+  <div class="grid g4" style="margin-top:50px;max-width:1300px">
+    <div class="stat rv"><div class="num g" style="font-size:58px">−95%</div><div class="lbl"><span lang="en">data volume</span><span lang="es">volumen de datos</span></div></div>
+    <div class="stat rv"><div class="num g" style="font-size:58px">−90%</div><div class="lbl"><span lang="en">storage cost</span><span lang="es">coste de almacenamiento</span></div></div>
+    <div class="stat rv"><div class="num g" style="font-size:58px">−80%</div><div class="lbl"><span lang="en">cloud processing</span><span lang="es">proceso cloud</span></div></div>
+    <div class="stat rv"><div class="num g" style="font-size:58px">−86%</div><div class="lbl"><span lang="en">training energy</span><span lang="es">energía de entrenamiento</span></div></div>
+  </div>
+  <div class="foot"><span>Jose L. Salmeron, PhD · Ground Truth AI</span><span class="pg"></span></div>
+</section>
+
+<!-- ================= 17 · SOURCES ================= -->
+<section class="slide" data-title="Sources" style="padding-top:40px;padding-bottom:86px;justify-content:flex-start">
+  <div class="kicker rv" style="margin-bottom:14px"><span lang="en">Sources</span><span lang="es">Fuentes</span></div>
+  <h2 class="rv" style="font-size:42px"><span lang="en">Where the numbers come from</span><span lang="es">De dónde salen las cifras</span></h2>
+  <p class="src rv" style="font-size:14px;margin-top:12px"><span lang="en">Savings rates (−95% data, −90% storage, −95% backup, −80% cloud, −95% training time, −70% data prep, −86% / −39% energy, $120k/yr) and benchmark results are <b>Ground Truth AI internal figures</b>, to be validated in each pilot.</span><span lang="es">Las tasas de ahorro (−95% datos, −90% almacenamiento, −95% backup, −80% cloud, −95% tiempo de entrenamiento, −70% preparación, −86% / −39% energía, 120k$/año) y los resultados de benchmark son <b>cifras internas de Ground Truth AI</b>, a validar en cada piloto.</span></p>
+  <div class="refs" style="margin-top:16px"><div class="r rv"><span class="fig">85% · 15% · $650k</span><b>Veritas — Global Databerg Report (2016)</b><span lang="en">2,500+ IT pros, 22 countries: 52% dark + 33% ROT; 15% business-critical; &gt;$650k/yr for a 1&nbsp;PB mid-size company.</span><span lang="es">2.500+ profesionales IT, 22 países: 52% oscuro + 33% ROT; 15% crítico; &gt;650k$/año en una empresa mediana con 1&nbsp;PB.</span><br><a href="https://web.archive.org/web/2017/https://www.veritas.com/news-releases/2016-03-15-veritas-global-databerg-report-finds-85-percent-of-stored-data" target="_blank" rel="noopener">web.archive.org/web/2017/www.veritas.com/news-releases/2016-03-15-veritas-glob…</a></div><div class="r rv"><span class="fig">38%</span><b>Anaconda — State of Data Science (2022)</b><span lang="en">Share of working time spent on data preparation and cleansing (45% in 2020).</span><span lang="es">Parte del tiempo de trabajo dedicada a preparar y limpiar datos (45% en 2020).</span><br><a href="https://venturebeat.com/ai/what-are-data-scientists-biggest-concerns-the-2022-state-of-data-science-report-has-the-answers" target="_blank" rel="noopener">venturebeat.com/ai/what-are-data-scientists-biggest-concerns-the-2022-state…</a></div><div class="r rv"><span class="fig">91%</span><b>Vela et al. — Scientific Reports 12, 11654 (2022)</b><span lang="en">Temporal degradation observed in 91% of 128 model–dataset pairs.</span><span lang="es">Degradación temporal observada en el 91% de 128 pares modelo–dataset.</span><br><a href="https://doi.org/10.1038/s41598-022-15245-z" target="_blank" rel="noopener">doi.org/10.1038/s41598-022-15245-z</a></div><div class="r rv"><span class="fig">410× · 2×</span><b>Gholami et al. — "AI and Memory Wall", IEEE Micro (2024)</b><span lang="en">Transformer parameters ×410 every 2 years vs. single-GPU memory ×2.</span><span lang="es">Parámetros de Transformers ×410 cada 2 años frente a ×2 de memoria por GPU.</span><br><a href="https://arxiv.org/abs/2403.14123" target="_blank" rel="noopener">arxiv.org/abs/2403.14123</a></div><div class="r rv"><span class="fig">4.4% · 6.7–12%</span><b>LBNL / U.S. DOE — 2024 Data Center Energy Usage Report</b><span lang="en">176 TWh, 4.4% of U.S. electricity in 2023; 6.7–12% by 2028.</span><span lang="es">176 TWh, 4,4% de la electricidad de EE.&nbsp;UU. en 2023; 6,7–12% en 2028.</span><br><a href="https://www.energy.gov/articles/doe-releases-new-report-evaluating-increase-electricity-demand-data-centers" target="_blank" rel="noopener">www.energy.gov/articles/doe-releases-new-report-evaluating-increase-electricit…</a></div><div class="r rv"><span class="fig">415 → 945 TWh</span><b>IEA — Energy and AI (2025)</b><span lang="en">Global data-center electricity in 2024 and 2030 (Base Case).</span><span lang="es">Electricidad de data centers en el mundo en 2024 y 2030 (escenario base).</span><br><a href="https://www.iea.org/reports/energy-and-ai/energy-demand-from-ai" target="_blank" rel="noopener">www.iea.org/reports/energy-and-ai/energy-demand-from-ai</a></div><div class="r rv"><span class="fig">$0.13/kWh</span><b>U.S. EIA — Electric Power Annual</b><span lang="en">2024 average commercial price: 12.75 ¢/kWh (EU non-household ≈ €0.19, Eurostat).</span><span lang="es">Precio medio comercial 2024: 12,75 ¢/kWh (UE no doméstico ≈ 0,19 €, Eurostat).</span><br><a href="https://www.eia.gov/electricity/annual/html/epa_02_10.html" target="_blank" rel="noopener">www.eia.gov/electricity/annual/html/epa_02_10.html</a></div><div class="r rv"><span class="fig">~28%</span><b>McKinsey — "The future of AI workloads" (2025)</b><span lang="en">AI training: 23.1 of 82.3 GW of global data-center demand in 2025.</span><span lang="es">Entrenamiento IA: 23,1 de 82,3 GW de la demanda global de data centers en 2025.</span><br><a href="https://www.mckinsey.com/featured-insights/week-in-charts/the-future-of-ai-workloads" target="_blank" rel="noopener">www.mckinsey.com/featured-insights/week-in-charts/the-future-of-ai-workloads</a></div><div class="r rv"><span class="fig">−50% · +5–15%</span><b>McKinsey — "What is personalization?"</b><span lang="en">Personalization can cut acquisition cost by up to 50% and lift revenue 5–15%.</span><span lang="es">La personalización puede reducir hasta un 50% el coste de adquisición y subir ingresos un 5–15%.</span><br><a href="https://www.mckinsey.com/featured-insights/mckinsey-explainers/what-is-personalization" target="_blank" rel="noopener">www.mckinsey.com/featured-insights/mckinsey-explainers/what-is-personalization</a></div><div class="r rv"><span class="fig">$23/TB·mo</span><b>AWS — Amazon S3 pricing</b><span lang="en">S3 Standard, first 50 TB, us-east-1: $0.023/GB-month.</span><span lang="es">S3 Standard, primeros 50 TB, us-east-1: 0,023 $/GB-mes.</span><br><a href="https://aws.amazon.com/s3/pricing/" target="_blank" rel="noopener">aws.amazon.com/s3/pricing/</a></div></div>
+  <div class="foot"><span class="brand"><svg><use href="#logo"/></svg><span>Ground<b>Truth</b> AI</span></span><span class="pg"></span></div>
+</section>
+
+</main>
+
+<div class="nav">
+  <button id="prev" title="Previous (←)">←</button>
+  <span class="cnt" id="cnt">1 / 1</span>
+  <button id="next" title="Next (→)">→</button>
+  <button id="langBtn" title="Language (L)" class="mono" style="font-size:12px;font-weight:700">ES</button>
+  <button id="fs" title="Fullscreen (F)">⛶</button>
+</div>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var stage = document.getElementById('stage');
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var N = slides.length, cur = 0;
+  var lang = 'en';
+
+  /* ---------- scale stage ---------- */
+  function fit(){
+    var s = Math.min(window.innerWidth/1600, window.innerHeight/900);
+    stage.style.transform = 'translate(-50%,-50%) scale(' + s + ')';
+  }
+  window.addEventListener('resize', fit); fit();
+
+  /* ---------- stagger index for reveal + page numbers ---------- */
+  slides.forEach(function(s, k){
+    s.querySelectorAll('.rv').forEach(function(el, i){ el.style.setProperty('--i', i); });
+    var pg = s.querySelector('.pg'); if (pg) pg.textContent = String(k+1).padStart(2,'0') + ' / ' + String(N).padStart(2,'0');
+  });
+
+  /* ---------- number formatting ---------- */
+  function loc(){ return lang === 'es' ? 'es-ES' : 'en-US'; }
+  function fmt(v, dec){ return v.toLocaleString(loc(), {minimumFractionDigits:dec||0, maximumFractionDigits:dec||0}); }
+
+  // Static decimals that must follow the language (97.4% vs 97,4%)
+  var numEls = Array.prototype.slice.call(document.querySelectorAll('[data-num]'));
+  numEls.forEach(function(el){ el.setAttribute('data-orig', el.textContent); });
+  function localizeStatic(){
+    numEls.forEach(function(el){
+      var t = el.getAttribute('data-orig');
+      el.textContent = lang === 'es' ? t.replace(/(\d)\.(\d)/g, '$1,$2') : t;
+    });
+  }
+
+  /* ---------- count-up ---------- */
+  function countUp(slide){
+    slide.querySelectorAll('.count').forEach(function(el){
+      var to = parseFloat(el.getAttribute('data-to')), dec = parseInt(el.getAttribute('data-dec')||'0',10);
+      var t0 = null, dur = 1500, delay = 350;
+      function step(ts){
+        if (!t0) t0 = ts;
+        var p = Math.min(1, Math.max(0, (ts - t0 - delay)/dur));
+        var e = 1 - Math.pow(1-p, 3);
+        el.textContent = fmt(to*e, dec);
+        if (p < 1) requestAnimationFrame(step);
+      }
+      el.textContent = fmt(0, dec);
+      requestAnimationFrame(step);
+    });
+  }
+  function finalCounts(){
+    document.querySelectorAll('.count').forEach(function(el){
+      el.textContent = fmt(parseFloat(el.getAttribute('data-to')), parseInt(el.getAttribute('data-dec')||'0',10));
+    });
+  }
+
+  /* ---------- navigation ---------- */
+  function go(n, instant){
+    n = Math.max(0, Math.min(N-1, n));
+    slides.forEach(function(s, k){
+      s.classList.toggle('active', k === n);
+      s.classList.toggle('past', k < n);
+    });
+    if (root.classList.contains('static')) finalCounts(); else if (n !== cur || instant) countUp(slides[n]);
+    cur = n;
+    document.getElementById('progress').style.width = ((n+1)/N*100) + '%';
+    document.getElementById('cnt').textContent = (n+1) + ' / ' + N;
+    if (history.replaceState) history.replaceState(null, '', '#' + (n+1));
+  }
+  document.getElementById('prev').onclick = function(){ go(cur-1); };
+  document.getElementById('next').onclick = function(){ go(cur+1); };
+
+  function toggleFS(){
+    var d = document, el = d.documentElement;
+    if (!(d.fullscreenElement || d.webkitFullscreenElement)) (el.requestFullscreen || el.webkitRequestFullscreen || function(){}).call(el);
+    else (d.exitFullscreen || d.webkitExitFullscreen || function(){}).call(d);
+  }
+  document.getElementById('fs').onclick = toggleFS;
+
+  document.addEventListener('keydown', function(e){
+    if (e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName) && e.target.type !== 'range') return;
+    if (e.target && e.target.type === 'range' && /Arrow/.test(e.key)) return;
+    switch (e.key) {
+      case 'ArrowRight': case 'ArrowDown': case 'PageDown': case ' ': e.preventDefault(); go(cur+1); break;
+      case 'ArrowLeft': case 'ArrowUp': case 'PageUp': e.preventDefault(); go(cur-1); break;
+      case 'Home': go(0); break;
+      case 'End': go(N-1); break;
+      case 'f': case 'F': toggleFS(); break;
+      case 'l': case 'L': setLang(lang === 'en' ? 'es' : 'en'); break;
+    }
+  });
+  var tx = null;
+  document.addEventListener('touchstart', function(e){ if (e.target.type !== 'range') tx = e.touches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if (tx === null) return; var dx = e.changedTouches[0].clientX - tx; tx = null;
+    if (Math.abs(dx) > 50) go(cur + (dx < 0 ? 1 : -1));
+  }, {passive:true});
+
+  /* ---------- language ---------- */
+  function setLang(l){
+    lang = l; root.setAttribute('data-lang', l); root.setAttribute('lang', l);
+    document.querySelectorAll('[data-lang-set]').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-lang-set') === l); });
+    document.getElementById('langBtn').textContent = l === 'en' ? 'ES' : 'EN';
+    if (!curTouched) { currency = l === 'es' ? 'EUR' : 'USD'; document.querySelectorAll('#cur button').forEach(function(x){ x.classList.toggle('on', x.getAttribute('data-c') === currency); }); }
+    localizeStatic(); finalCounts(); calc();
+  }
+  document.querySelectorAll('[data-lang-set]').forEach(function(b){ b.onclick = function(){ setLang(b.getAttribute('data-lang-set')); }; });
+  document.getElementById('langBtn').onclick = function(){ setLang(lang === 'en' ? 'es' : 'en'); };
+
+  /* ---------- cover visual: distillation particles ---------- */
+  (function(){
+    var g = document.getElementById('dots'), ns = 'http://www.w3.org/2000/svg';
+    var cx = 310, cy = 320, seed = 7;
+    function rnd(){ seed = (seed*9301 + 49297) % 233280; return seed/233280; }
+    for (var i = 0; i < 160; i++){
+      var a = rnd()*Math.PI*2, r = 70 + Math.sqrt(rnd())*215;
+      var x = cx + Math.cos(a)*r, y = cy + Math.sin(a)*r;
+      var c = document.createElementNS(ns, 'circle');
+      c.setAttribute('cx', x.toFixed(1)); c.setAttribute('cy', y.toFixed(1));
+      c.setAttribute('r', (2 + rnd()*3.2).toFixed(1));
+      c.setAttribute('fill', rnd() > .5 ? '#5D6D85' : '#3C4A60');
+      c.setAttribute('class', 'dot ' + (i % 20 === 0 ? 'keep' : 'gone'));
+      var k = .78; // keepers move to an orbit near the core
+      c.style.setProperty('--dx', ((cx-x)) + 'px'); c.style.setProperty('--dy', ((cy-y)) + 'px');
+      var kr = 62 + rnd()*20, ka = a;
+      c.style.setProperty('--kx', ((cx + Math.cos(ka)*kr) - x) + 'px'); c.style.setProperty('--ky', ((cy + Math.sin(ka)*kr) - y) + 'px');
+      c.style.setProperty('--d', (rnd()*0.9).toFixed(2) + 's');
+      g.appendChild(c);
+    }
+  })();
+
+  /* ---------- waste grid on problem slide ---------- */
+  (function(){
+    var w = document.getElementById('waste'), h = '';
+    for (var i = 0; i < 40; i++) h += '<span' + (i < 6 ? ' class="ok"' : '') + '></span>';
+    w.innerHTML = h;
+  })();
+
+  /* ---------- savings calculator ---------- */
+  var RATES = {
+    target: { sto:.90, proc:.80, train:.80, prep:.70, red:.95 },
+    cons:   { sto:.60, proc:.50, train:.50, prep:.40, red:.86 }
+  };
+  var scen = 'target', currency = 'USD', curTouched = false;
+  var $ = function(id){ return document.getElementById(id); };
+  function money(v){
+    var sym = currency === 'USD' ? '$' : '€';
+    var a = Math.abs(v), s;
+    if (a >= 1e6) s = fmt(v/1e6, a >= 1e7 ? 1 : 2) + 'M';
+    else if (a >= 1e3) s = fmt(v/1e3, 0) + 'k';
+    else s = fmt(v, 0);
+    return currency === 'USD' ? sym + s : s + ' ' + sym;
+  }
+  function tb(v){ return v >= 1000 ? fmt(v/1000, 2) + ' PB' : fmt(v, v < 10 ? 1 : 0) + ' TB'; }
+  function fillRange(el){ el.style.setProperty('--p', ((el.value - el.min)/(el.max - el.min)*100) + '%'); }
+  function calc(){
+    var R = RATES[scen];
+    var T = +$('i-tb').value, C = +$('i-ctb').value, P = +$('i-proc').value, TR = +$('i-train').value, PR = +$('i-prep').value;
+    var stoBase = T*C*12;
+    var s = { sto: stoBase*R.sto, proc: P*R.proc, train: TR*R.train, prep: PR*R.prep };
+    var total = s.sto + s.proc + s.train + s.prep, base = stoBase + P + TR + PR;
+    $('o-tb').textContent = tb(T);
+    $('o-ctb').textContent = money(C);
+    $('o-proc').textContent = money(P);
+    $('o-train').textContent = money(TR);
+    $('o-prep').textContent = money(PR);
+    $('r-total').textContent = money(total);
+    $('r-3y').textContent = money(total*3);
+    $('r-tb').textContent = tb(T) + ' → ' + tb(T*(1-R.red));
+    $('r-pct').textContent = base > 0 ? fmt(total/base*100, 0) + '%' : '—';
+    var mx = Math.max(s.sto, s.proc, s.train, s.prep, 1);
+    ['sto','proc','train','prep'].forEach(function(k){
+      $('b-'+k).style.setProperty('--w', (s[k]/mx*100) + '%');
+      $('v-'+k).textContent = money(s[k]);
+    });
+    var pc = function(x){ return fmt(x*100,0) + '%'; };
+    $('r-note').innerHTML = lang === 'es'
+      ? 'Estimación ilustrativa. Tasas aplicadas — almacenamiento ' + pc(R.sto) + ', proceso cloud ' + pc(R.proc) + ', entrenamiento ' + pc(R.train) + ', preparación ' + pc(R.prep) + '. ' + (scen==='target' ? 'Escenario esperado basado en las cifras validadas (entrenamiento limitado al 80% por overheads).' : 'Escenario conservador ≈ 2/3 de las cifras validadas.') + ' El ahorro real se confirma en el piloto. Referencia: S3 Standard ≈ 23 $/TB·mes (AWS); el coste total con backup y réplica suele ser mayor.'
+      : 'Illustrative estimate. Rates applied — storage ' + pc(R.sto) + ', cloud processing ' + pc(R.proc) + ', training ' + pc(R.train) + ', data prep ' + pc(R.prep) + '. ' + (scen==='target' ? 'Expected scenario based on validated figures (training capped at 80% for overheads).' : 'Conservative scenario ≈ 2/3 of validated figures.') + ' Actual savings are confirmed in the pilot. Reference: S3 Standard ≈ $23/TB·month (AWS); fully loaded cost with backup and replication is usually higher.';
+    document.querySelectorAll('.calc input[type=range]').forEach(fillRange);
+  }
+  document.querySelectorAll('.calc input[type=range]').forEach(function(el){ el.addEventListener('input', calc); });
+  document.querySelectorAll('#scen button').forEach(function(b){ b.onclick = function(){
+    scen = b.getAttribute('data-s'); document.querySelectorAll('#scen button').forEach(function(x){ x.classList.toggle('on', x === b); }); calc(); }; });
+  document.querySelectorAll('#cur button').forEach(function(b){ b.onclick = function(){
+    currency = b.getAttribute('data-c'); curTouched = true; document.querySelectorAll('#cur button').forEach(function(x){ x.classList.toggle('on', x === b); }); calc(); }; });
+
+  /* ---------- init ---------- */
+  var q = new URLSearchParams(location.search);
+  var STATIC = q.has('static');
+  if (STATIC) root.classList.add('static');
+  var uiT; document.addEventListener('mousemove', function(){ document.body.classList.add('ui'); clearTimeout(uiT); uiT = setTimeout(function(){ document.body.classList.remove('ui'); }, 2500); });
+  if (q.get('lang') === 'es') setLang('es'); else { localizeStatic(); calc(); }
+  var h = parseInt((location.hash || '').replace('#',''), 10);
+  go(isNaN(h) ? 0 : h-1, true);
+})();
+</script>
 </body>
-
 </html>
