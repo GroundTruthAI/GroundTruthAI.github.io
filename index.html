@@ -880,7 +880,11 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
   var uiT; document.addEventListener('mousemove', function(){ document.body.classList.add('ui'); clearTimeout(uiT); uiT = setTimeout(function(){ document.body.classList.remove('ui'); }, 2500); });
   if (q.get('lang') === 'es') setLang('es'); else { localizeStatic(); calc(); }
   var h = parseInt((location.hash || '').replace('#',''), 10);
-  go(isNaN(h) ? 0 : h-1, true);
+  var start = isNaN(h) ? 0 : h-1;
+  /* Activate after the first paint so the entrance transitions (cover particles,
+     5% core, reveals) also play on the initial load, not only when navigating. */
+  if (STATIC) go(start, true);
+  else requestAnimationFrame(function(){ requestAnimationFrame(function(){ go(start, true); }); });
 })();
 </script>
 </body>
