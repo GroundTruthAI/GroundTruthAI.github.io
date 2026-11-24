@@ -174,7 +174,9 @@ def render_home(cases, industries):
         '<p class="eyebrow">Commercial engagement</p><h2 id="cta-h">Start with a conversation about your architecture</h2>'
         + engagement_block(compact=True) +
         '<div class="cta-band eng-final"><div><h3 class="h-m">Have a distributed-data problem in mind?</h3>'
-        '<p>Tell us where your data lives and what you want to train. <a href="/technology/#faq">Read the FAQ</a> first if you prefer.</p></div>'
+        '<p>Tell us where your data lives and what you want to train. <a href="/technology/#faq">Read the FAQ</a> first if you prefer.</p>'
+        f'<p class="small">Sharing this internally? <a href="/resources/executive-brief/">Executive overview in 7 slides</a> · '
+        f'<a href="{brief_pdf("en")}">PDF</a> · <a href="{brief_pdf("es")}" hreflang="es">PDF en español</a></p></div>'
         '<div class="cta-stack"><a class="btn btn-primary btn-lg" href="/pilot/">Contact</a></div></div>'
         '</div></section>')
 
@@ -733,7 +735,7 @@ def render_company(cases):
               "GroundTruth AI enables enterprise intelligence across distributed and segregated data environments while reducing unnecessary data movement "
               "and optimizing AI infrastructure efficiency.",
               [("Home", "/"), ("Company", None)], "Company",
-              button("Contact", "/pilot/"))
+              button("Contact", "/pilot/") + button("Executive overview (7 slides)", "/resources/executive-brief/", "ghost"))
         + section("why", "Why we exist",
                   '<p class="lead-s">Enterprise data is distributed for good reasons: safety, ownership, regulation, cost. The default AI workflow ignores those reasons and asks for everything in one place. '
                   'We think the better answer is to move less, and to move only what a model actually needs.</p>'

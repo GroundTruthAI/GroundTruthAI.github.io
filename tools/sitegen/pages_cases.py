@@ -328,7 +328,7 @@ def render_explorer(cases, industries):
         '<div class="table-wrap"><table class="tbl"><thead><tr><th scope="col">Business case</th><th scope="col">Solution family</th>'
         f'<th scope="col">Primary outcome</th></tr></thead><tbody>{table_rows}</tbody></table></div>'
         '<div class="cta-row">' + button("Contact", "/pilot/") + button("Try the architecture simulator", "/simulator/", "ghost")
-        + button("Open the ROI calculator", "/roi/", "ghost") + '</div>'
+        + button("Open the ROI calculator", "/roi/", "ghost") + button("Executive overview (7 slides)", "/resources/executive-brief/", "ghost") + '</div>'
         '</div></section>')
     page("/business-cases/", "Business cases by solution family",
          "Eleven enterprise business cases in three solution families: distributed enterprise intelligence (OT/IT segregation, cross-enterprise analytics, multi-site industrial AI), AI infrastructure efficiency and intelligent data mobility.",
