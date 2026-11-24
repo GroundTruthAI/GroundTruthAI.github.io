@@ -984,3 +984,8 @@ h2{font-size:clamp(1.8rem,3.4vw,2.8rem);line-height:1.06}
 .notc{border-left:1px solid var(--stroke);box-shadow:inset 3px 0 0 var(--cyan);margin-top:0}
 .notc p{margin:0;color:var(--muted)}
 .notc .callout-h{color:var(--cyan)}
+.sv-rows{display:grid;gap:14px}
+.sv-row{display:grid;grid-template-columns:1.6fr 1fr;gap:6px 14px;padding:12px 0;border-top:1px solid var(--line)}
+.sv-row:first-child{border-top:0;padding-top:0}
+.sv-h{grid-column:1/-1;margin:0;font-weight:700}
+@media (max-width:640px){.sv-row{grid-template-columns:1fr}}

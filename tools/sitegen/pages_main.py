@@ -531,103 +531,67 @@ def _num(id_, label, value, unit="", step="any", hint="", cls="", mx=None):
 
 
 def render_roi(cases):
-    opts = "".join(f'<option value="{c["id"]}" data-preset="{S.CASE_PRESET[c["id"]]}">{esc(c["title"])}</option>' for c in cases)
-    presets = "".join(f'<option value="{k}" data-model="{m}" data-domain="{esc(d)}">{esc(lbl)}</option>' for k, lbl, m, d in S.ROI_PRESETS)
+    opts = "".join(f'<option value="{c["id"]}">{esc(c["title"])}</option>' for c in cases)
     strat = {c["id"]: c["outcomes"]["strategic"] for c in cases}
     strat_html = "".join(f'<ul class="strat-list" data-case="{cid}" hidden>' + "".join(
         f'<li><label><input type="checkbox"> {md(s)}</label></li>' for s in items) + "</ul>" for cid, items in strat.items())
-
-    transfer = (
-        '<fieldset class="scen" data-scen="transfer"><legend>Data movement & replication</legend><div class="fld-grid">'
-        + _num("t_dom", "Plants or OT zones", 4, "", "1")
-        + _num("t_vol", "Raw data moved per domain per month", 20, "TB")
-        + _num("t_elig", "Share moved only to feed model training", 50, "%", hint="Only this eligible share is affected.", mx=100)
-        + _num("t_ctr", "Data transfer cost", 20, "per TB", hint="Egress, WAN or gateway cost. Use your contract rates.")
-        + _num("t_cing", "Central ingestion cost", 10, "per TB", hint="Pipelines and landing-zone processing on arrival.")
-        + _num("t_cproc", "Central processing cost", 20, "per TB", hint="Data preparation before training.")
-        + _num("t_cst", "Central storage cost incl. replicas", 25, "per TB·month", hint="Central training copies only. Source data is retained.")
-        + _num("t_ret", "Average retention of central training copies", 12, "months", "1")
-        + _num("t_over", "Source-side distillation compute", 5, "per TB distilled", hint="Compute and operations at the source. Measured in a pilot.")
+    rows = "".join(
+        f'<div class="sv-row"><p class="sv-h">{esc(en)}</p>'
+        + _num(f"s_{k}", "Annual spend", spend, "per year", hint=hint)
+        + _num(f"r_{k}", "Expected reduction", red, "%", mx=99)
+        + '</div>' for k, en, _es, spend, red, hint, _h in S.SAVINGS_LINES)
+    C = S.SAVINGS_COSTS
+    costs = (
+        '<fieldset class="scen-common"><legend>Costs deducted from the savings</legend><div class="fld-grid">'
+        + _num("c_dist", "Distillation and validation per year", C["distill"], "per year", hint="Compute at the source, quality checks and dataset maintenance.")
+        + _num("c_sol", "GroundTruth AI annual license", C["license"], "per year", hint="Enter a quoted figure. Pricing is not published.")
+        + _num("c_impl", "One-time implementation cost", C["implementation"], "one-time")
         + '</div></fieldset>')
-    training = (
-        '<fieldset class="scen" data-scen="training" hidden><legend>Training & retraining spend</legend><div class="fld-grid">'
-        + _num("r_spend", "Annual training and retraining compute spend", 400000, "per year")
-        + _num("r_share", "Share of that spend that scales with data volume", 60, "%", hint="Fixed costs (reserved capacity, tooling) are not reduced.", mx=100)
-        + _num("r_runs", "Distillation runs per year", 12, "", "1", hint="One per retraining cycle, or fewer if datasets are reused.")
-        + _num("r_rcost", "Compute cost per distillation run", 1500, "per run")
-        + _num("r_kwh", "Annual training energy (optional)", 0, "kWh", hint="Informational: energy cost is already inside compute spend.")
-        + _num("r_dkwh", "Energy per distillation run (optional)", 0, "kWh")
-        + _num("r_price", "Electricity price", 0.15, "per kWh")
-        + _num("r_hours", "Training wall-clock hours per year (optional)", 0, "hours")
-        + '</div></fieldset>')
-    infra = (
-        '<fieldset class="scen" data-scen="infrastructure" hidden><legend>Storage, compute & energy</legend><div class="fld-grid">'
-        + _num("i_tb", "Eligible stored training copies", 500, "TB", hint="Central training copies that a distilled version could replace. Source data is retained.")
-        + _num("i_cst", "Storage cost incl. backup and replicas", 25, "per TB·month")
-        + _num("i_comp", "Eligible annual processing and training compute", 300000, "per year")
-        + _num("i_share", "Share of compute that scales with data", 60, "%", mx=100)
-        + _num("i_kwh", "Eligible annual energy not included in compute", 0, "kWh", hint="Only energy not already paid inside the compute spend above.")
-        + _num("i_price", "Electricity price", 0.15, "per kWh")
-        + _num("i_ocost", "Annual distillation compute cost", 20000, "per year")
-        + _num("i_okwh", "Annual distillation energy", 0, "kWh")
-        + _num("i_grid", "Grid emission factor (optional)", 0, "kg CO₂e/kWh", hint="Location-based. Operational emissions only; not a lifecycle assessment.")
-        + '</div></fieldset>')
-    common = (
-        '<fieldset class="scen-common"><legend>Assumptions that apply to every scenario</legend><div class="fld-grid">'
-        + _num("c_red", "Assumed data reduction on eligible data", 70, "%", hint="Benchmarks: 86–95% on public datasets. Your workload must be measured.", mx=99)
-        + _num("c_val", "Annual validation and dataset maintenance", 15000, "per year", hint="Fidelity checks, regeneration and approvals.")
-        + _num("c_sol", "GroundTruth AI annual license", 0, "per year", hint="Enter a quoted figure. Pricing is not published.")
-        + _num("c_impl", "One-time implementation cost", 0, "one-time")
-        + _num("c_hrs", "Team hours on data preparation and transfer per year (optional)", 0, "hours")
-        + _num("c_hsave", "Share of those hours avoidable (optional)", 0, "%", mx=100)
-        + _num("c_rate", "Loaded hourly cost (optional)", 0, "per hour")
-        + '</div></fieldset>')
-
     body = (
         _hero("Estimate the value for your business case",
-              "An illustrative financial scenario built only on assumptions you enter. Savings apply only to eligible, data-proportional cost lines; "
-              "distillation, validation, licensing and implementation are deducted; strategic enablement is listed, never priced.",
+              "An illustrative estimate built on assumptions you can change. Every saving is added up: data transfer, cloud processing, storage, "
+              "AI training, energy and team time, minus the cost of distillation, validation, license and implementation.",
               [("Home", "/"), ("Business cases", "/business-cases/"), ("ROI calculator", None)], "ROI calculator")
         + '<section class="sec sec-tight" aria-labelledby="roi-h"><div class="wrap">'
         '<h2 id="roi-h" class="sr-only">Calculator</h2>'
-        '<noscript><div class="callout"><p>The calculator needs JavaScript. The method: savings = eligible volume or spend × assumed reduction × unit cost, minus distillation, '
-        'validation, license and implementation costs. Strategic value is listed, never priced.</p></div></noscript>'
+        '<noscript><div class="callout"><p>The calculator needs JavaScript. The method: for each cost line, saving = annual spend × expected reduction; '
+        'net annual value = sum of savings − distillation and validation − license.</p></div></noscript>'
         '<form class="roi" id="roi" hidden><div class="roi-in">'
         '<div class="fld-row"><div class="fld"><label for="roi-case">Business case</label>'
         f'<select id="roi-case"><option value="">Choose a business case (optional)</option>{opts}</select></div>'
-        f'<div class="fld"><label for="roi-scen">Commercial scenario</label><select id="roi-scen">{presets}</select></div>'
-        '<div class="fld fld-s"><label for="roi-cur">Currency</label><select id="roi-cur"><option value="$">USD $</option><option value="€">EUR €</option><option value="£">GBP £</option></select></div></div>'
-        + transfer + training + infra + common
-        + '<p class="note">Defaults are placeholders for illustration only, not benchmarks, quotes or forecasts. Replace them with your own figures.</p>'
+        '<div class="fld fld-s"><label for="roi-cur">Currency</label><select id="roi-cur"><option value="$">USD $</option><option value="€">EUR €</option><option value="£">GBP £</option></select></div>'
+        '<div class="fld fld-s"><button class="btn btn-ghost btn-sm" type="button" id="roi-reset">Reset to the 20-plant example</button></div></div>'
+        '<fieldset class="scen"><legend>Annual spend and expected reduction</legend>'
+        f'<div class="sv-rows">{rows}</div></fieldset>'
+        + costs
+        + '<p class="note">Defaults are the illustrative 20-plant example from the executive overview: GroundTruth AI planning assumptions, '
+          'not measurements, quotes or forecasts. Replace them with your own figures.</p>'
         '<p class="form-err" id="roi-err" role="alert" hidden></p>'
         '</div><div class="roi-out" aria-live="polite">'
-        '<div class="out-card out-main"><p class="out-k">Net annual direct value</p><p class="out-big" id="o-net">—</p>'
+        '<div class="out-card out-main"><p class="out-k">Net annual value</p><p class="out-big" id="o-net">—</p>'
         '<p class="out-s" id="o-net-s"></p></div>'
-        '<div class="out-card"><p class="out-k">1 · Direct financial savings</p><ul class="out-lines" id="o-lines"></ul></div>'
-        '<div class="out-card"><p class="out-k">2 · Operational efficiency</p><ul class="out-lines" id="o-ops"></ul></div>'
-        '<div class="out-card"><p class="out-k">Energy and emissions</p><ul class="out-lines" id="o-energy"></ul></div>'
-        '<div class="out-card out-strat"><p class="out-k">3 · Strategic business enablement · not priced</p>'
+        '<div class="out-card"><p class="out-k">Savings by line, per year</p><ul class="out-lines" id="o-lines"></ul></div>'
+        '<div class="out-card out-strat"><p class="out-k">Strategic business enablement · not priced</p>'
         '<p class="small" id="o-strat-empty">Choose a business case to list its strategic outcomes. Tick those that matter to you; they are not converted into money.</p>'
         f'{strat_html}</div>'
         '<div class="cta-row"><button class="btn btn-ghost btn-sm js-print" type="button" hidden>Print scenario</button>'
         '<button class="btn btn-ghost btn-sm" type="button" id="o-copy" hidden>Copy summary</button>'
         '<a class="btn btn-primary btn-sm" id="o-pilot" href="/pilot/?type=assessment">Validate these assumptions</a></div>'
         '<p class="small" id="o-copy-s" role="status"></p>'
-        '<p class="disc-note"><strong>Not contractual.</strong> Illustrative estimates based on internal experiments and on the assumptions entered here; no warranty or guarantee of results. Actual results require a workload-specific evaluation. <a href="#site-disclaimer">Full disclaimer</a>.</p>'
+        '<p class="disc-note"><strong>Not contractual.</strong> Illustrative estimates based on internal experiments and on the assumptions entered here; '
+        'no warranty or guarantee of results. Actual results require a workload-specific evaluation. <a href="#site-disclaimer">Full disclaimer</a>.</p>'
         '</div></form></div></section>'
         + section("method", "Method and limits",
                   ul([
-                      "Only the **eligible, data-proportional share** of each cost line is reduced. A reduction in dataset records is not an equivalent reduction in total infrastructure spend.",
-                      "Transfer, ingestion, processing, storage, training compute and energy are separate lines; energy already paid inside compute spend is not counted again.",
-                      "Unit costs per TB are treated as **variable** costs; leave fixed costs (committed contracts, reserved capacity, licenses) out of them.",
-                      "**ROI** is first-year net value divided by the costs entered (recurring costs plus implementation); it is not shown when no costs are entered.",
-                      "**Distillation compute**, **validation and dataset maintenance**, the **license** and **implementation** are deducted from gross savings.",
-                      "Original source data is assumed to be **retained**; only central training copies are affected.",
-                      "Energy results are operational estimates. Environmental claims require lifecycle measurement.",
-                      "Operational efficiency is only computed from hours you enter; strategic enablement is never priced.",
-                      "All calculation happens in your browser. Nothing you enter is sent anywhere.",
+                      "Each line is the **annual spend in scope** times the **reduction you expect** for that line. Use only the part of each spend that depends on the volume of data.",
+                      "All lines are added up: data transfer, cloud ingestion and processing, storage and backup, AI training, energy and team time.",
+                      "Avoid double counting: energy and team time should not already be included in the other lines.",
+                      "**Distillation and validation**, the **license** and the one-time **implementation** are deducted.",
+                      "Original source data is assumed to be **retained**; only central copies and processing are affected.",
+                      "The default reductions are planning assumptions. Measured results today come from internal tests on public datasets (86–95% less training data, 86% less training energy); a pilot measures yours.",
+                      "Strategic enablement is listed, never priced. All calculation happens in your browser; nothing you enter is sent anywhere.",
                   ]) + '<p><a class="link-arrow" href="/simulator/">Prefer to start from the architecture? Use the simulator</a></p>', cls="sec-alt"))
-    page("/roi/", "ROI calculator", "Estimate the direct, operational and strategic value of dataset distillation for a business case with your own assumptions, net of distillation, validation, license and implementation costs.",
+    page("/roi/", "ROI calculator", "Estimate the annual value of dataset distillation: savings in data transfer, cloud processing, storage, AI training, energy and team time, net of distillation, validation, license and implementation.",
          body, active="business-cases", cases=cases, priority="0.8", extra_js=("/assets/js/roi.js",))
 
 

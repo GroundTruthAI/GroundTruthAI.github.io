@@ -102,19 +102,38 @@ ROI_SCENARIOS = {
     "infrastructure": "Storage, compute & energy",
 }
 
-# Commercial scenarios offered in the ROI calculator: (key, label, calculation model, label for a domain)
-ROI_PRESETS = [
-    ("ot-it", "Industrial OT/IT data movement", "transfer", "Plants or OT zones"),
-    ("distributed", "Distributed enterprise analytics", "transfer", "Subsidiaries or data domains"),
-    ("edge", "Edge-to-cloud optimization", "transfer", "Edge sites or device fleets"),
-    ("multicloud", "Multicloud optimization", "transfer", "Source clouds or environments"),
-    ("training", "AI training efficiency", "training", ""),
-    ("infrastructure", "AI infrastructure efficiency", "infrastructure", ""),
+# Savings model shared by the ROI calculator (defaults) and the executive brief (20-plant example).
+# Illustrative planning assumptions of GroundTruth AI, not measured results; every value is editable in the calculator.
+# (key, EN label, ES label, default annual spend, default assumed reduction %, EN hint, ES hint)
+SAVINGS_LINES = [
+    ("transfer", "Data transfer and network", "Transmisión de datos y red", 150_000, 90,
+     "Egress, WAN links and gateways that carry raw data to central platforms.", "Egress, enlaces WAN y pasarelas que llevan datos a plataformas centrales."),
+    ("processing", "Cloud ingestion and processing", "Ingesta y proceso en la nube", 600_000, 80,
+     "Pipelines, landing zones and data processing on arrival.", "Pipelines, zonas de aterrizaje y procesado de datos al llegar."),
+    ("storage", "Storage and backup of central copies", "Almacenamiento y backup de copias centrales", 240_000, 90,
+     "For example 500 TB incl. backups and replicas × 40 per TB·month × 12. Source data is retained.",
+     "Por ejemplo 500 TB con backups y réplicas × 40 por TB·mes × 12. Los datos de origen se conservan."),
+    ("training", "AI training and retraining compute", "Entrenamiento y reentrenamiento de IA", 400_000, 80,
+     "GPU/CPU spend for training and retraining runs.", "Gasto en GPU/CPU de entrenamientos y reentrenamientos."),
+    ("energy", "Energy not included above", "Energía no incluida arriba", 100_000, 86,
+     "Power and cooling of on-premises infrastructure not already paid inside the lines above.",
+     "Electricidad y refrigeración de infraestructura propia que no esté ya incluida en las partidas anteriores."),
+    ("prep", "Team time on data preparation", "Horas del equipo en preparar datos", 300_000, 70,
+     "Loaded cost of the hours spent preparing, moving and governing training data.",
+     "Coste de las horas dedicadas a preparar, mover y gobernar datos de entrenamiento."),
 ]
-# Default commercial scenario per business case
-CASE_PRESET = {"BC01": "ot-it", "BC02": "distributed", "BC03": "training", "BC04": "ot-it", "BC05": "edge",
-               "BC06": "infrastructure", "BC07": "distributed", "BC08": "multicloud", "BC09": "training",
-               "BC10": "infrastructure", "BC11": "distributed"}
+SAVINGS_COSTS = {"distill": 16_000, "license": 0, "implementation": 0}   # annual distillation + validation; license; one-time
+
+
+def savings_example():
+    """Annual saving per line, gross, costs and net for the default assumptions."""
+    lines = {k: spend * red / 100 for k, _, _, spend, red, _, _ in SAVINGS_LINES}
+    gross = sum(lines.values())
+    costs = SAVINGS_COSTS["distill"] + SAVINGS_COSTS["license"]
+    net = gross - costs
+    return {"lines": lines, "gross": gross, "costs": costs, "net": net, "net3": net * 3 - SAVINGS_COSTS["implementation"],
+            "spend": sum(x[3] for x in SAVINGS_LINES)}
+
 
 # Three commercial solution families. Every business case belongs to exactly one.
 PILLARS = [

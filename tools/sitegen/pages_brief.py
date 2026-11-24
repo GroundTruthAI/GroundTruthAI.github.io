@@ -34,23 +34,16 @@ CONTACT = S.BASE_URL + "/pilot/"
 
 N_SLIDES = 7
 
-# Slide 6 economics: illustrative annual savings for the 20-plant program, using the planning assumptions of the
-# original GroundTruth AI savings deck (internal estimates, not measured results). Clearly labelled on the slide.
-ECON_LINES = [
-    # key, annual baseline spend, assumed reduction
-    ("storage", 500 * 40 * 12, 0.90),   # 500 TB of central copies incl. backup and replicas × 40 per TB·month
-    ("processing", 600_000, 0.80),      # cloud ingestion and processing
-    ("training", 400_000, 0.80),        # AI training and retraining
-    ("prep", 300_000, 0.70),            # team time on data preparation
-]
-ECON_COSTS = 200 * 5 + 15_000          # distillation compute (200 TB × 5) + validation and dataset maintenance
-
-
+# Slide 6 economics: the shared savings model (content/site.py → SAVINGS_LINES), i.e. the ROI calculator's defaults.
 def economics():
-    lines = {k: base * r for k, base, r in ECON_LINES}
-    gross = sum(lines.values())
-    net = gross - ECON_COSTS
-    return {"lines": lines, "gross": gross, "costs": ECON_COSTS, "net": net, "net3": net * 3}
+    return S.savings_example()
+
+
+def _calc_text(key, spend, red, lang):
+    if key == "storage":
+        return ("500 TB × $40/TB·month · −{r}%" if lang == "en" else "500 TB × 40 €/TB·mes · −{r} %").format(r=red)
+    amount = _k(spend, lang)
+    return (f"{amount} a year · −{red}%" if lang == "en" else f"{amount} al año · −{red}\u00a0%")
 
 
 def _k(v, lang):
@@ -118,7 +111,7 @@ T = {
         "notc_k": "Dataset distillation, not compression",
         "notc": "Compression shrinks the same data, which must be unpacked before use, so the AI still processes all of it. "
                 "Distillation builds a much smaller dataset that the AI uses directly to learn.",
-        "stats": [("86–95%", "less training data"), ("86%", "less energy per training run"), ("≈$1.2M", "saved a year, 20-plant example · illustrative*")],
+        "stats": [("86–95%", "less training data"), ("86%", "less energy per training run"), ("≈{net}", "saved a year, 20-plant example · illustrative*")],
         "stats_note": "Internal tests on four public datasets: models trained on 5–14% of the data came within 1.4–2.8 accuracy points of "
                       "models trained on all of it. Energy: internal measurement, excluding the distillation step. *Illustrative estimate based on "
                       "planning assumptions, detailed on slide 6; before license costs. Results vary by use case; not contractual.",
@@ -170,14 +163,11 @@ T = {
         "h3m": "20 industrial plants. ≈{net} saved every year.",
         "money_k": "Estimated net saving per year",
         "money_s": "≈{net3} over three years · before license costs",
-        "break": [("storage", "Storage and backup of central copies", "500 TB × $40/TB·month · −90%"),
-                  ("processing", "Cloud ingestion and processing", "$600k a year · −80%"),
-                  ("training", "AI training and retraining", "$400k a year · −80%"),
-                  ("prep", "Data preparation team time", "$300k a year · −70%")],
         "break_d": ("Distillation and validation", "compute at the plants + dataset checks"),
         "break_t": "Net saving per year",
         "s6_qual": "Illustrative estimate for a 20-plant AI program, not a customer deployment and not contractual. Spend levels and "
-                   "reduction rates are GroundTruth AI planning assumptions to be validated in a pilot. Calculate yours at groundtruthai.github.io/roi",
+                   "reduction rates are GroundTruth AI planning assumptions to be validated in a pilot; they are the defaults of the ROI calculator. "
+                   "Calculate yours at groundtruthai.github.io/roi",
         "s3_lead": "Imagine a global manufacturer that wants to anticipate equipment failures across all its facilities while keeping "
                    "original operational data within its existing industrial environments.",
         "s3_key": "Enterprise-wide predictive maintenance without complete raw data consolidation.",
@@ -220,7 +210,7 @@ T = {
         "notc_k": "Destilación de datos, no compresión",
         "notc": "La compresión reduce el tamaño de los mismos datos, que hay que descomprimir para usarlos: la IA sigue procesándolos "
                 "todos. La destilación crea un conjunto de datos mucho más pequeño que la IA usa directamente para aprender.",
-        "stats": [("86–95\u00a0%", "menos datos de entrenamiento"), ("86\u00a0%", "menos energía por entrenamiento"), ("≈1,2\u00a0M€", "de ahorro al año, ejemplo de 20 plantas · ilustrativo*")],
+        "stats": [("86–95\u00a0%", "menos datos de entrenamiento"), ("86\u00a0%", "menos energía por entrenamiento"), ("≈{net}", "de ahorro al año, ejemplo de 20 plantas · ilustrativo*")],
         "stats_note": "Ensayos internos con cuatro conjuntos de datos públicos: con el 5–14 % de los datos, los modelos quedaron a 1,4–2,8 "
                       "puntos de precisión de los entrenados con todos. Energía: medición interna, sin incluir el paso de destilación. "
                       "*Estimación ilustrativa basada en supuestos de planificación, detallados en la diapositiva 6; antes del coste de "
@@ -268,15 +258,11 @@ T = {
         "h3m": "20 plantas industriales. ≈{net} de ahorro al año.",
         "money_k": "Ahorro neto estimado al año",
         "money_s": "≈{net3} en tres años · antes del coste de licencia",
-        "break": [("storage", "Almacenamiento y backup de copias centrales", "500 TB × 40 €/TB·mes · −90 %"),
-                  ("processing", "Ingesta y proceso en la nube", "600 k€ al año · −80 %"),
-                  ("training", "Entrenamiento y reentrenamiento de IA", "400 k€ al año · −80 %"),
-                  ("prep", "Horas del equipo en preparar datos", "300 k€ al año · −70 %")],
         "break_d": ("Destilación y validación", "cómputo en planta + revisión de los datos"),
         "break_t": "Ahorro neto al año",
         "s6_qual": "Estimación ilustrativa para un programa de IA en 20 plantas, no un despliegue en cliente ni con valor contractual. "
                    "Los niveles de gasto y los porcentajes de reducción son supuestos de planificación de GroundTruth AI que deben "
-                   "validarse en un piloto. Calcula el tuyo en groundtruthai.github.io/roi",
+                   "validarse en un piloto; son los valores por defecto de la calculadora ROI. Calcula el tuyo en groundtruthai.github.io/roi",
         "s3_lead": "Una empresa industrial quiere anticipar fallos de equipos en todas sus instalaciones, manteniendo los datos operativos "
                    "originales dentro de sus entornos industriales.",
         "s3_key": "Mantenimiento predictivo global sin centralizar todos los datos industriales originales.",
@@ -404,7 +390,7 @@ def slides(t, lang):
         f'<p class="sl-how">{esc(t["how"])}</p>'
         f'<p class="sl-lead"><strong class="sl-what">{esc(t["what_k"])}</strong> {esc(t["lead"])}</p>'
         '<ul class="sl-ben">' + "".join(f'<li><span class="ben-n">{i}</span>{esc(b)}</li>' for i, b in enumerate(t["benefits"], 1)) + "</ul>"
-        '<dl class="sl-stats">' + "".join(f'<div><dd class="g">{esc(v)}</dd><dt>{esc(k)}</dt></div>' for v, k in t["stats"]) + '</dl>'
+        '<dl class="sl-stats">' + "".join(f'<div><dd class="g">{esc(v.format(net=_k(economics()["net"], lang)))}</dd><dt>{esc(k)}</dt></div>' for v, k in t["stats"]) + '</dl>'
         f'<p class="sl-stats-note">{esc(t["stats_note"])}</p></div>'
         f'<div class="s-art">{diagram_value(t, u(1))}</div></div>')
 
@@ -447,8 +433,9 @@ def slides(t, lang):
     # 6 — scenario, focused on money
     ec = economics()
     net = _k(ec["net"], lang)
-    rows = "".join(f'<tr><th scope="row">{esc(lbl)}<span>{esc(calc)}</span></th><td>{esc(_k(ec["lines"][key], lang))}</td></tr>'
-                   for key, lbl, calc in t["break"])
+    rows = "".join(f'<tr><th scope="row">{esc(en if lang == "en" else es)}<span>{esc(_calc_text(key, spend, red, lang))}</span></th>'
+                   f'<td>{esc(_k(ec["lines"][key], lang))}</td></tr>'
+                   for key, en, es, spend, red, _h1, _h2 in S.SAVINGS_LINES)
     rows += (f'<tr class="neg"><th scope="row">{esc(t["break_d"][0])}<span>{esc(t["break_d"][1])}</span></th>'
              f'<td>{esc(_k(-ec["costs"], lang))}</td></tr>'
              f'<tr class="tot"><th scope="row">{esc(t["break_t"])}</th><td>{esc(net)}</td></tr>')

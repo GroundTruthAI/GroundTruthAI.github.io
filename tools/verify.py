@@ -265,10 +265,14 @@ for u, pdf in ((BRIEF_URL["en"], BRIEF_PDF["en"]), (BRIEF_URL["es"], BRIEF_PDF["
         warn("pdfinfo not available: PDF page count and size not checked")
     if os.path.getmtime(path) < os.path.getmtime(os.path.join(ROOT, "tools/sitegen/pages_brief.py")):
         warn(f"{pdf} is older than the presentation source: rerun tools/build_pdf.py")
-# slide-6 economics: net = sum of line savings − distillation/validation costs
-from sitegen.pages_brief import economics
-_ec = economics()
-if abs(_ec["net"] - (sum(_ec["lines"].values()) - _ec["costs"])) > 1e-6: err("executive brief economics do not add up")
+# shared savings model: brief slide 6 and ROI calculator defaults come from the same data
+_ec = S.savings_example()
+if abs(_ec["net"] - (sum(_ec["lines"].values()) - _ec["costs"])) > 1e-6: err("savings model does not add up")
+roi_src = open(os.path.join(ROOT, "roi/index.html"), encoding="utf-8").read()
+for k, _en, _es, spend, red, _h1, _h2 in S.SAVINGS_LINES:
+    for fid, val in ((f"s_{k}", spend), (f"r_{k}", red)):
+        m = re.search(rf'id="{fid}" name="{fid}" value="([0-9.]+)"', roi_src)
+        if not m or float(m.group(1)) != float(val): err(f"ROI calculator default {fid} differs from the shared savings model")
 sim = by_url.get("/simulator/")
 if not sim: err("missing page /simulator/")
 else:
