@@ -4,6 +4,7 @@ from .core import esc, md, ul, page, breadcrumb, button, badge, section, write
 from .diagrams import (hero_visual, viz_bc03, viz_pillar_distributed, viz_pillar_efficiency, viz_pillar_mobility,
                        arch_figure, legend, SCENARIO_A, OEM_EMBED)
 from .pages_cases import case_url, engagement_block
+from .pages_brief import pdf_url as brief_pdf
 
 # Technical support available for each case (public summary of the evidence matrix)
 SUPPORT = {
@@ -780,8 +781,8 @@ def render_pilot(cases, industries):
         '<div><h2 id="form-h">Tell us about your situation</h2>'
         '<p>We reply with a proposal for a short call. If distillation is not a good fit, we will say so.</p>'
         '<p class="small">Sharing this internally first? <a href="/resources/executive-brief/">Executive overview in 6 slides</a> '
-        '(<a href="/resources/executive-brief/GroundTruthAI_Executive_Brief_EN.pdf">PDF</a> · '
-        '<a href="/resources/executive-brief/GroundTruthAI_Resumen_Comercial_ES.pdf" hreflang="es">PDF en español</a>)</p>'
+        f'(<a href="{brief_pdf("en")}">PDF</a> · '
+        f'<a href="{brief_pdf("es")}" hreflang="es">PDF en español</a>)</p>'
         + ul(["Which data, where it lives, and why it cannot simply be centralized", "The model or analytics you want to build", "The baseline you would compare against"])
         + '<p class="small"><strong>No proprietary data needed.</strong> Please do not include confidential data, files or credentials in this form.</p>'
         '<div class="privacy" id="privacy"><h3 class="h-s">Privacy</h3>'

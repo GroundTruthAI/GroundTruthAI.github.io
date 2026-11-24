@@ -5,6 +5,8 @@ headless Chrome (print styles in assets/css/brief.css give one 16:9 page per sli
 Content uses only information already published on the site; the 20-plant scenario is the site's
 illustrative scenario (assumed 90% reduction) and is labelled as such.
 """
+import os
+
 from content import site as S
 from . import core
 from .core import esc, asset, BRAND, CSP
@@ -12,6 +14,21 @@ from .core import esc, asset, BRAND, CSP
 DIR = "/resources/executive-brief/"
 PDF = {"en": "GroundTruthAI_Executive_Brief_EN.pdf", "es": "GroundTruthAI_Resumen_Comercial_ES.pdf"}
 URL = {"en": DIR, "es": DIR + "es.html"}
+
+
+def pdf_version():
+    """Cache-busting version for the PDF links: hash of the presentation source (content, layout, print styles).
+    It changes whenever the slides change, so browsers fetch the regenerated PDF instead of a cached copy."""
+    import hashlib
+    h = hashlib.sha256()
+    for f in (__file__, os.path.join(core.ROOT, "assets/css/brief.css")):
+        with open(f, "rb") as fh:
+            h.update(fh.read())
+    return h.hexdigest()[:10]
+
+
+def pdf_url(lang):
+    return f"{DIR}{PDF[lang]}?v={pdf_version()}"
 CONTACT = S.BASE_URL + "/pilot/"
 
 N_SLIDES = 6
@@ -383,7 +400,7 @@ def render_brief():
             '<nav class="deck-nav" aria-label="Presentation">'
             f'<a class="deck-lang" href="{URL[other]}" hreflang="{other}" lang="{other}" title="{esc(t["other_label"])}" data-keep-hash>'
             f'<span aria-hidden="true">{t["other"]}</span><span class="sr-only">{esc(t["other_label"])}</span></a>'
-            f'<a class="deck-link" href="{DIR}{PDF[lang]}" download>{esc(t["pdf"])}</a>'
+            f'<a class="deck-link" href="{pdf_url(lang)}" download="{PDF[lang]}">{esc(t["pdf"])}</a>'
             f'<button class="deck-link deck-full" type="button" hidden>{esc(t["full"])}</button>'
             f'<a class="deck-link deck-site" href="/">{esc(t["back"])}</a>'
             f'<a class="btn btn-primary btn-sm" href="/pilot/">{esc(t["contact"])}</a></nav></header>\n'
