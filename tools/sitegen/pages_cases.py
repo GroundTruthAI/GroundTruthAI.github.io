@@ -158,7 +158,7 @@ def render_case(c, cases, industries):
                   f'<p class="lead-s">{md(sol["intro"])}</p><ol class="steps">{steps}</ol>'
                   f'<div class="callout callout-limit"><p class="callout-h">What this does not do</p>{ul(sol["not"])}</div>'
                   '<p class="note"><a href="/technology/">How task-aware dataset distillation works</a> · '
-                  '<a href="/platform/">What is available for evaluation today</a></p>'))
+                  '<a href="/technology/#platform">What is available for evaluation today</a></p>'))
     s.append(_sec("scenario", 4, "Illustrative enterprise scenario", scenario_block(c)))
     s.append(_sec("architecture", 5, "Reference architecture",
                   '<p class="small">Reference architecture for pilot evaluation: it shows how the components would be placed, not an existing deployment.</p>'

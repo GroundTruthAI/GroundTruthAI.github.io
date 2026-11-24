@@ -278,7 +278,7 @@ if not sim: err("missing page /simulator/")
 else:
     if "Illustrative architecture simulator" not in " ".join(sim.text): err("simulator: label missing")
     if "/pilot/?type=assessment" not in sim.links: err("simulator: conversion CTA missing")
-for u in ("/roi/", "/business-cases/", "/pilot/", "/simulator/", "/evidence/", "/platform/", "/technology/", "/partners/", "/company/", "/industries/"):
+for u in ("/roi/", "/business-cases/", "/pilot/", "/simulator/", "/evidence/", "/technology/", "/partners/", "/company/", "/industries/"):
     if u not in by_url: err(f"missing page {u}")
     elif u != "/" and "/pilot/" not in by_url[u].links: err(f"{u}: Request a Pilot CTA missing")
 

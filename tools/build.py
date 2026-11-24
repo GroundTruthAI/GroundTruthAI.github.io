@@ -37,7 +37,6 @@ def main():
     render_industries_index(cases, INDUSTRIES)
     for i in INDUSTRIES:
         render_industry(i, cases, INDUSTRIES)
-    M.render_platform(cases)
     M.render_technology(cases)
     M.render_evidence(cases)
     M.render_roi(cases)

@@ -105,6 +105,7 @@ def header(active, cases):
         '<span class="nav-toggle-bars" aria-hidden="true"></span><span class="sr-only">Menu</span></button>'
         '<nav id="site-nav" class="site-nav" aria-label="Primary">'
         f'<ul class="nav-list">{"".join(links)}</ul>'
+        '<a class="btn btn-ghost btn-sm nav-brief" href="/executive/">Executive overview</a>'
         '<a class="btn btn-primary btn-sm nav-cta" href="/pilot/">Contact</a>'
         '</nav></div></header>')
 
@@ -130,7 +131,7 @@ def footer(cases):
         '<li><a href="/executive/">Executive overview (7 slides)</a></li>'
         '<li><a href="/roi/">ROI calculator</a></li>'
         '<li><a href="/industries/">Industries</a></li>'
-        '<li><a href="/platform/">Platform</a></li>'
+        '<li><a href="/technology/#platform">Platform and availability</a></li>'
         '<li><a href="/technology/">Technology</a></li>'
         '<li><a href="/evidence/">Evidence</a></li>'
         '<li><a href="/partners/">Partners and OEM</a></li>'

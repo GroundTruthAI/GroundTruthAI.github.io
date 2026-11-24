@@ -167,7 +167,7 @@ def render_home(cases, industries):
         f'<div class="fc-viz">{viz_bc03(S.BENCHMARKS)}</div>'
         '<p><a class="link-arrow" href="/evidence/">Results, methodology and validation roadmap</a></p></div>'
         f'<div><ul class="dep-mini">{dep_html}</ul>'
-        '<p><a class="link-arrow" href="/platform/">What is available for evaluation today</a></p></div></div>'
+        '<p><a class="link-arrow" href="/technology/#platform">What is available for evaluation today</a></p></div></div>'
         '</div></section>'
 
         + '<section class="sec sec-cta" id="engage" aria-labelledby="cta-h"><div class="wrap">'
@@ -201,7 +201,8 @@ PRODUCT_DIAGRAM = {
 }
 
 
-def render_platform(cases):
+def platform_sections():
+    """Platform content (what is available today), shown on the Technology page; /platform/ redirects there."""
     comps = [
         ("Distillation runtime", "experimental",
          "Builds a compact, task-specific training dataset from source data. Python runtime; tabular data via pandas / NumPy and image arrays; classification tasks."),
@@ -250,22 +251,18 @@ def render_platform(cases):
         ("Evaluation workflow", ["Agree the task and the acceptance tolerance",
                                  "Distill, then train the same model on both datasets",
                                  "Compare task metrics on the same test data; the full-data reference training also consumes compute"]),
-        ("Current limitations", ["Classification only; industrial time series, regression and forecasting not yet evaluated",
-                                 "No connectors or packaging: data is exchanged as files or arrays",
-                                 "Each dataset is task-specific; new objectives need a new dataset",
-                                 "Compute and energy of distillation itself not yet reported"]),
+        ("Execution", ["Runs on your server, VM or private cloud, next to the data",
+                       "No connectors or packaging yet: data is exchanged as files or arrays",
+                       "Your data is not sent to GroundTruth AI"]),
     ]
     av_html = "".join(f'<div class="acq"><h3>{esc(t)}</h3>{ul(items)}</div>' for t, items in avail)
 
-    body = (
-        _hero("A distillation runtime that runs where your data lives",
-              "What is available for technical evaluation today, what each component's status is, and how it fits the platforms you already operate.",
-              [("Home", "/"), ("Platform", None)], "Platform",
-              button("Request a feasibility assessment", "/pilot/?type=assessment") + button("See the business cases", "/business-cases/", "ghost"))
-        + section("available", "Available for technical evaluation",
+    return (
+        section("platform", "What is available for evaluation today",
                   legend() + arch_figure(PRODUCT_DIAGRAM, "prod", "Available")
                   + f'<div class="acq-grid acq-grid-2">{av_html}</div>'
-                  '<p class="note">How an optimized dataset is constructed is part of the proprietary method and is not published; it is available for technical due diligence under NDA.</p>')
+                  '<p class="note">How an optimized dataset is constructed is part of the proprietary method and is not published; it is available for technical due diligence under NDA.</p>',
+                  eyebrow="Platform")
         + section("components", "Components and their status",
                   '<p><strong>Experimental</strong>: implemented and used in internal experiments; available for evaluation. '
                   '<strong>Reference architecture</strong>: a documented deployment pattern, implemented with a customer. '
@@ -289,13 +286,7 @@ def render_platform(cases):
                       "It does not replace network segmentation, OT security controls, data integration or compliance processes.",
                       "GroundTruth AI holds no security certifications today.",
                   ]) + '</div></div>')
-        + section("next", "Evaluate it on your architecture",
-                  '<p>A feasibility assessment starts with an architecture review: where the runtime would sit, which data it reads, which path the dataset takes and who approves it. '
-                  '<a href="/technology/#faq">Frequently asked questions</a></p>'
-                  '<div class="cta-row">' + button("Request a feasibility assessment", "/pilot/?type=assessment") + button("Read the technology", "/technology/", "ghost") + '</div>',
-                  cls="sec-alt"))
-    page("/platform/", "Platform: what is available for evaluation", "The GroundTruth AI distillation runtime available for technical evaluation: inputs, outputs, evaluation workflow, component status, execution environments and integrations.",
-         body, active="platform", cases=cases, priority="0.7")
+    )
 
 
 # ---------------------------------------------------------------------------- TECHNOLOGY
@@ -339,11 +330,11 @@ def render_technology(cases):
                  f'<div><dt>What each domain needs</dt><dd>{esc(c)}</dd></div><div><dt>Exchange pattern</dt><dd>{esc(d)}</dd></div></dl></div>'
                  for i, (n, a, b, c, d) in enumerate(spectrum))
     body = (
-        _hero("Dataset distillation, explained for architects",
+        _hero("Dataset distillation: how it works and what is available today",
               "Dataset distillation builds a much smaller training dataset for a specific modeling task, such that models trained on it perform "
               "close to models trained on the full data. It is the enabling technology behind every GroundTruth AI business case.",
               [("Home", "/"), ("Technology", None)], "Technology",
-              button("See what it enables", "/business-cases/") + button("Evidence", "/evidence/", "ghost"))
+              button("What is available today", "#platform") + button("Frequently asked questions", "#faq", "ghost"))
         + section("what", "What makes it task-aware",
                   '<div class="two-col"><div>'
                   '<p>A distilled dataset is not a general-purpose summary. What is kept depends on the <strong>task</strong>: the target variable, the model family and the '
@@ -356,11 +347,9 @@ def render_technology(cases):
                       "New analytical requirements may need a new optimized dataset, generated from the original data.",
                       "Downstream performance is evaluated for each workload before the dataset is used.",
                   ]) + '</div>'
-                  '<div class="side-card"><p class="side-h">Inputs and outputs</p>' + ul([
-                      "**In:** source data in its home environment, plus a task specification",
-                      "**Out:** a distilled training dataset",
-                      "**Out:** evaluation results comparing models trained on full and on distilled data",
-                  ]) + '<p class="small">Evaluation trains a reference model on the full data (or reuses an existing baseline), which consumes compute; it is part of the cost of an evaluation.</p></div></div>')
+                  '<div class="side-card"><p class="side-h">Good to know</p><p class="small">Evaluation trains a reference model on the full data (or reuses an existing baseline), '
+                  'which consumes compute; it is part of the cost of an evaluation. Inputs, outputs and the evaluation workflow are described under '
+                  '<a href="#platform">What is available today</a>.</p></div></div>')
         + section("position", "Between centralizing everything and training everywhere",
                   f'<div class="sp-grid">{sp}</div>' + ul([
                       "Original datasets remain distributed; distillation runs inside authorized source environments.",
@@ -381,7 +370,8 @@ def render_technology(cases):
                   '<li><span class="fs-n">4</span><h3>Performance evaluation</h3><p>Full vs. distilled models compared on the same test data.</p></li>'
                   '<li><span class="fs-n">5</span><h3>Approval and regeneration</h3><p>In the reference architecture, owners approve; datasets are regenerated when the task or data change.</p></li></ol>'
                   '<p class="note">Proprietary method details are not published. They are available for technical due diligence under NDA.</p>', cls="sec-alt")
-        + section("scope", "Current scope",
+        + platform_sections()
+        + section("scope", "Current scope and limits",
                   '<div class="ev-grid">'
                   '<div class="ev ev-yes"><h3>Exercised today</h3>' + ul([
                       "Classification tasks", "Tabular data with deep learning (MLP)", "Image data with a CNN (MNIST)",
@@ -405,8 +395,8 @@ def render_technology(cases):
                         "**Anomaly detection** — multimodal anomaly signals, including fraud-style patterns.",
                         "**Behavioral segmentation and recommendation** — earlier product explorations."])
                   + '<p><a class="link-arrow" href="/business-cases/continuous-model-retraining/">See how drift detection relates to continuous retraining</a></p>', cls="sec-alt"))
-    page("/technology/", "Enterprise dataset distillation technology",
-         "How task-aware, source-side dataset distillation works and how it compares with centralization, compression, sampling, coresets, data virtualization, federated learning, synthetic data and clean rooms.",
+    page("/technology/", "Technology and platform: enterprise dataset distillation",
+         "How task-aware, source-side dataset distillation works, what is available for evaluation today, how it deploys and integrates, and how it compares with compression, sampling, federated learning and other techniques.",
          body, active="technology", cases=cases, priority="0.7")
 
 
@@ -809,6 +799,8 @@ LEGACY = {
     "starter-page.html": "/",
     # Retired Smart Data Savings briefing deck (claims superseded; original kept in internal/legacy/)
     "resources/smart-data-savings/index.html": "/evidence/",
+    # Platform merged into Technology
+    "platform/index.html": "/technology/#platform",
     # Executive brief moved to /executive/ (old PDFs are kept as copies by tools/build_pdf.py)
     "resources/executive-brief/index.html": "/executive/",
     "resources/executive-brief/es.html": "/executive/es/",

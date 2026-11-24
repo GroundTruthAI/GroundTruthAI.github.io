@@ -34,7 +34,6 @@ NAV = [
     # (label, href, key)
     ("Business Cases", "/business-cases/", "business-cases"),
     ("Industries", "/industries/", "industries"),
-    ("Platform", "/platform/", "platform"),
     ("Technology", "/technology/", "technology"),
     ("Evidence", "/evidence/", "evidence"),
     ("Partners", "/partners/", "partners"),
