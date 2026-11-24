@@ -73,13 +73,14 @@ T = {
         "deck": "GroundTruth AI executive overview", "skip": "Skip to the presentation",
         "prev": "Previous slide", "next": "Next slide", "of": "of", "slide": "Slide",
         "pdf": "Download PDF", "full": "Full screen", "back": "Website", "contact": "Contact",
-        "other": "ES", "other_label": "Ver en español", "kicker": "Executive overview",
+        "other": "ES", "other_label": "Ver en español", "kicker": "Dataset distillation for the enterprise",
         "note": "Illustrative information for discussion. Figures and scenarios are estimates and have no contractual value.",
         "legal": [("Legal notice", "/legal-notice/"), ("Privacy policy", "/privacy/"), ("Cookie policy", "/cookie-policy/")],
         # 1 value proposition
         "h1a": "Keep data distributed.", "h1b": "Centralize intelligence.",
+        "how": "We make it possible with dataset distillation.",
         "what_k": "What we do:",
-        "lead": "GroundTruth AI applies dataset distillation. Our software runs inside each plant, business unit or region and "
+        "lead": "Our software runs inside each plant, business unit or region and "
                 "distills the data into a much smaller training dataset that contains what an AI model needs for a specific purpose. "
                 "Only that distilled dataset is shared; the original data stays where it is.",
         "benefits": ["Enable new AI and analytics projects", "Reduce unnecessary data movement", "Optimize AI infrastructure costs"],
@@ -150,12 +151,13 @@ T = {
         "deck": "Resumen ejecutivo de GroundTruth AI", "skip": "Ir a la presentación",
         "prev": "Diapositiva anterior", "next": "Diapositiva siguiente", "of": "de", "slide": "Diapositiva",
         "pdf": "Descargar PDF", "full": "Pantalla completa", "back": "Web", "contact": "Contacto",
-        "other": "EN", "other_label": "View in English", "kicker": "Resumen ejecutivo",
+        "other": "EN", "other_label": "View in English", "kicker": "Destilación de datos para la empresa",
         "note": "Información orientativa para conversar. Las cifras y los escenarios son estimaciones y no tienen valor contractual.",
         "legal": [("Aviso legal", "/aviso-legal/"), ("Política de privacidad", "/privacidad/"), ("Política de cookies", "/cookies/")],
         "h1a": "Datos distribuidos.", "h1b": "Inteligencia centralizada.",
+        "how": "Lo conseguimos con destilación de datos.",
         "what_k": "Qué hacemos:",
-        "lead": "GroundTruth AI aplica la destilación de datos. Nuestro software funciona dentro de cada planta, unidad de negocio "
+        "lead": "Nuestro software funciona dentro de cada planta, unidad de negocio "
                 "o región y destila los datos en un conjunto de entrenamiento mucho más pequeño, con lo que un modelo de IA necesita "
                 "para un objetivo concreto. Solo se comparte ese conjunto destilado; los datos originales se quedan donde están.",
         "benefits": ["Habilitar nuevos proyectos de IA y analítica", "Reducir el movimiento innecesario de datos", "Optimizar los costes de infraestructura de IA"],
@@ -310,6 +312,7 @@ def slides(t, lang):
     sec(1, "s1",
         f'<div class="s-grid"><div class="s-text"><p class="sl-kick">{esc(t["kicker"])}</p>'
         f'<h1 class="sl-h1">{esc(t["h1a"])} <span class="g">{esc(t["h1b"])}</span></h1>'
+        f'<p class="sl-how">{esc(t["how"])}</p>'
         f'<p class="sl-lead"><strong class="sl-what">{esc(t["what_k"])}</strong> {esc(t["lead"])}</p>'
         '<ul class="sl-ben">' + "".join(f'<li><span class="ben-n">{i}</span>{esc(b)}</li>' for i, b in enumerate(t["benefits"], 1)) + "</ul>"
         f'<p class="sl-proof sl-notc"><strong>{esc(t["notc_k"])}.</strong> {esc(t["notc"])}</p>'
