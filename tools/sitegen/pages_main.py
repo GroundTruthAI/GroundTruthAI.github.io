@@ -49,18 +49,12 @@ def render_home(cases, industries):
 
     inds = "".join(f'<li><a class="chip chip-lg" href="/industries/{i["slug"]}/">{esc(i["name"])}</a></li>' for i in industries)
 
-    sub = [("challenges", "Business cases"), ("opportunity", "Why now"), ("how", "How it works"), ("value", "Value"),
-           ("evidence", "Evidence"), ("integration", "Integration"), ("industries", "Industries"), ("engage", "Pilot")]
-    subnav = ('<nav class="subnav" aria-label="Sections on this page"><div class="wrap subnav-in"><ul>'
-              + "".join(f'<li><a href="#{i}">{t}</a></li>' for i, t in sub)
-              + '</ul><a class="subnav-all" href="/business-cases/">All 11 business cases</a></div></nav>')
     strip = "".join(
         f'<li><a href="{case_url(by[k])}"><span class="code">{k}</span><strong>{esc(by[k]["title"])}</strong>'
         f'<span>{md(by[k]["outcome_short"])}</span></a></li>' for k in ("BC01", "BC02", "BC03", "BC04"))
 
     body = (
-        subnav
-        + '<section class="hero" aria-labelledby="hero-h"><div class="wrap"><div class="hero-grid"><div class="hero-copy">'
+        '<section class="hero" aria-labelledby="hero-h"><div class="wrap"><div class="hero-grid"><div class="hero-copy">'
         '<p class="eyebrow">Task-aware dataset distillation for distributed enterprises</p>'
         '<h1 id="hero-h">Keep data distributed. <span class="hl g">Centralize intelligence.</span></h1>'
         '<p class="lead">Enable enterprise analytics across segregated data environments, optimize AI training costs and reduce unnecessary '

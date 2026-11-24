@@ -676,17 +676,6 @@ h2{font-size:clamp(1.8rem,3.4vw,2.8rem);line-height:1.06}
 
 
 /* ---------------- home: section bar + compact hero ---------------- */
-html:has(body.pg-home){scroll-padding-top:128px}
-.subnav{position:sticky;top:68px;z-index:40;background:rgba(5,8,15,.82);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--stroke)}
-.subnav-in{display:flex;align-items:center;gap:16px;min-height:50px}
-.subnav ul{display:flex;gap:4px;list-style:none;margin:0;padding:0;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}
-.subnav ul::-webkit-scrollbar{display:none}
-.subnav li{margin:0;flex-shrink:0}
-.subnav ul a{display:block;padding:8px 12px;border-radius:999px;font:600 .82rem/1.2 var(--sans);color:var(--muted);text-decoration:none;white-space:nowrap}
-.subnav ul a:hover{color:var(--text);background:rgba(255,255,255,.05)}
-.subnav ul a.is-active{color:#04150E;background:var(--save)}
-.subnav-all{flex-shrink:0;font:600 .82rem var(--sans);color:var(--save);text-decoration:none;white-space:nowrap}
-.subnav-all::after{content:" →"}
 .pg-home .hero{padding:clamp(28px,4.5vw,56px) 0 clamp(28px,3.5vw,44px)}
 .pg-home .hero h1{font-size:clamp(2.3rem,3.6vw,3.25rem);line-height:1.04}
 .pg-home .hero-grid{grid-template-columns:1.35fr 1fr}
@@ -708,8 +697,8 @@ html:has(body.pg-home){scroll-padding-top:128px}
 .hc-list span:last-child{font-size:.84rem;color:var(--muted);line-height:1.4}
 @media (max-width:1080px){.hc-list{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:960px){.pg-home .hero-grid{grid-template-columns:minmax(0,1fr)}.pg-home .hero-art{justify-self:center}}
-@media (max-width:640px){.subnav-all{display:none}.hc-list{grid-template-columns:1fr}.hc-list span:last-child{display:none}}
-@media print{.subnav,.hero-cases{display:none}}
+@media (max-width:640px){.hc-list{grid-template-columns:1fr}.hc-list span:last-child{display:none}}
+@media print{.hero-cases{display:none}}
 
 /* ---------------- print: shareable business case summaries ---------------- */
 @media print{

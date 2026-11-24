@@ -73,7 +73,7 @@
     }
 
     // ---- on-page TOC highlighting
-    var tocLinks = document.querySelectorAll(".case-toc nav a, .subnav ul a");
+    var tocLinks = document.querySelectorAll(".case-toc nav a");
     if (tocLinks.length && "IntersectionObserver" in window) {
       var map = {};
       Array.prototype.forEach.call(tocLinks, function (a) { map[a.getAttribute("href").slice(1)] = a; });
@@ -83,10 +83,6 @@
             Array.prototype.forEach.call(tocLinks, function (a) { a.classList.remove("is-active"); a.removeAttribute("aria-current"); });
             map[en.target.id].classList.add("is-active");
             map[en.target.id].setAttribute("aria-current", "location");
-            if (map[en.target.id].scrollIntoView && map[en.target.id].closest(".subnav")) {
-              var ul = map[en.target.id].closest("ul"), a = map[en.target.id];
-              ul.scrollLeft = a.offsetLeft - ul.clientWidth / 2 + a.clientWidth / 2;
-            }
           }
         });
       }, { rootMargin: "-30% 0px -60% 0px" });
