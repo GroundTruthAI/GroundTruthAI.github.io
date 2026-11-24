@@ -34,6 +34,28 @@ CONTACT = S.BASE_URL + "/pilot/"
 
 N_SLIDES = 7
 
+# Slide 6 economics: the 20-plant scenario (200 TB eligible, 90% assumed reduction) priced with the ROI calculator's
+# example unit costs (pages_main.render_roi defaults). Illustrative only; licence not included.
+ECON = {"eligible_tb": 200, "reduction": 0.90, "transfer": 20, "ingest": 10, "process": 20,
+        "storage_month": 25, "retention_months": 12, "distill_per_tb": 5}
+
+
+def economics():
+    e = ECON
+    avoided = e["eligible_tb"] * e["reduction"]
+    lines = [("transfer", avoided * e["transfer"]),
+             ("ingest_process", avoided * (e["ingest"] + e["process"])),
+             ("storage", avoided * e["storage_month"] * e["retention_months"])]
+    gross = sum(v for _, v in lines)
+    distill = e["eligible_tb"] * e["distill_per_tb"]
+    return {"avoided": avoided, "lines": dict(lines), "gross": gross, "distill": distill, "net": gross - distill}
+
+
+def _k(v, lang):
+    k = round(v / 1000, 1)
+    txt = (f"{k:.1f}".rstrip("0").rstrip(".") if k % 1 else f"{k:.0f}")
+    return (f"${txt}k" if lang == "en" else f"{txt.replace('.', ',')}\u00a0k€")
+
 # Business cases shown on slide 4, by solution family: (site slug, EN title, EN one-liner, ES title, ES one-liner)
 CASES = [
     ("Unlock new AI projects", "Habilitar nuevos proyectos de IA", [
@@ -138,6 +160,15 @@ T = {
         "inds": "Industries: manufacturing · energy and utilities · oil, gas and mining · transport and logistics · financial services · healthcare · telecom · retail · multinational groups · AI infrastructure",
         # 5 scenario
         "h3": "20 industrial plants. One AI model.",
+        "h3m": "20 industrial plants. ≈{net} saved in the first year.",
+        "money_k": "Estimated net saving, first year",
+        "money_s": "before license costs",
+        "break": [("transfer", "Data transfer avoided", "180 TB × $20"), ("ingest_process", "Central ingestion and processing avoided", "180 TB × $30"),
+                  ("storage", "Central storage of copies avoided, 12 months", "180 TB × $25 × 12")],
+        "break_d": ("Distillation compute at the plants", "200 TB × $5"),
+        "break_t": "Net, first year",
+        "s6_qual": "Illustrative calculation, not a customer deployment and not contractual: assumed 90% reduction and the ROI calculator's "
+                   "example unit costs. Calculate yours at groundtruthai.github.io/roi",
         "s3_lead": "Imagine a global manufacturer that wants to anticipate equipment failures across all its facilities while keeping "
                    "original operational data within its existing industrial environments.",
         "s3_key": "Enterprise-wide predictive maintenance without complete raw data consolidation.",
@@ -226,6 +257,15 @@ T = {
         "c_more": "Detalle completo en groundtruthai.github.io/business-cases (en inglés)",
         "inds": "Sectores: industria · energía y utilities · petróleo, gas y minería · transporte y logística · servicios financieros · salud · telecomunicaciones · retail · grupos multinacionales · infraestructura de IA",
         "h3": "20 plantas industriales. Un modelo de IA común.",
+        "h3m": "20 plantas industriales. ≈{net} de ahorro el primer año.",
+        "money_k": "Ahorro neto estimado, primer año",
+        "money_s": "antes del coste de licencia",
+        "break": [("transfer", "Transferencia de datos evitada", "180 TB × 20 €"), ("ingest_process", "Ingesta y procesado central evitados", "180 TB × 30 €"),
+                  ("storage", "Almacenamiento central de copias evitado, 12 meses", "180 TB × 25 € × 12")],
+        "break_d": ("Cómputo de destilación en las plantas", "200 TB × 5 €"),
+        "break_t": "Neto, primer año",
+        "s6_qual": "Cálculo ilustrativo, no un despliegue en cliente ni con valor contractual: reducción supuesta del 90 % y costes "
+                   "unitarios de ejemplo de la calculadora ROI. Calcula el tuyo en groundtruthai.github.io/roi",
         "s3_lead": "Una empresa industrial quiere anticipar fallos de equipos en todas sus instalaciones, manteniendo los datos operativos "
                    "originales dentro de sus entornos industriales.",
         "s3_key": "Mantenimiento predictivo global sin centralizar todos los datos industriales originales.",
@@ -393,14 +433,22 @@ def slides(t, lang):
         f'<a href="{S.BASE_URL}/business-cases/">{esc(t["c_more"])}</a></p>'
         f'<div class="cs-grid">{"".join(cols)}</div><p class="sl-inds">{esc(t["inds"])}</p>')
 
-    # 6 — scenario
+    # 6 — scenario, focused on money
+    ec = economics()
+    net = _k(ec["net"], lang)
+    rows = "".join(f'<tr><th scope="row">{esc(lbl)}<span>{esc(calc)}</span></th><td>{esc(_k(ec["lines"][key], lang))}</td></tr>'
+                   for key, lbl, calc in t["break"])
+    rows += (f'<tr class="neg"><th scope="row">{esc(t["break_d"][0])}<span>{esc(t["break_d"][1])}</span></th>'
+             f'<td>−{esc(_k(ec["distill"], lang))}</td></tr>'
+             f'<tr class="tot"><th scope="row">{esc(t["break_t"])}</th><td>{esc(net)}</td></tr>')
     figs = "".join(f'<div><dt>{esc(lbl)}</dt><dd{" class=\"g\"" if k >= 2 else ""}>{esc(v)}</dd></div>' for k, (v, lbl) in enumerate(t["figs"]))
-    sec(6, "s3",
-        f'<div class="s-grid s-grid-3"><div class="s-text"><h2 class="sl-h2">{esc(t["h3"])}</h2>'
-        f'<p class="sl-lead">{esc(t["s3_lead"])}</p><p class="sl-key">{esc(t["s3_key"])}</p>'
-        f'<h3 class="sl-mini">{esc(t["s3_approach"])}</h3><ol class="sl-steps">' + "".join(f"<li>{esc(x)}</li>" for x in t["s3_steps"]) + "</ol></div>"
+    sec(6, "s3 s-money",
+        f'<div class="s-grid s-grid-3"><div class="s-text"><h2 class="sl-h2">{esc(t["h3m"].format(net=net))}</h2>'
+        f'<p class="sl-lead">{esc(t["s3_lead"])}</p>'
+        f'<div class="sl-money"><p class="mk">{esc(t["money_k"])}</p><p class="mv g">≈{esc(net)}</p><p class="ms">{esc(t["money_s"])}</p></div>'
+        f'<table class="sl-break"><tbody>{rows}</tbody></table></div>'
         f'<div class="s-art">{diagram_scenario(t, u(6))}<dl class="sl-figs">{figs}</dl>'
-        f'<p class="sl-qual">{esc(t["s3_qual"])}</p></div></div>')
+        f'<p class="sl-qual">{esc(t["s6_qual"])}</p></div></div>')
 
     # 7 — call to action
     mail = S.CONTACT_EMAIL

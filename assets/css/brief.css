@@ -188,6 +188,22 @@
 .hw p{margin:0;font-size:calc(var(--u)*1.32);line-height:1.45;color:var(--muted)}
 .sl-where{margin:0 0 calc(var(--u)*2.6);font:600 calc(var(--u)*1.3)/1.4 var(--sans);color:var(--text)}
 
+/* slide 6 — money */
+.s-money .sl-h2{font-size:calc(var(--u)*2.9)}
+.s-money .sl-lead{font-size:calc(var(--u)*1.1);margin-bottom:calc(var(--u)*1.2)}
+.sl-money{padding:calc(var(--u)*1.2) calc(var(--u)*1.6);border-radius:calc(var(--u)*1.2);border:1px solid rgba(46,230,166,.5);
+  background:linear-gradient(180deg,rgba(46,230,166,.14),rgba(46,230,166,.03));box-shadow:0 30px 70px -40px rgba(46,230,166,.7);margin-bottom:calc(var(--u)*1.2)}
+.sl-money .mk{margin:0;font:700 calc(var(--u)*.85) var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--save)}
+.sl-money .mv{margin:calc(var(--u)*.3) 0 0;font:800 calc(var(--u)*4.6)/1 var(--display);letter-spacing:-.03em}
+.sl-money .ms{margin:calc(var(--u)*.3) 0 0;font-size:calc(var(--u)*1);color:var(--muted)}
+.sl-break{width:100%;border-collapse:collapse;font-size:calc(var(--u)*1.02)}
+.sl-break th,.sl-break td{padding:calc(var(--u)*.55) 0;border-bottom:1px solid var(--stroke);text-align:left;vertical-align:top}
+.sl-break th{font-weight:600;color:var(--text)}
+.sl-break th span{display:block;font:500 calc(var(--u)*.82) var(--mono);color:var(--dim);margin-top:2px}
+.sl-break td{text-align:right;font:700 calc(var(--u)*1.15) var(--display);white-space:nowrap;padding-left:calc(var(--u)*1)}
+.sl-break .neg td{color:var(--raw)}
+.sl-break .tot th,.sl-break .tot td{border-bottom:0;font-weight:800;color:var(--save);font-size:calc(var(--u)*1.2)}
+
 /* ---------- diagrams ---------- */
 .bd{width:100%;height:auto;display:block}
 .bd text{fill:var(--text);font-family:var(--sans)}
@@ -270,6 +286,12 @@
   .sl-stats dt{font-size:.78rem}
   .sl-stats-note{font-size:.75rem}
   .sl-notc-how{font-size:.9rem}
+  .s-money .sl-h2{font-size:1.6rem}
+  .sl-money .mv{font-size:2.4rem}
+  .sl-money .mk{font-size:.7rem}
+  .sl-break{font-size:.9rem}
+  .sl-break th span{font-size:.72rem}
+  .sl-break td{font-size:1rem}
 }
 
 /* ---------- print / PDF: one 16:9 page per slide, no viewer controls ---------- */
