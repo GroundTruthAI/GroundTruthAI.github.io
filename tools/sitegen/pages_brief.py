@@ -160,8 +160,11 @@ T = {
         "inds": "Industries: manufacturing · energy and utilities · oil, gas and mining · transport and logistics · financial services · healthcare · telecom · retail · multinational groups · AI infrastructure",
         # 5 scenario
         "h3": "20 industrial plants. One AI model.",
-        "h3m": "20 industrial plants. ≈{net} saved every year.",
-        "money_k": "Estimated net saving per year",
+        "h3m": "≈{per} saved per plant, every year.",
+        "money_k": "Estimated net saving per year · 20 plants, one AI program",
+        "scale_k": "It grows with every plant and every AI use case",
+        "scale": [("Per plant", "{per}"), ("50 plants", "{p50}"), ("100 plants", "{p100}")],
+        "scale_n": "Assumes spend grows in proportion to the number of plants. Each additional AI use case (quality, energy, anomaly detection…) adds its own savings.",
         "money_s": "≈{net3} over three years · before license costs",
         "break_d": ("Distillation and validation", "compute at the plants + dataset checks"),
         "break_t": "Net saving per year",
@@ -255,8 +258,11 @@ T = {
         "c_more": "Detalle completo en groundtruthai.github.io/business-cases (en inglés)",
         "inds": "Sectores: industria · energía y utilities · petróleo, gas y minería · transporte y logística · servicios financieros · salud · telecomunicaciones · retail · grupos multinacionales · infraestructura de IA",
         "h3": "20 plantas industriales. Un modelo de IA común.",
-        "h3m": "20 plantas industriales. ≈{net} de ahorro al año.",
-        "money_k": "Ahorro neto estimado al año",
+        "h3m": "≈{per} de ahorro por planta, cada año.",
+        "money_k": "Ahorro neto estimado al año · 20 plantas, un programa de IA",
+        "scale_k": "Crece con cada planta y con cada caso de uso de IA",
+        "scale": [("Por planta", "{per}"), ("50 plantas", "{p50}"), ("100 plantas", "{p100}")],
+        "scale_n": "Supone que el gasto crece en proporción al número de plantas. Cada caso de uso de IA adicional (calidad, energía, detección de anomalías…) suma sus propios ahorros.",
         "money_s": "≈{net3} en tres años · antes del coste de licencia",
         "break_d": ("Destilación y validación", "cómputo en planta + revisión de los datos"),
         "break_t": "Ahorro neto al año",
@@ -433,6 +439,8 @@ def slides(t, lang):
     # 6 — scenario, focused on money
     ec = economics()
     net = _k(ec["net"], lang)
+    per_v = ec["net"] / 20
+    sc = {"per": _k(per_v, lang), "p50": _k(per_v * 50, lang), "p100": _k(per_v * 100, lang)}
     rows = "".join(f'<tr><th scope="row">{esc(en if lang == "en" else es)}<span>{esc(_calc_text(key, spend, red, lang))}</span></th>'
                    f'<td>{esc(_k(ec["lines"][key], lang))}</td></tr>'
                    for key, en, es, spend, red, _h1, _h2 in S.SAVINGS_LINES)
@@ -441,11 +449,14 @@ def slides(t, lang):
              f'<tr class="tot"><th scope="row">{esc(t["break_t"])}</th><td>{esc(net)}</td></tr>')
     figs = "".join(f'<div><dt>{esc(lbl)}</dt><dd{" class=\"g\"" if k >= 2 else ""}>{esc(v)}</dd></div>' for k, (v, lbl) in enumerate(t["figs"]))
     sec(6, "s3 s-money",
-        f'<div class="s-grid s-grid-3"><div class="s-text"><h2 class="sl-h2">{esc(t["h3m"].format(net=net))}</h2>'
+        f'<div class="s-grid s-grid-3"><div class="s-text"><h2 class="sl-h2">{esc(t["h3m"].format(**sc))}</h2>'
         f'<p class="sl-lead">{esc(t["s3_lead"])}</p>'
         f'<div class="sl-money"><p class="mk">{esc(t["money_k"])}</p><p class="mv g">≈{esc(net)}</p><p class="ms">{esc(t["money_s"].format(net3=_k(ec["net3"], lang)))}</p></div>'
         f'<table class="sl-break"><tbody>{rows}</tbody></table></div>'
-        f'<div class="s-art">{diagram_scenario(t, u(6))}<dl class="sl-figs">{figs}</dl>'
+        f'<div class="s-art"><div class="sl-scale"><p class="mk">{esc(t["scale_k"])}</p><dl>'
+        + "".join(f'<div><dt>{esc(k)}</dt><dd class="g">≈{esc(v.format(**sc))}</dd></div>' for k, v in t["scale"])
+        + f'</dl><p class="sl-scale-n">{esc(t["scale_n"])}</p></div>'
+        f'{diagram_scenario(t, u(6))}<dl class="sl-figs">{figs}</dl>'
         f'<p class="sl-qual">{esc(t["s6_qual"])}</p></div></div>')
 
     # 7 — call to action
