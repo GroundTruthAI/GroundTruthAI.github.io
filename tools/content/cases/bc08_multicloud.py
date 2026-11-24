@@ -15,7 +15,7 @@ CASE = {
     "problem_short": "AI workloads span private infrastructure and several clouds, forcing costly duplication and transfer of large training datasets.",
     "solution_short": "Distill at the source environment and transfer only the workload-specific dataset to the target platform.",
     "outcome_short": "Less data duplicated and moved between environments for AI workloads.",
-    "cta": "Evaluate your intercloud data flows",
+    "cta": "Evaluate your multicloud data flows",
     "industries": ["financial-services", "retail-consumer", "ai-infrastructure", "multinational-groups"],
     "filters": {
         "objectives": ["data-movement", "replication", "distributed-infra", "training-cost"],
@@ -67,6 +67,40 @@ CASE = {
             "It does not change provider pricing; savings depend on the customer's actual transfer, storage and processing rates.",
             "Distilled datasets remain subject to the same security, residency and contractual controls as their source.",
         ],
+    },
+
+    # 3b. Illustrative enterprise scenario — never a customer story; numbers are planning assumptions
+    "scenario": {
+        "name": "Multicloud enterprise",
+        "context": "A large enterprise runs analytics and AI workloads on two public clouds and private infrastructure, chosen by business unit, region and history.",
+        "current": "Training data is copied between environments whenever a model is trained somewhere other than where its data lives. Copies persist, and egress and storage bills grow.",
+        "problem": "Each cross-environment training workload duplicates large datasets. Transfer, egress and duplicate storage costs rise with every new model, and every copy adds governance work.",
+        "proposed": "Workload-specific datasets are distilled in the environment where the data lives. Only the approved distilled dataset is replicated to the environment where training runs.",
+        "assumptions": [
+            "40 TB moved between environments per month for training workloads",
+            "60% of it eligible for distillation; assumed reduction 80%, an illustrative planning value",
+            "Potential avoided transfer: about 19 TB per month (40 × 0.6 × 0.8)",
+            "Generating, validating and maintaining distilled datasets has its own cost, deducted from any saving",
+        ],
+        "constraints": [
+            "Distilled datasets must be regenerated when the workload or the data change",
+            "Each environment's security and residency controls apply to distilled data too",
+        ],
+        "economic": [
+            "Lower egress and inter-cloud transfer for eligible workloads",
+            "Less duplicate storage of training copies",
+            "Net of distillation, validation and dataset maintenance costs",
+        ],
+        "strategic": [
+            "Training placed where it makes sense, without duplicating complete datasets",
+            "Fewer data copies under governance",
+        ],
+        "validation": [
+            "Model performance within tolerance for each workload",
+            "Total cost including distillation, validation and regeneration",
+            "Regeneration effort as data and workloads change",
+        ],
+        "stakeholder": "Cloud platform owner or CIO, with the FinOps team",
     },
 
     "architecture": {
@@ -176,7 +210,7 @@ CASE = {
     },
 
     "evidence": {
-        "status": "Proposed enterprise application — not yet validated in production",
+        "status": "Enterprise application for pilot evaluation — not yet validated in production",
         "summary": "Internal experiments show large data reductions with limited accuracy change on public "
                    "benchmarks. The effect on intercloud transfer, storage and processing costs has not yet been "
                    "measured on a customer estate.",

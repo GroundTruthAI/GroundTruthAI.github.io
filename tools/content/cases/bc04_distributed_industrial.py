@@ -78,6 +78,39 @@ CASE = {
         ],
     },
 
+    # 3b. Illustrative enterprise scenario — never a customer story; numbers are planning assumptions
+    "scenario": {
+        "name": "Multinational energy company",
+        "context": "An energy company operates generation and distribution assets in several countries: plants, substations and wind farms with different equipment generations and operating regimes.",
+        "current": "Operational data stays in regional control environments and plant historians. Central analytics see aggregated reports; asset-health models are built region by region, with uneven quality.",
+        "problem": "A central analytics team wants global asset-health, failure-prediction and operational-forecasting models. Rare failures are spread thinly across regions, so no single region has enough examples, yet consolidating every historian across segregated infrastructure is impractical.",
+        "proposed": "Each region distills task-specific datasets locally, under coverage constraints that keep rare failures and every operating regime represented. Approved datasets move through authorized exchange paths to the central team, which trains a shared model and evaluates it region by region.",
+        "assumptions": [],
+        "constraints": [
+            "Infrastructure segregation between regions and between OT and IT",
+            "Different operating regimes across sites, seasons and asset classes",
+            "Time-series dependencies the forecasting models rely on",
+            "Rare failures that must survive distillation",
+            "Authorized data exchange only, through existing mechanisms",
+        ],
+        "economic": [
+            "Less raw time-series history replicated to the center for each model",
+            "Lower central storage and training compute for fleet-wide models",
+        ],
+        "strategic": [
+            "Global asset-health and failure-prediction models that learn from rare failures in every region",
+            "Comparable models and metrics across the asset fleet",
+            "Regional data ownership preserved",
+        ],
+        "validation": [
+            "Time-series structure (sequences, lags, seasonality) preserved for the task",
+            "Rare-failure coverage per region and asset class",
+            "Performance per operating regime, not only on average",
+            "Performance on a region held out from training",
+        ],
+        "stakeholder": "Head of asset management or reliability, with the Chief Data Officer",
+    },
+
     "architecture": {
         "current": {
             "title": "Conventional: ship complete site histories to the center",
@@ -196,7 +229,7 @@ CASE = {
     },
 
     "evidence": {
-        "status": "Proposed enterprise application — not yet validated in production",
+        "status": "Enterprise application for pilot evaluation — not yet validated in production",
         "summary": "Single-dataset benchmarks show large reductions with limited accuracy change. This "
                    "business case adds three untested elements: industrial time-series data, explicit "
                    "rare-event and regime coverage, and the combination of distilled sets from "

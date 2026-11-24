@@ -1,4 +1,5 @@
 """Industry pages and the business-case × industry matrix."""
+from content import site as S
 from .core import esc, md, paras, ul, page, breadcrumb, button
 from .pages_cases import case_url
 
@@ -12,7 +13,7 @@ def render_industry(i, cases, industries):
     by_id = {c["id"]: c for c in cases}
     con = i["constraints"]
     rel = "".join(
-        f'<li class="ind-case"><a href="{case_url(by_id[cid])}"><span class="code">{cid}</span>'
+        f'<li class="ind-case"><p class="rel-p">{esc(S.PILLAR_OF[cid]["name"])}</p><a href="{case_url(by_id[cid])}">'
         f'<strong>{esc(by_id[cid]["title"])}</strong>{" <em class=\"flag-s\">Flagship</em>" if by_id[cid]["tier"] == "flagship" else ""}</a>'
         f'<p>{md(why)}</p><p class="ind-out"><span class="bc-k">Primary outcome</span> {md(by_id[cid]["outcome_short"])}</p></li>'
         for cid, why in i["cases"] if cid in by_id)
@@ -23,7 +24,7 @@ def render_industry(i, cases, industries):
         + breadcrumb([("Home", "/"), ("Industries", "/industries/"), (i["name"], None)])
         + '<p class="eyebrow">Industry</p>'
         f'<h1>{esc(i["name"])}</h1><p class="lead">{md(i["short"])}</p>'
-        f'<div class="cta-row">{button("Request a Pilot", "/pilot/?industry=" + i["slug"])}'
+        f'<div class="cta-row">{button("Discuss your use case", "/pilot/?industry=" + i["slug"])}'
         f'{button("Most relevant business case", case_url(by_id[first]), "ghost")}</div></div></div>'
         '<section class="sec" aria-labelledby="ib-h"><div class="wrap">'
         '<h2 id="ib-h">Business cases that matter most in this sector</h2>'
@@ -43,7 +44,7 @@ def render_industry(i, cases, industries):
         '</div></section>'
         '<section class="sec sec-alt" aria-labelledby="ip-h"><div class="wrap two-col">'
         f'<div><h2 id="ip-h">A sensible first pilot</h2><p class="lead-s">{md(i["pilot_hint"])}</p>'
-        f'<div class="cta-row">{button("Request a Pilot", "/pilot/?industry=" + i["slug"])}{button("Estimate the value", "/roi/?case=" + first, "ghost")}</div></div>'
+        f'<div class="cta-row">{button("Request a feasibility assessment", "/pilot/?type=assessment&industry=" + i["slug"])}{button("Estimate the value", "/roi/?case=" + first, "ghost")}</div></div>'
         f'<div class="side-card"><p class="side-h">Who is usually involved</p>{ul(i["buyers"])}</div>'
         '</div></section>'
         f'<section class="sec sec-tight" aria-labelledby="io-h"><div class="wrap"><h2 id="io-h" class="h-s">Other industries</h2><ul class="chips">{others}</ul></div></section>')
@@ -61,7 +62,7 @@ def render_industries_index(cases, industries):
         cells = "".join(
             '<td class="m-yes"><span aria-hidden="true">●</span><span class="sr-only">Relevant</span></td>' if i["slug"] in c["industries"]
             else '<td class="m-no"><span class="sr-only">Not primary</span></td>' for i in industries)
-        rows.append(f'<tr><th scope="row"><a href="{case_url(c)}">{c["id"]} · {esc(c["title"])}</a></th>{cells}</tr>')
+        rows.append(f'<tr><th scope="row"><a href="{case_url(c)}">{esc(c["title"])}</a></th>{cells}</tr>')
     body = (
         '<div class="page-hero"><div class="wrap">'
         + breadcrumb([("Home", "/"), ("Industries", None)])

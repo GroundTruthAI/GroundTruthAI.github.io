@@ -15,7 +15,7 @@ CASE = {
     "problem_short": "AI workloads add energy demand that sustainability teams must account for, but few levers reduce it without reducing AI ambitions.",
     "solution_short": "Train eligible models on validated distilled datasets and measure net energy, distillation included, per workload.",
     "outcome_short": "A measurable, workload-level reduction in training energy that can feed sustainability reporting once verified.",
-    "cta": "Measure the energy of your AI workloads",
+    "cta": "Discuss your AI energy footprint",
     "industries": ["ai-infrastructure", "multinational-groups", "energy-utilities"],
     "filters": {
         "objectives": ["energy", "training-cost", "operational-efficiency"],
@@ -77,6 +77,32 @@ CASE = {
             "It does not reduce embodied emissions of hardware or facility overheads directly.",
             "Dataset reduction does not translate one-for-one into data center energy reduction.",
         ],
+    },
+
+    # 3b. Illustrative enterprise scenario — never a customer story; numbers are planning assumptions
+    "scenario": {
+        "name": "Group reporting AI energy use",
+        "context": "A multinational group reports the energy footprint of its digital operations, including AI workloads.",
+        "current": "AI training energy is estimated from installed capacity rather than measured per workload.",
+        "problem": "Sustainability teams need levers that reduce AI energy without stopping AI initiatives, and evidence that holds up to scrutiny.",
+        "proposed": "Selected training workloads are measured with full and distilled data, including the energy of distillation. Verified results feed internal reporting.",
+        "assumptions": [],
+        "constraints": [
+            "Operational energy only; not a lifecycle assessment",
+            "Grid factors and measurement method agreed with the sustainability team",
+        ],
+        "economic": [
+            "Lower training energy cost for eligible workloads",
+        ],
+        "strategic": [
+            "Credible, measured workload-level reductions",
+        ],
+        "validation": [
+            "Metered energy per training run on both paths",
+            "Distillation energy included",
+            "Methodology reviewed by the sustainability team",
+        ],
+        "stakeholder": "Chief Sustainability Officer, with the CIO",
     },
 
     "architecture": {
@@ -190,7 +216,7 @@ CASE = {
     },
 
     "evidence": {
-        "status": "Proposed enterprise application — not yet validated in production",
+        "status": "Enterprise application for pilot evaluation — not yet validated in production",
         "summary": "Internal measurements indicate lower training energy per run after data reduction on a "
                    "workstation and on IoT/edge devices. The methodology is not yet published, the "
                    "figures do not separately report distillation energy, and no data-center or lifecycle "

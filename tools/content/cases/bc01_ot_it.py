@@ -13,16 +13,16 @@ CASE = {
     "tier": "flagship",              # "flagship" | "explorer"
     "title": "OT/IT data segregation",
     "eyebrow": "Industrial data architecture",
-    "headline": "Train enterprise AI on plant data without replicating the plant into IT.",
+    "headline": "Train enterprise AI without centralizing all your OT data.",
     "summary": (
-        "Distill task-relevant training data inside the authorized OT environment and move only "
-        "approved, optimized datasets across the OT/IT boundary for central model training."
+        "Distill industrial datasets within authorized OT-side environments and transfer approved, "
+        "task-relevant datasets to enterprise IT for centralized analytics and model training."
     ),
     # Card copy (one sentence each, <= 160 characters)
-    "problem_short": "Central AI programs need plant data, but replicating full OT histories into IT erodes segregation and multiplies infrastructure.",
+    "problem_short": "Central AI programs need plant data, but centralizing full OT histories in IT is undesirable, operationally difficult or restricted.",
     "solution_short": "Task-aware distillation runs source-side, in the OT environment; only approved distilled datasets cross the boundary.",
     "outcome_short": "Centralized industrial AI training without centralizing all raw OT data.",
-    "cta": "Request an OT/IT data efficiency pilot",
+    "cta": "Discuss your OT/IT architecture",
     "industries": ["manufacturing", "energy-utilities", "oil-gas-mining", "transportation-logistics"],
     "filters": {
         "objectives": ["segregated-analytics", "data-movement", "replication", "distributed-infra"],
@@ -35,18 +35,19 @@ CASE = {
 
     # 1. Business challenge — 2–3 paragraphs
     "challenge": [
-        "Industrial enterprises keep Operational Technology (OT) and Information Technology (IT) "
-        "environments apart for good reasons: safety, availability, cybersecurity, vendor support "
-        "obligations and clear operational accountability. Plant historians, SCADA systems and "
-        "control networks sit behind segmented zones, industrial DMZs and, in some sites, "
-        "one-way gateways.",
-        "Enterprise AI programs pull in the opposite direction. Predictive maintenance, quality "
-        "and energy models are usually trained centrally, on IT or cloud platforms, and the "
-        "conventional workflow asks for large volumes of raw sensor history to be copied across "
-        "the boundary first. Each new use case adds another replication path, another landing "
-        "zone and another copy to secure, store and govern.",
-        "The result is a recurring trade-off between the architecture the plant needs and the "
-        "data volume the central AI team asks for.",
+        "Large industrial organizations keep Operational Technology (OT) and Information Technology (IT) "
+        "environments apart on purpose: for operational independence, industrial cybersecurity, data "
+        "governance, infrastructure architecture, production continuity, organizational ownership and "
+        "regulatory requirements. Plant historians, SCADA systems and control networks sit behind "
+        "segmented zones, industrial DMZs and, at some sites, one-way gateways.",
+        "Enterprise AI programs pull in the opposite direction. Predictive maintenance, quality and "
+        "energy models are usually trained centrally, and the conventional workflow first asks for large "
+        "volumes of historical industrial data to be copied into enterprise IT. Each new use case adds "
+        "another replication path, another landing zone and another raw copy to secure and govern.",
+        "The problem is not only that data transfer is expensive. Complete raw data centralization is "
+        "often undesirable, operationally difficult or simply not allowed, so valuable cross-plant "
+        "analytics never start. The question is how to give central AI teams what their models need "
+        "without moving the plant's full history.",
     ],
 
     # 2. Why existing approaches are insufficient — 3–5 items (no named competitors)
@@ -77,20 +78,58 @@ CASE = {
             ("Define the task", "The central AI team and plant engineering agree the target model, "
              "the variables and the acceptance thresholds (for example, maximum accuracy loss and "
              "minimum coverage of known failure modes)."),
-            ("Distill at the source", "The runtime reads historian extracts inside the OT environment "
-             "and generates a task-specific distilled dataset. Raw data never leaves its zone."),
+            ("Distill close to the source", "The engine reads authorized historian extracts in an approved "
+             "OT-side computing environment and generates a compact, task-specific dataset. Original data "
+             "stays in its zone, under existing retention and operating policies."),
             ("Validate fidelity", "A fidelity report compares models trained on full and distilled data "
              "and checks coverage of operating regimes and labeled events."),
             ("Approve and transfer", "OT and data owners approve the dataset; it crosses the boundary "
              "through the existing DMZ or gateway path, under existing controls."),
-            ("Train centrally", "Data science teams train and iterate on central platforms with a "
-             "fraction of the original volume, and request regeneration when the task changes."),
+            ("Train centrally across facilities", "Data science teams combine approved datasets from several "
+             "facilities, train and iterate on central platforms, and request regeneration when the task changes."),
         ],
         "not": [
             "It does not replace network segmentation, firewalls, data diodes or OT security controls.",
-            "It does not open new connections into control networks; it uses transfer paths the customer already authorizes.",
+            "It does not open new connections into control networks, connect control systems to the cloud or bypass existing security controls; it uses transfer paths the customer already authorizes.",
+            "It does not run on control-level devices or change safety-critical control loops.",
             "A distilled dataset is still plant data and stays under the customer's classification and transfer rules.",
         ],
+    },
+
+    # 3b. Illustrative enterprise scenario — never a customer story; numbers are planning assumptions
+    "scenario": {
+        "name": "Global manufacturer, 20 facilities",
+        "context": "A manufacturing group operates 20 industrial facilities. Each facility keeps its operational data in an authorized OT environment, behind its own industrial DMZ.",
+        "current": "Plant historians record sensor and equipment data locally. Central analytics receive selected KPIs, but the enterprise AI team has no governed path for training data at scale.",
+        "problem": "The central AI team wants to train predictive-maintenance models on data from all 20 facilities. The conventional approach would replicate about 200 TB of eligible history into enterprise IT, a request that OT security, plant owners and infrastructure budgets all resist.",
+        "proposed": "A distillation engine runs in each facility's authorized site-operations zone. It builds a task-specific dataset for the predictive-maintenance model, validates it, and, after owner approval, passes it through the existing DMZ transfer path. The central team trains one model on the combined approved datasets.",
+        "assumptions": [
+            "20 facilities × 10 TB of eligible training data = 200 TB",
+            "Assumed dataset reduction: 90%, an illustrative planning value, not a measured result for this workload",
+            "Optimized data transferred: 20 TB",
+            "Potential avoided transfer: 180 TB",
+        ],
+        "constraints": [
+            "Raw historian data stays in each facility, under existing retention policies",
+            "Only existing, approved OT/IT exchange mechanisms are used",
+            "No change to control systems or safety-critical control loops",
+        ],
+        "economic": [
+            "About 180 TB of raw training copies not transferred, ingested or stored centrally (illustrative)",
+            "Smaller central training runs, net of source-side distillation compute",
+        ],
+        "strategic": [
+            "Enterprise-wide predictive maintenance across all facilities",
+            "Analytical collaboration between plants without a central raw OT data lake",
+            "A repeatable pattern for the next industrial use case",
+        ],
+        "validation": [
+            "Predictive performance within the agreed tolerance of a full-data baseline",
+            "Coverage of rare failure modes in every facility's distilled dataset",
+            "Cross-site generalization, including a facility held out from training",
+            "Source-side compute and energy overhead measured on site hardware",
+        ],
+        "stakeholder": "COO or industrial digitalization leader, with the CIO and OT security",
     },
 
     # 4. Reference architecture — DSL
@@ -99,52 +138,70 @@ CASE = {
     #   flows: [from_id, to_id, kind, label]  kind: "raw" | "distilled" | "model" | "control"
     "architecture": {
         "current": {
-            "title": "Conventional: raw OT history replicated into IT",
+            "title": "Conventional: raw OT history replicated into enterprise IT, plant by plant",
             "zones": [
-                {"id": "ot", "label": "OT zone · plant network", "kind": "source",
-                 "nodes": [["hist", "Plant historian", "store"], ["scada", "SCADA / PLC signals", "system"]]},
+                {"id": "ot", "label": "Plant OT zone · levels 0–2", "kind": "source",
+                 "nodes": [["sens", "Sensors and equipment", "system"], ["plc", "PLCs and SCADA", "system"],
+                           ["hist", "Industrial historian", "store"], ["more", "Plants B…N: same full-history copy", "system"]]},
                 {"id": "dmz", "label": "Industrial DMZ", "kind": "boundary",
                  "nodes": [["rep", "Replication gateway", "system"]]},
-                {"id": "it", "label": "Enterprise IT / cloud", "kind": "central",
-                 "nodes": [["lake", "Raw data lake copy", "store"], ["ml", "Central ML training", "model"]]},
+                {"id": "it", "label": "Enterprise IT", "kind": "central",
+                 "nodes": [["lake", "Raw OT data lake copy", "store"], ["ml", "Central ML training", "model"]]},
             ],
             "flows": [
-                ["scada", "hist", "raw", "continuous"],
+                ["sens", "plc", "raw", ""],
+                ["plc", "hist", "raw", "continuous"],
                 ["hist", "rep", "raw", "full history"],
-                ["rep", "lake", "raw", "TBs / month"],
+                ["rep", "lake", "raw", "TBs per plant"],
+                ["more", "rep", "raw", ""],
                 ["lake", "ml", "raw", "all features"],
             ],
         },
         "proposed": {
-            "title": "With GroundTruth AI: distill in OT, transfer approved datasets",
+            "title": "With GroundTruth AI: distill OT-side, transfer approved datasets through the existing DMZ",
             "zones": [
-                {"id": "ot", "label": "OT zone · plant network", "kind": "source",
-                 "nodes": [["hist", "Plant historian", "store"], ["gt", "GroundTruth distillation runtime", "gt"]]},
-                {"id": "dmz", "label": "Industrial DMZ", "kind": "boundary",
-                 "nodes": [["appr", "Approval + existing transfer path", "system"]]},
-                {"id": "it", "label": "Enterprise IT / cloud", "kind": "central",
-                 "nodes": [["ds", "Distilled dataset store", "store"], ["ml", "Central ML training", "model"]]},
+                {"id": "ot", "label": "Plant OT zone · levels 0–2", "kind": "source",
+                 "nodes": [["sens", "Sensors and equipment", "system"], ["plc", "PLCs and SCADA", "system"],
+                           ["hist", "Industrial historian", "store"]]},
+                {"id": "ops", "label": "Approved OT-side computing · site operations zone", "kind": "source",
+                 "nodes": [["gt", "GroundTruth AI distillation engine", "gt"],
+                           ["ds", "Distilled dataset + validation and provenance report", "store"],
+                           ["more", "Plants B…N: same pattern, distilled locally", "system"]]},
+                {"id": "dmz", "label": "Industrial DMZ · approved OT/IT gateway", "kind": "boundary",
+                 "nodes": [["gw", "Existing approved transfer mechanism", "system"]]},
+                {"id": "it", "label": "Enterprise IT", "kind": "central",
+                 "nodes": [["ana", "Centralized analytics", "model"], ["plat", "Enterprise data platform", "store"],
+                           ["ml", "Centralized ML training", "model"]]},
             ],
             "flows": [
-                ["hist", "gt", "raw", "stays in zone"],
-                ["gt", "appr", "distilled", "distilled set + fidelity report"],
-                ["appr", "ds", "distilled", "approved only"],
-                ["ds", "ml", "distilled", ""],
-                ["ml", "gt", "control", "task spec / regeneration request"],
+                ["sens", "plc", "raw", ""],
+                ["plc", "hist", "raw", "stays in OT"],
+                ["hist", "gt", "raw", "read-only extract"],
+                ["gt", "ds", "distilled", ""],
+                ["ds", "gw", "distilled", "approved only"],
+                ["more", "gw", "distilled", ""],
+                ["gw", "plat", "distilled", "distilled sets"],
+                ["plat", "ana", "distilled", ""],
+                ["plat", "ml", "distilled", ""],
+                ["ml", "gt", "control", "task spec via change process"],
             ],
         },
         "notes": [
-            "The distillation runtime is deployed in a zone the OT owner authorizes (typically level 3 "
-            "or the site operations zone), not on control-level devices.",
-            "Only the distilled dataset and its fidelity report cross the boundary; task specifications "
-            "flow inward through the customer's existing change process.",
+            "Raw data retained at source: historians and control systems keep their data under existing "
+            "retention and operating policies. Nothing is deleted or moved by default.",
+            "The engine runs in a computing environment the OT owner approves (typically the level 3 site "
+            "operations zone), never on control-level devices, and it does not alter control loops.",
+            "Only approved distilled datasets, with their validation and provenance report, cross the "
+            "boundary, through the existing DMZ or gateway. There is no direct cloud connectivity from "
+            "industrial control systems and no bypass of existing security controls.",
+            "Task specifications flow inward through the customer's existing change process.",
         ],
     },
 
     # 5. Business outcomes — separate direct savings from new capabilities
     "outcomes": {
         "direct": [
-            "Less data replicated across the OT/IT boundary for each modeling use case.",
+            "Less raw industrial data replicated across the OT/IT boundary for each modeling use case.",
             "Lower central storage and ingestion for training data.",
             "Lower central compute per training run, net of source-side distillation cost.",
         ],
@@ -154,9 +211,10 @@ CASE = {
             "Faster onboarding of new plant use cases, because datasets are smaller and task-specific.",
         ],
         "strategic": [
-            "Central AI training on industrial data without centralizing all raw OT data.",
-            "A repeatable pattern for enterprise-wide industrial intelligence across plants.",
-            "Use cases previously blocked by data-transfer policy become candidates for evaluation.",
+            "Enterprise-wide predictive maintenance and cross-facility equipment-health models.",
+            "Global industrial anomaly detection and centralized quality prediction.",
+            "Analytical collaboration between industrial sites.",
+            "Centralized AI development without complete OT data consolidation.",
         ],
     },
 
@@ -215,7 +273,7 @@ CASE = {
 
     # 9. Evidence
     "evidence": {
-        "status": "Proposed enterprise application — not yet validated in production",
+        "status": "Enterprise application for pilot evaluation — not yet validated in production",
         "summary": "Internal experiments show large data reductions with limited accuracy change on public "
                    "benchmarks. Whether the same holds for industrial sensor time series, and for "
                    "multi-variable failure prediction, is what an OT/IT pilot is designed to establish.",

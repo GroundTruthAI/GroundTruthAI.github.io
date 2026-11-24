@@ -15,7 +15,7 @@ CASE = {
     "problem_short": "Training and retraining on ever-larger datasets drives compute spend, slows experimentation and ties up shared infrastructure.",
     "solution_short": "Distill each training dataset to a compact, task-specific core and validate it against a full-data baseline before use.",
     "outcome_short": "Lower compute per training run and faster experimentation, within an agreed accuracy tolerance.",
-    "cta": "Evaluate your AI training costs",
+    "cta": "Assess your AI training costs",
     "industries": ["financial-services", "telecommunications", "retail-consumer", "manufacturing", "ai-infrastructure"],
     "filters": {
         "objectives": ["training-cost", "operational-efficiency", "energy"],
@@ -73,6 +73,39 @@ CASE = {
             "It does not reduce the whole training bill one-for-one; only the data-proportional share of cost is affected, net of distillation cost.",
             "It does not replace model compression, efficient architectures or capacity planning; it complements them.",
         ],
+    },
+
+    # 3b. Illustrative enterprise scenario — never a customer story; numbers are planning assumptions
+    "scenario": {
+        "name": "Retail ML platform team",
+        "context": "A retailer's central ML platform trains demand, pricing and personalization models on several years of transaction and clickstream history.",
+        "current": "Each experiment and each retraining run processes the full history on shared compute capacity.",
+        "problem": "Training spend and queue times rise with data volume. Data scientists wait for capacity, and experimentation slows.",
+        "proposed": "For selected models, GroundTruth AI produces a validated distilled training set. Experiments run on the distilled set; candidate models are validated against the full-data baseline before release.",
+        "assumptions": [
+            "Annual training compute for the selected models: 400,000 (in any currency)",
+            "60% of that spend scales with data volume",
+            "Assumed dataset reduction: 70%, an illustrative planning value",
+            "Data-proportional spend reduced by about 168,000 before distillation and licensing costs",
+        ],
+        "constraints": [
+            "Accuracy tolerance agreed per model before the evaluation",
+            "Distilled sets are task-specific; a new target needs regeneration",
+        ],
+        "economic": [
+            "Lower compute per training run and per experiment",
+            "Net of the compute used for distillation",
+        ],
+        "strategic": [
+            "More experiments on the same capacity",
+            "Faster iteration from idea to validated model",
+        ],
+        "validation": [
+            "Accuracy within tolerance on a full-data test set",
+            "Measured compute and wall-clock time per run, including distillation",
+            "How often the distilled set can be reused across experiments",
+        ],
+        "stakeholder": "Head of ML platform, with IT finance",
     },
 
     "architecture": {
@@ -189,7 +222,7 @@ CASE = {
     },
 
     "evidence": {
-        "status": "Proposed enterprise application — not yet validated in production",
+        "status": "Enterprise application for pilot evaluation — not yet validated in production",
         "summary": "This is the business case with the most direct experimental support. On four public "
                    "benchmarks, distillation reduced training data by 86–95% with accuracy changes between "
                    "−1.4 and −2.8 pp, and internal measurements show 86% less energy per training run on a "

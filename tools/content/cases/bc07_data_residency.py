@@ -15,7 +15,7 @@ CASE = {
     "problem_short": "Multinational and regulated organizations must keep original data in specific jurisdictions or domains, which limits shared analytics.",
     "solution_short": "Distillation runs inside each authorized environment; only approved task-specific datasets are considered for permitted transfer.",
     "outcome_short": "Less cross-border replication of complete datasets, with source data ownership preserved.",
-    "cta": "Assess your distributed data architecture",
+    "cta": "Discuss your data residency architecture",
     "industries": ["financial-services", "healthcare", "multinational-groups", "telecommunications"],
     "filters": {
         "objectives": ["residency", "segregated-analytics", "replication", "data-movement"],
@@ -71,6 +71,32 @@ CASE = {
             "Distilled datasets remain subject to applicable data protection, residency, transfer and contractual restrictions.",
             "Distillation does not provide legal authorization for any cross-border transfer; that decision remains with the customer's legal and privacy functions.",
         ],
+    },
+
+    # 3b. Illustrative enterprise scenario — never a customer story; numbers are planning assumptions
+    "scenario": {
+        "name": "Multinational insurer with in-country data",
+        "context": "An insurer operates in eight countries. Customer data must remain in-country under local law and group policy.",
+        "current": "Group analytics use aggregated reports; complete datasets are not replicated across borders.",
+        "problem": "The group wants shared actuarial or claims models, but complete cross-border replication is restricted or slow to authorize.",
+        "proposed": "Each country distills a task-specific dataset in-country. Legal and data protection teams decide, dataset by dataset, whether a transfer is permitted. Where it is, the group trains centrally; where it is not, the dataset stays in-country.",
+        "assumptions": [],
+        "constraints": [
+            "Distillation is not anonymization and creates no legal basis for transfer",
+            "Transfer decisions remain with legal and data protection functions",
+        ],
+        "economic": [
+            "Less cross-border replication of complete datasets",
+        ],
+        "strategic": [
+            "Shared models where transfers are authorized, with original data kept in-country",
+        ],
+        "validation": [
+            "Legal review of each dataset before transfer",
+            "Model performance per country",
+            "Re-identification risk assessment",
+        ],
+        "stakeholder": "Chief Data Officer, with the data protection officer and legal",
     },
 
     "architecture": {
@@ -186,7 +212,7 @@ CASE = {
     },
 
     "evidence": {
-        "status": "Proposed enterprise application — not yet validated in production",
+        "status": "Enterprise application for pilot evaluation — not yet validated in production",
         "summary": "Internal experiments show large data reductions with limited accuracy change on single "
                    "public benchmarks. Distilling separately in several jurisdictions and combining the results "
                    "is an architectural hypothesis that has not yet been tested, and no privacy or re-identification "

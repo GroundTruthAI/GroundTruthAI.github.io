@@ -15,7 +15,7 @@ CASE = {
     "problem_short": "Group-wide analytics stall because subsidiaries, regions and business units hold data in separate, separately governed estates.",
     "solution_short": "Each domain distills a task-specific dataset in place; only approved distilled sets are combined centrally for training.",
     "outcome_short": "Enterprise-wide predictive models without a complete data consolidation program.",
-    "cta": "Assess your distributed data architecture",
+    "cta": "Evaluate your distributed data environments",
     "industries": ["financial-services", "healthcare", "multinational-groups"],
     "filters": {
         "objectives": ["segregated-analytics", "replication", "data-movement", "operational-efficiency"],
@@ -78,6 +78,39 @@ CASE = {
             "It does not anonymize data or authorize any transfer; distilled sets keep the source data's obligations.",
             "It does not replace a data integration strategy where full integration is the right answer.",
         ],
+    },
+
+    # 3b. Illustrative enterprise scenario — never a customer story; numbers are planning assumptions
+    "scenario": {
+        "name": "International financial group",
+        "context": "A financial group operates banks, an insurer and payment businesses in several jurisdictions, each with its own data environment, governance and supervisors.",
+        "current": "Each entity trains its own fraud and risk models on its own data. Group analytics rely on aggregated reporting; complete data replication between entities is restricted by privacy law, contracts and internal policy.",
+        "problem": "The group wants selected shared fraud-detection or risk models that learn from patterns visible across entities. Replicating complete transaction histories into a group platform is slow to authorize and often not permitted.",
+        "proposed": "Each entity distills a task-specific training dataset inside its own environment. Legal and data protection teams decide, dataset by dataset, whether it may be shared. Where it may, the group trains a shared model and each entity validates it on its own data.",
+        "assumptions": [],
+        "constraints": [
+            "Minority-class performance: fraud is rare, so positive cases must be preserved",
+            "Privacy restrictions: distilled data derived from personal data must be treated as personal data unless shown otherwise",
+            "Transfer authorization is decided by legal and data protection functions, case by case",
+            "Each entity remains the owner of its source data and its distilled dataset",
+            "Distributional heterogeneity between entities, products and countries",
+        ],
+        "economic": [
+            "Less complete-data replication into group platforms for the selected models",
+            "Lower central training compute",
+        ],
+        "strategic": [
+            "Group-wide fraud and risk models that see cross-entity patterns",
+            "A shorter path from analytical idea to an authorized dataset",
+            "Entity-level data ownership preserved",
+        ],
+        "validation": [
+            "Recall and precision on the minority class, per entity",
+            "Performance under distribution differences between entities",
+            "Privacy and re-identification risk review of each distilled dataset",
+            "A documented legal basis for every transfer",
+        ],
+        "stakeholder": "Chief Data Officer, with the group CRO and the data protection officer",
     },
 
     "architecture": {
@@ -198,7 +231,7 @@ CASE = {
     },
 
     "evidence": {
-        "status": "Proposed enterprise application — not yet validated in production",
+        "status": "Enterprise application for pilot evaluation — not yet validated in production",
         "summary": "The single-dataset results are encouraging: large reductions with limited accuracy "
                    "change on public benchmarks. The cross-enterprise pattern adds an untested step, "
                    "combining distilled sets produced independently in heterogeneous domains, which is "

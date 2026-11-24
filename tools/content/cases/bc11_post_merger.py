@@ -15,7 +15,7 @@ CASE = {
     "problem_short": "Merged organizations want joint analytics early, but platform integration and data migration take years.",
     "solution_short": "Each legacy domain produces approved distilled datasets for a defined task; selected workloads train on the combination.",
     "outcome_short": "Earlier joint analytical capabilities with less dependency on complete data migration.",
-    "cta": "Assess your post-merger analytics roadmap",
+    "cta": "Discuss your post-merger analytics",
     "industries": ["multinational-groups", "financial-services", "healthcare"],
     "filters": {
         "objectives": ["segregated-analytics", "replication", "data-movement"],
@@ -76,6 +76,33 @@ CASE = {
             "It does not provide legal authorization to share data before or after closing; competition-law, clean-team, contractual and consent constraints still apply.",
             "Distilled datasets are derived from source data and are not anonymized by default.",
         ],
+    },
+
+    # 3b. Illustrative enterprise scenario — never a customer story; numbers are planning assumptions
+    "scenario": {
+        "name": "Two merged industrial distributors",
+        "context": "Two companies have merged. Integrating their ERP, CRM and data platforms will take years.",
+        "current": "Each side runs its own analytics; joint reporting is assembled manually.",
+        "problem": "Leadership wants joint demand, churn or cross-sell models within the first year, well before platform integration.",
+        "proposed": "After the relevant fields are mapped semantically, each side distills task-specific datasets for the agreed joint models. Approved datasets train the joint models.",
+        "assumptions": [],
+        "constraints": [
+            "Semantic mapping of fields is still required",
+            "Before closing, competition law restricts information exchange in full",
+            "Distilled data stays under each company's data protection obligations",
+        ],
+        "economic": [
+            "Fewer interim data migrations for early analytics",
+        ],
+        "strategic": [
+            "Joint analytics earlier in the integration",
+        ],
+        "validation": [
+            "Model performance on each side's data",
+            "Correctness of the semantic mapping",
+            "Legal sign-off before any exchange",
+        ],
+        "stakeholder": "M&A integration lead, with the Chief Data Officer",
     },
 
     "architecture": {
@@ -192,7 +219,7 @@ CASE = {
     },
 
     "evidence": {
-        "status": "Proposed enterprise application — not yet validated in production",
+        "status": "Enterprise application for pilot evaluation — not yet validated in production",
         "summary": "Internal experiments support large data reductions within a single dataset. Combining "
                    "distilled datasets produced independently in different organizations, with different "
                    "data distributions, has not been tested; a pilot is the first measurement.",

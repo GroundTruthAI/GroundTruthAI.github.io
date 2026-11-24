@@ -15,7 +15,7 @@ CASE = {
     "problem_short": "Sensors, cameras and edge systems generate more data than networks, cloud ingestion and central storage can economically absorb.",
     "solution_short": "Task-aware distillation on an edge gateway or site server reduces training data before it is transmitted.",
     "outcome_short": "Less network traffic and cloud ingestion for AI training, with a scalable distributed architecture.",
-    "cta": "Assess your edge-to-cloud data flows",
+    "cta": "Evaluate your edge-to-cloud data flows",
     "industries": ["telecommunications", "manufacturing", "energy-utilities", "transportation-logistics", "oil-gas-mining"],
     "filters": {
         "objectives": ["data-movement", "distributed-infra", "energy", "operational-efficiency"],
@@ -75,6 +75,41 @@ CASE = {
             "It does not imply compatibility with any specific edge device; target hardware must be qualified during the pilot.",
             "It does not replace edge security, device management or network design.",
         ],
+    },
+
+    # 3b. Illustrative enterprise scenario — never a customer story; numbers are planning assumptions
+    "scenario": {
+        "name": "Telecommunications operator",
+        "context": "A telecommunications operator runs thousands of network sites that generate telemetry, performance counters, alarms and operational events.",
+        "current": "Telemetry is aggregated regionally and shipped to central platforms. Much of it is stored only to feed periodic model training.",
+        "problem": "The operator wants centralized anomaly-detection and network-performance models. Moving raw telemetry from every region consumes transport capacity, ingestion pipelines and central storage, and most of the volume is routine.",
+        "proposed": "Distillation runs in regional data centers or aggregation points. It produces task-specific training datasets that keep unusual network events and the temporal context around them. Only those datasets travel to the central platform for training.",
+        "assumptions": [
+            "12 regions × 50 TB of eligible telemetry per training cycle = 600 TB",
+            "Assumed dataset reduction: 85%, an illustrative planning value",
+            "Optimized data transferred: 90 TB",
+            "Potential avoided transfer: 510 TB per training cycle",
+        ],
+        "constraints": [
+            "Unusual network events are rare and must survive distillation",
+            "Temporal dependencies (alarm sequences, load patterns) matter to the models",
+            "No interference with network operations systems",
+        ],
+        "economic": [
+            "Less transport capacity, central ingestion and storage used for training data",
+            "Smaller central processing and training runs, net of regional distillation compute",
+        ],
+        "strategic": [
+            "Network-wide anomaly models trained on data from every region",
+            "A pattern that scales as telemetry volumes grow",
+        ],
+        "validation": [
+            "Recall on rare anomalies and incident precursors",
+            "Preservation of the temporal patterns the task depends on",
+            "Compute footprint at the regional sites",
+            "Net reduction after distillation overhead",
+        ],
+        "stakeholder": "CTO or head of network operations, with the head of data platforms",
     },
 
     "architecture": {
@@ -185,7 +220,7 @@ CASE = {
     },
 
     "evidence": {
-        "status": "Proposed enterprise application — not yet validated in production",
+        "status": "Enterprise application for pilot evaluation — not yet validated in production",
         "summary": "Internal experiments show large data reductions with limited accuracy change on public "
                    "benchmarks, and an internal measurement indicates lower energy use on IoT / edge devices "
                    "at the point of capture. Edge-fleet data, batch cadence and gateway overhead have not yet "

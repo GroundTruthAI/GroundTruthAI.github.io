@@ -15,7 +15,7 @@ CASE = {
     "problem_short": "Production models are retrained on ever-growing full histories, so each cycle costs more compute, time and storage than the last.",
     "solution_short": "Retraining pipelines consume a validated distilled dataset; distillation is re-run on demand when the data shifts.",
     "outcome_short": "Lower recurring retraining cost and shorter model update cycles, with fidelity checked every cycle.",
-    "cta": "Evaluate your retraining costs",
+    "cta": "Assess your retraining costs",
     "industries": ["financial-services", "retail-consumer", "telecommunications", "manufacturing"],
     "filters": {
         "objectives": ["training-cost", "operational-efficiency", "energy"],
@@ -78,6 +78,33 @@ CASE = {
             "It does not remove the need for periodic full-data reference evaluations.",
             "Drift detection is a prototype capability and has not been validated on customer data.",
         ],
+    },
+
+    # 3b. Illustrative enterprise scenario — never a customer story; numbers are planning assumptions
+    "scenario": {
+        "name": "Payments provider with monthly retraining",
+        "context": "A payments company retrains its fraud models every month on a growing transaction history.",
+        "current": "Each retraining cycle processes the full history, so cost and duration grow every month.",
+        "problem": "Retraining is becoming slower and more expensive, which delays model updates exactly when fraud patterns shift.",
+        "proposed": "Each cycle, a distilled dataset is regenerated from the updated history, validated against the full-data model and used for retraining. Full-data retraining remains as a periodic control.",
+        "assumptions": [],
+        "constraints": [
+            "Fraud is a minority class; positive examples must be preserved",
+            "Drift-triggered regeneration is a proposed capability; the scenario assumes scheduled regeneration",
+        ],
+        "economic": [
+            "Lower compute per retraining cycle",
+            "Net of the cost of regenerating the distilled dataset each cycle",
+        ],
+        "strategic": [
+            "Shorter update cycles when fraud patterns change",
+        ],
+        "validation": [
+            "Minority-class recall in every cycle",
+            "Stability of model quality over several consecutive cycles",
+            "Cumulative cost including regeneration",
+        ],
+        "stakeholder": "Head of ML or MLOps, with the fraud risk owner",
     },
 
     "architecture": {
@@ -194,7 +221,7 @@ CASE = {
     },
 
     "evidence": {
-        "status": "Proposed enterprise application — not yet validated in production",
+        "status": "Enterprise application for pilot evaluation — not yet validated in production",
         "summary": "Internal experiments show large single-run data reductions with limited accuracy change "
                    "on public benchmarks, and lower training energy per run on a workstation. Repeated "
                    "retraining over shifting data, and adaptive or drift-triggered regeneration, have not "

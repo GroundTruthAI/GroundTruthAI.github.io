@@ -15,7 +15,7 @@ CASE = {
     "problem_short": "Enterprise AI workloads consume growing storage, compute and energy, and much of that capacity is spent on redundant training data.",
     "solution_short": "Task-aware distillation shrinks eligible training datasets and the compute that scales with them.",
     "outcome_short": "Better utilization of AI infrastructure for eligible workloads, net of distillation overhead.",
-    "cta": "Evaluate your AI infrastructure efficiency",
+    "cta": "Assess your AI infrastructure efficiency",
     "industries": ["ai-infrastructure", "telecommunications", "financial-services"],
     "filters": {
         "objectives": ["training-cost", "distributed-infra", "energy", "operational-efficiency"],
@@ -71,6 +71,33 @@ CASE = {
             "It does not reduce inference, networking or facility overhead costs that are independent of training data volume.",
             "It does not replace capacity planning, scheduling or hardware efficiency programs.",
         ],
+    },
+
+    # 3b. Illustrative enterprise scenario — never a customer story; numbers are planning assumptions
+    "scenario": {
+        "name": "Enterprise private AI platform",
+        "context": "An enterprise runs a private AI platform in its own data centers, shared by dozens of teams.",
+        "current": "Training datasets are stored with backups and replicas, and training jobs compete for the same capacity.",
+        "problem": "Storage, compute and energy demand grow with data volume, and capacity requests outpace budgets.",
+        "proposed": "Eligible workloads train on validated distilled datasets, and the capacity they no longer use is reallocated. Source data is retained under existing policies.",
+        "assumptions": [],
+        "constraints": [
+            "Only eligible, data-proportional workloads are affected",
+            "Distillation itself consumes compute and energy",
+        ],
+        "economic": [
+            "Less storage for eligible central training copies",
+            "Less data-proportional compute for eligible workloads",
+        ],
+        "strategic": [
+            "Capacity expansion deferred for eligible workloads",
+        ],
+        "validation": [
+            "Utilization measured before and after on the same workloads",
+            "Energy measured including distillation",
+            "Model quality within tolerance",
+        ],
+        "stakeholder": "Head of infrastructure and data centers",
     },
 
     "architecture": {
@@ -179,7 +206,7 @@ CASE = {
     },
 
     "evidence": {
-        "status": "Proposed enterprise application — not yet validated in production",
+        "status": "Enterprise application for pilot evaluation — not yet validated in production",
         "summary": "Internal experiments show large data reductions with limited accuracy change on public "
                    "benchmarks, and an internal measurement indicates lower energy per training run on a "
                    "workstation. Effects at data center scale, and net of distillation overhead, have not yet "

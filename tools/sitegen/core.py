@@ -63,20 +63,23 @@ BRAND = f'{LOGO}<span class="brand-t">Ground<b>Truth</b> AI</span>'
 
 
 def _flagship_menu(cases):
-    flag = [c for c in cases if c["tier"] == "flagship"]
-    items = "".join(
-        f'<li><a href="/business-cases/{c["slug"]}/"><span class="mm-code">{c["id"]}</span>'
-        f'<span class="mm-t">{esc(c["title"])}</span><span class="mm-d">{esc(c["outcome_short"])}</span></a></li>'
-        for c in flag)
+    """Business-cases menu organized by the three commercial solution families."""
+    by = {c["id"]: c for c in cases}
+    cols = []
+    for p in S.PILLARS:
+        items = "".join(f'<li><a href="/business-cases/{by[cid]["slug"]}/">{esc(by[cid]["title"])}</a></li>'
+                        for cid in p["cases"] if cid in by)
+        cols.append(f'<div class="mm-col"><a class="mm-p" href="/solutions/{p["slug"]}/"><span class="mm-t">{esc(p["name"])}</span>'
+                    f'<span class="mm-d">{esc(p["message"])}</span></a><ul class="mm-cases">{items}</ul></div>')
     return (
         '<div class="megamenu" id="mm-cases" hidden>'
-        '<div class="mm-col"><p class="mm-h">Flagship business cases</p>'
-        f'<ul class="mm-list">{items}</ul></div>'
-        '<div class="mm-col mm-side"><p class="mm-h">Find your case</p><ul class="mm-links">'
+        + "".join(cols) +
+        '<div class="mm-col mm-side"><p class="mm-h">Explore</p><ul class="mm-links">'
         '<li><a href="/business-cases/">All 11 business cases · explorer</a></li>'
+        '<li><a href="/simulator/">Architecture simulator</a></li>'
         '<li><a href="/roi/">ROI calculator</a></li>'
         '<li><a href="/industries/">Business cases by industry</a></li>'
-        '<li><a href="/pilot/">Pilot program</a></li>'
+        '<li><a href="/pilot/">Discuss your use case</a></li>'
         '</ul></div></div>')
 
 
@@ -101,37 +104,40 @@ def header(active, cases):
         '<span class="nav-toggle-bars" aria-hidden="true"></span><span class="sr-only">Menu</span></button>'
         '<nav id="site-nav" class="site-nav" aria-label="Primary">'
         f'<ul class="nav-list">{"".join(links)}</ul>'
-        '<a class="btn btn-primary btn-sm nav-cta" href="/pilot/">Request a Pilot</a>'
+        '<a class="btn btn-primary btn-sm nav-cta" href="/pilot/">Discuss your use case</a>'
         '</nav></div></header>')
 
 
 def footer(cases):
-    flag = [c for c in cases if c["tier"] == "flagship"]
-    more = [c for c in cases if c["tier"] != "flagship"]
-    fl = "".join(f'<li><a href="/business-cases/{c["slug"]}/">{esc(c["title"])}</a></li>' for c in flag)
-    mo = "".join(f'<li><a href="/business-cases/{c["slug"]}/">{esc(c["title"])}</a></li>' for c in more)
+    by = {c["id"]: c for c in cases}
+    def col(p):
+        items = "".join(f'<li><a href="/business-cases/{by[c]["slug"]}/">{esc(by[c]["title"])}</a></li>' for c in p["cases"] if c in by)
+        return f'<p class="ft-h"><a href="/solutions/{p["slug"]}/">{esc(p["name"])}</a></p><ul>{items}</ul>'
+    p1, p2, p3 = S.PILLARS
     return (
         '<footer class="site-footer"><div class="wrap">'
         '<div class="ft-top">'
         f'<div class="ft-brand"><a class="brand" href="/">{BRAND}</a>'
         '<p>Keep data distributed. Centralize intelligence.</p>'
-        '<a class="btn btn-primary btn-sm" href="/pilot/">Request a Pilot</a></div>'
+        '<a class="btn btn-primary btn-sm" href="/pilot/">Discuss your use case</a></div>'
         '<nav class="ft-nav" aria-label="Footer">'
-        f'<div><p class="ft-h">Flagship cases</p><ul>{fl}</ul></div>'
-        f'<div><p class="ft-h">More business cases</p><ul>{mo}</ul></div>'
+        f'<div>{col(p1)}</div>'
+        f'<div>{col(p2)}{col(p3)}</div>'
         '<div><p class="ft-h">Explore</p><ul>'
         '<li><a href="/business-cases/">Business case explorer</a></li>'
+        '<li><a href="/simulator/">Architecture simulator</a></li>'
         '<li><a href="/roi/">ROI calculator</a></li>'
         '<li><a href="/industries/">Industries</a></li>'
         '<li><a href="/platform/">Platform</a></li>'
         '<li><a href="/technology/">Technology</a></li>'
         '<li><a href="/evidence/">Evidence</a></li>'
-        '<li><a href="/partners/">Partners</a></li>'
+        '<li><a href="/partners/">Partners and OEM</a></li>'
         '<li><a href="/company/">Company</a></li>'
+        '<li><a href="/pilot/#privacy">Privacy</a></li>'
         '</ul></div></nav></div>'
-        '<div class="ft-legal"><p>All business cases are <strong>proposed enterprise applications</strong> that have not yet been validated in production. '
+        '<div class="ft-legal"><p>Business cases describe enterprise applications for pilot evaluation; they have not yet been validated in production. '
         'Technical results come from internal experiments on public benchmark datasets. '
-        'Financial figures are illustrative scenarios based on stated assumptions. '
+        'Scenarios and financial figures are illustrative and based on stated assumptions. '
         '<a href="/evidence/">How we classify evidence</a>.</p>'
         '<p>Distilled datasets remain subject to applicable data protection, residency, transfer and security requirements.</p>'
         '<p>© 2026 GroundTruth AI</p></div>'
@@ -157,6 +163,10 @@ def page(path, title, description, body, active="", cases=(), priority="0.6", ex
         f'<meta property="og:description" content="{esc(description)}">\n'
         f'<meta property="og:url" content="{esc(canonical)}">\n'
         '<meta property="og:type" content="website">\n'
+        f'<meta property="og:site_name" content="{esc(S.SITE_NAME)}">\n'
+        f'<meta property="og:image" content="{esc(S.BASE_URL)}/assets/img/og-card.png">\n'
+        '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n'
+        '<meta name="twitter:card" content="summary_large_image">\n'
         '<meta name="color-scheme" content="dark">\n'
         '<meta name="theme-color" content="#05080F">\n'
         '<link rel="icon" href="/assets/img/favicon.png">\n'

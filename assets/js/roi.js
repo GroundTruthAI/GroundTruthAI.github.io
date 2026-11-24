@@ -1,9 +1,65 @@
 /* ROI calculator — illustrative financial scenarios on user-entered assumptions.
-   Separates direct cost reduction, operational efficiency and strategic enablement.
-   Deducts distillation overhead and solution cost. Strategic value is never priced.
-   Runs entirely in the browser; nothing is transmitted. */
-(function () {
+   Three value categories: 1 direct financial savings, 2 operational efficiency, 3 strategic enablement (never priced).
+   Savings apply only to eligible, data-proportional cost lines; distillation, validation, license and
+   implementation costs are deducted. Pure maths in calc(); runs entirely in the browser. */
+(function (root) {
   "use strict";
+
+  // model: "transfer" | "training" | "infrastructure"; v: sanitized numbers, percentages as fractions (0..1)
+  function calc(model, v) {
+    var r = v.c_red, lines = [], ded = [], ops = [], energy = {};
+    if (model === "transfer") {
+      var moved = v.t_dom * v.t_vol * 12 * v.t_elig;          // eligible TB moved per year
+      var stored = v.t_dom * v.t_vol * v.t_elig * v.t_ret;    // eligible TB of central copies held on average
+      lines.push(["Data transfer", moved * r * v.t_ctr]);
+      lines.push(["Central ingestion", moved * r * v.t_cing]);
+      lines.push(["Central processing", moved * r * v.t_cproc]);
+      lines.push(["Central storage of training copies", stored * r * v.t_cst * 12]);
+      ded.push(["Source-side distillation compute", moved * v.t_over]);
+      ops.push(["Eligible data moved per year", moved, "TB"]);
+      ops.push(["Avoided transfer per year", moved * r, "TB"]);
+    } else if (model === "training") {
+      lines.push(["Training & retraining compute", v.r_spend * v.r_share * r]);
+      ded.push(["Distillation compute", v.r_runs * v.r_rcost]);
+      if (v.r_kwh > 0) {
+        energy.net = v.r_kwh * v.r_share * r - v.r_runs * v.r_dkwh;   // informational: cost already in compute
+        energy.dist = v.r_runs * v.r_dkwh;
+        energy.cost = energy.net * v.r_price;
+        energy.inCompute = true;
+      }
+      if (v.r_hours > 0) ops.push(["Training hours avoided per year", v.r_hours * v.r_share * r, "h"]);
+    } else {
+      lines.push(["Storage incl. backup & replicas", v.i_tb * r * v.i_cst * 12]);
+      lines.push(["Data-proportional compute", v.i_comp * v.i_share * r]);
+      if (v.i_kwh > 0) lines.push(["Energy outside compute", v.i_kwh * r * v.i_price]);
+      ded.push(["Distillation compute", v.i_ocost]);
+      if (v.i_okwh > 0) ded.push(["Distillation energy", v.i_okwh * v.i_price]);
+      if (v.i_kwh > 0 || v.i_okwh > 0) {
+        energy.net = v.i_kwh * r - v.i_okwh;
+        energy.dist = v.i_okwh;
+        if (v.i_grid > 0) energy.co2 = energy.net * v.i_grid / 1000;
+      }
+    }
+    ded.push(["Validation & dataset maintenance", v.c_val]);
+    ded.push(["GroundTruth AI license", v.c_sol]);
+    var gross = lines.reduce(function (a, l) { return a + l[1]; }, 0);
+    var deductions = ded.reduce(function (a, l) { return a + l[1]; }, 0);
+    var net = gross - deductions;
+    var hrs = v.c_hrs * v.c_hsave;
+    if (hrs > 0) {
+      ops.push(["Team hours freed per year", hrs, "h"]);
+      if (v.c_rate > 0) ops.push(["Value of hours freed (not in net)", hrs * v.c_rate, "money"]);
+    }
+    var three = net * 3 - v.c_impl;
+    var payback = (v.c_impl > 0 && net > 0) ? Math.max(1, Math.ceil(v.c_impl / (net / 12))) : null;
+    return { lines: lines, ded: ded, gross: gross, deductions: deductions, net: net, three: three, payback: payback, ops: ops, energy: energy };
+  }
+
+  var api = { calc: calc };
+  if (typeof module !== "undefined" && module.exports) module.exports = api;
+  root.GTRoi = api;
+  if (typeof document === "undefined") return;
+
   document.addEventListener("DOMContentLoaded", function () {
     var form = document.getElementById("roi");
     if (!form) return;
@@ -15,13 +71,34 @@
     var scens = form.querySelectorAll(".scen");
     var pilot = document.getElementById("o-pilot");
     var stratEmpty = document.getElementById("o-strat-empty");
+    var errBox = document.getElementById("roi-err");
+    var copyBtn = document.getElementById("o-copy");
+    var copyS = document.getElementById("o-copy-s");
+    var domLabel = document.querySelector('label[for="t_dom"]');
+    var PCT = ["t_elig", "r_share", "i_share", "c_red", "c_hsave"];
+    var last = null;
 
-    function n(id) {
-      var el = document.getElementById(id);
-      var v = parseFloat(el && el.value);
-      return isFinite(v) && v > 0 ? v : 0;
+    function model() { var o = scenSel.options[scenSel.selectedIndex]; return o ? o.dataset.model : "transfer"; }
+
+    function values() {
+      var v = {}, bad = [];
+      Array.prototype.forEach.call(form.querySelectorAll("input[type=number]"), function (input) {
+        var raw = input.value.trim(), x = raw === "" ? 0 : Number(raw), ok = true;
+        if (!isFinite(x) || x < 0) { x = 0; ok = raw === ""; }
+        var max = input.getAttribute("max");
+        if (max !== null && x > Number(max)) { x = Number(max); ok = false; }
+        input.setAttribute("aria-invalid", ok ? "false" : "true");
+        if (!ok) {
+          var l = form.querySelector('label[for="' + input.id + '"]');
+          bad.push(l ? l.textContent : input.id);
+        }
+        v[input.id] = PCT.indexOf(input.id) !== -1 ? x / 100 : x;
+      });
+      errBox.hidden = !bad.length;
+      errBox.textContent = bad.length ? "Out of range, so capped or treated as 0: " + bad.join("; ") + "." : "";
+      return v;
     }
-    function pct(id) { return Math.min(n(id), 100) / 100; }
+
     function money(v) {
       var c = curSel.value, a = Math.abs(v), s;
       if (a >= 1e6) s = (a / 1e6).toFixed(a >= 1e7 ? 1 : 2) + "M";
@@ -30,87 +107,73 @@
       return (v < 0 ? "−" : "") + c + s;
     }
     function num(v, unit) { return Math.round(v).toLocaleString("en-US") + " " + unit; }
+    function esc(s) { return String(s).replace(/[&<>"]/g, function (ch) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]; }); }
     function li(label, value, cls) {
-      return '<li' + (cls ? ' class="' + cls + '"' : "") + "><span>" + label + "</span><span>" + value + "</span></li>";
+      return "<li" + (cls ? ' class="' + cls + '"' : "") + "><span>" + esc(label) + "</span><span>" + esc(value) + "</span></li>";
     }
 
     function compute() {
-      var sc = scenSel.value, r = pct("c_red");
-      var lines = [], over = 0, energy = [], ops = [];
-      if (sc === "transfer") {
-        var moved = n("t_dom") * n("t_vol") * 12 * pct("t_elig");          // eligible TB moved per year
-        var stored = n("t_dom") * n("t_vol") * pct("t_elig") * n("t_ret"); // eligible TB held on average
-        lines.push(["Transfer / network", moved * r * n("t_ctr")]);
-        lines.push(["Central ingestion & processing", moved * r * n("t_cproc")]);
-        lines.push(["Central storage of training copies", stored * r * n("t_cst") * 12]);
-        over = moved * n("t_over");
-        ops.push(li("Eligible data moved per year", num(moved, "TB")));
-        ops.push(li("Avoided transfer volume per year", num(moved * r, "TB")));
-      } else if (sc === "training") {
-        var spend = n("r_spend") * pct("r_share");
-        lines.push(["Training & retraining compute", spend * r]);
-        over = n("r_runs") * n("r_rcost");
-        var kwh = n("r_kwh") * pct("r_share") * r - n("r_runs") * n("r_dkwh");
-        if (n("r_kwh") > 0) {
-          energy.push(li("Net training energy avoided", num(kwh, "kWh"), kwh < 0 ? "neg" : ""));
-          energy.push(li("Distillation energy included", num(n("r_runs") * n("r_dkwh"), "kWh"), "muted"));
-          if (n("r_price") > 0) energy.push(li("Energy cost (inside compute line)", money(kwh * n("r_price")), "muted"));
-        }
-        if (n("r_hours") > 0) ops.push(li("Training hours avoided per year", num(n("r_hours") * pct("r_share") * r, "h")));
-      } else {
-        lines.push(["Storage incl. backup & replicas", n("i_tb") * r * n("i_cst") * 12]);
-        lines.push(["Data-proportional compute", n("i_comp") * pct("i_share") * r]);
-        var ekwh = n("i_kwh") * r - n("i_okwh");
-        if (n("i_kwh") > 0) {
-          lines.push(["Energy", n("i_kwh") * r * n("i_price")]);
-          energy.push(li("Net energy avoided", num(ekwh, "kWh"), ekwh < 0 ? "neg" : ""));
-          energy.push(li("Distillation energy included", num(n("i_okwh"), "kWh"), "muted"));
-          if (n("i_grid") > 0) energy.push(li("Operational emissions avoided*", num(ekwh * n("i_grid") / 1000, "t CO₂e"), ekwh < 0 ? "neg" : ""));
-        }
-        over = n("i_ocost") + n("i_okwh") * n("i_price");
-      }
-      var gross = lines.reduce(function (a, l) { return a + l[1]; }, 0);
-      var sol = n("c_sol");
-      var net = gross - over - sol;
-
-      var html = lines.map(function (l) { return li(l[0], money(l[1])); }).join("");
-      html += li("Gross direct reduction", money(gross), "tot");
-      html += li("Distillation overhead", money(-over), "neg");
-      html += li("GroundTruth AI subscription", sol ? money(-sol) : "not entered", sol ? "neg" : "muted");
+      var m = model(), v = values(), o = calc(m, v);
+      last = { m: m, v: v, o: o };
+      var html = o.lines.map(function (l) { return li(l[0], money(l[1])); }).join("");
+      html += li("Gross direct reduction", money(o.gross), "tot");
+      html += o.ded.map(function (d) {
+        var notEntered = d[1] === 0 && /license/i.test(d[0]);
+        return li("− " + d[0], notEntered ? "not entered" : money(-d[1]), notEntered ? "muted" : "neg");
+      }).join("");
       document.getElementById("o-lines").innerHTML = html;
 
       var big = document.getElementById("o-net");
-      big.textContent = money(net);
-      big.classList.toggle("neg", net < 0);
-      var s = [];
-      s.push("3-year view: " + money(net * 3 - n("c_impl")) + (n("c_impl") ? " after one-time implementation" : ""));
-      if (n("c_impl") && net > 0) s.push("simple payback ≈ " + Math.max(1, Math.ceil(n("c_impl") / (net / 12))) + " months");
-      if (!sol) s.push("before solution cost");
+      big.textContent = money(o.net);
+      big.classList.toggle("neg", o.net < 0);
+      var s = ["3-year view: " + money(o.three) + (v.c_impl ? " after one-time implementation" : "")];
+      if (o.payback) s.push("simple payback ≈ " + o.payback + " months");
+      if (!v.c_sol) s.push("license not entered");
       document.getElementById("o-net-s").textContent = s.join(" · ");
 
-      var hrs = n("c_hrs") * pct("c_hsave");
-      if (hrs > 0) {
-        ops.push(li("Team hours freed per year", num(hrs, "h")));
-        if (n("c_rate") > 0) ops.push(li("Value of hours freed", money(hrs * n("c_rate"))));
+      document.getElementById("o-ops").innerHTML = o.ops.length ? o.ops.map(function (x) {
+        return li(x[0], x[2] === "money" ? money(x[1]) : num(x[1], x[2]));
+      }).join("") : '<li class="muted"><span>Enter team hours and avoidable share to estimate.</span><span></span></li>';
+
+      var e = o.energy, eh = "";
+      if (e.net !== undefined) {
+        eh += li("Net energy avoided", num(e.net, "kWh"), e.net < 0 ? "neg" : "");
+        eh += li("Distillation energy included", num(e.dist, "kWh"), "muted");
+        if (e.inCompute && v.r_price > 0) eh += li("Energy cost (already inside compute line)", money(e.cost), "muted");
+        if (e.co2 !== undefined) eh += li("Operational emissions avoided*", num(e.co2, "t CO₂e"), e.co2 < 0 ? "neg" : "") +
+          '<li class="muted"><span>*Location-based, operational only. Not a lifecycle assessment.</span><span></span></li>';
       }
-      document.getElementById("o-ops").innerHTML = ops.length ? ops.join("") :
-        '<li class="muted"><span>Enter team hours and avoidable share to estimate.</span><span></span></li>';
-      document.getElementById("o-energy").innerHTML = energy.length ? energy.join("") + (sc === "infrastructure" && n("i_grid") > 0 ?
-        '<li class="muted"><span>*Location-based, operational only. Not a lifecycle assessment.</span><span></span></li>' : "") :
+      document.getElementById("o-energy").innerHTML = eh ||
         '<li class="muted"><span>Enter annual energy (kWh) to estimate. Distillation energy is deducted.</span><span></span></li>';
     }
 
+    function summary() {
+      if (!last) return "";
+      var o = last.o, lines = ["GroundTruth AI — illustrative ROI scenario (not a forecast or a quote)",
+        "Business case: " + (caseSel.value ? caseSel.options[caseSel.selectedIndex].text : "not selected"),
+        "Commercial scenario: " + scenSel.options[scenSel.selectedIndex].text,
+        "Assumed reduction on eligible data: " + Math.round(last.v.c_red * 100) + "%", ""];
+      o.lines.forEach(function (l) { lines.push(l[0] + ": " + money(l[1])); });
+      lines.push("Gross direct reduction: " + money(o.gross));
+      o.ded.forEach(function (d) { lines.push("− " + d[0] + ": " + money(d[1])); });
+      lines.push("Net annual direct value: " + money(o.net), "3-year view after implementation: " + money(o.three), "",
+        "Strategic enablement is listed separately and not priced. Source data is assumed to be retained.", location.href);
+      return lines.join("\n");
+    }
+
     function showScenario() {
-      Array.prototype.forEach.call(scens, function (f) { f.hidden = f.dataset.scen !== scenSel.value; });
+      var m = model(), o = scenSel.options[scenSel.selectedIndex];
+      Array.prototype.forEach.call(scens, function (f) { f.hidden = f.dataset.scen !== m; });
+      if (domLabel && o && o.dataset.domain) domLabel.textContent = o.dataset.domain;
       compute();
     }
     function showCase() {
       var id = caseSel.value;
       var opt = caseSel.options[caseSel.selectedIndex];
-      if (opt && opt.dataset.scenario) scenSel.value = opt.dataset.scenario;
+      if (opt && opt.dataset.preset) scenSel.value = opt.dataset.preset;
       Array.prototype.forEach.call(form.querySelectorAll(".strat-list"), function (u) { u.hidden = u.dataset.case !== id; });
       stratEmpty.hidden = !!id;
-      pilot.href = "/pilot/" + (id ? "?case=" + id : "");
+      pilot.href = "/pilot/?type=assessment" + (id ? "&case=" + id : "");
       var q = new URLSearchParams(location.search);
       if (id) q.set("case", id); else q.delete("case");
       var qs = q.toString();
@@ -118,14 +181,21 @@
       showScenario();
     }
 
-    form.addEventListener("input", function (e) { if (e.target.tagName === "INPUT") compute(); });
+    form.addEventListener("input", function (e) { if (e.target.tagName === "INPUT" && e.target.type === "number") compute(); });
     form.addEventListener("submit", function (e) { e.preventDefault(); });
     caseSel.addEventListener("change", showCase);
     scenSel.addEventListener("change", showScenario);
     curSel.addEventListener("change", compute);
+    copyBtn.hidden = false;
+    copyBtn.addEventListener("click", function () {
+      var t = summary();
+      function done() { copyS.textContent = "Summary copied to the clipboard."; }
+      if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(done, function () { copyS.textContent = "Copy failed; use Print scenario instead."; });
+      else copyS.textContent = "Copy is not available in this browser; use Print scenario instead.";
+    });
 
     var pre = new URLSearchParams(location.search).get("case");
     if (pre && caseSel.querySelector('option[value="' + pre.replace(/[^A-Z0-9]/g, "") + '"]')) caseSel.value = pre;
     showCase();
   });
-})();
+})(typeof window !== "undefined" ? window : this);

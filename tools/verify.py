@@ -18,14 +18,14 @@ sys.path.insert(0, HERE)
 from content import site as S                  # noqa: E402
 from content.industries import INDUSTRIES      # noqa: E402
 from sitegen.pages_cases import load_cases     # noqa: E402
+from sitegen.pages_main import LEGACY as LEGACY_MAP  # noqa: E402
 
 errors, warnings = [], []
 def err(m): errors.append(m)
 def warn(m): warnings.append(m)
 
 SKIP_DIRS = ("tools", "internal", "resources", ".git", "_dbg")
-LEGACY = {"distillation.html", "data-drift.html", "customer-segmentation.html", "recommender-systems.html",
-          "fraud-detection.html", "portfolio-details.html", "service-details.html", "starter-page.html"}
+LEGACY = set(LEGACY_MAP)
 
 
 class Page(HTMLParser):
@@ -188,29 +188,63 @@ for c in cases:
     u = f"/business-cases/{c['slug']}/"
     p = by_url.get(u)
     if not p: err(f"missing page {u}"); continue
-    for sid in ("challenge", "gap", "solution", "architecture", "outcomes", "metrics", "stakeholders", "implementation", "evidence", "pilot"):
+    order = ("challenge", "opportunity", "solution", "scenario", "architecture", "outcomes", "implementation", "evidence", "validation", "engage")
+    for sid in order + ("metrics", "pilot"):
         if sid not in p.ids: err(f"{u}: missing section #{sid}")
+    pos = [p.ids.index(x) for x in order if x in p.ids]
+    if pos != sorted(pos): err(f"{u}: sections out of the required order")
     if f"/pilot/?case={c['id']}" not in p.links: err(f"{u}: no case-specific pilot CTA")
     if f"/roi/?case={c['id']}" not in p.links: err(f"{u}: no ROI scenario link")
     if not any(l.startswith("/industries/") and l != "/industries/" for l in p.links): err(f"{u}: no industry links")
     pt = " ".join(p.text)
-    if pt.find("Business challenge") > pt.find("GroundTruth AI solution"): err(f"{u}: solution precedes challenge")
+    if "Illustrative enterprise scenario" not in pt: err(f"{u}: scenario not labelled as illustrative")
+    if "not yet validated in production" not in pt: err(f"{u}: validation status missing")
+    pil = S.PILLAR_OF.get(c["id"])
+    if not pil: err(f"{c['id']}: not in a solution family")
+    elif f"/solutions/{pil['slug']}/" not in p.links: err(f"{u}: no link to its solution family")
 for i in INDUSTRIES:
     p = by_url.get(f"/industries/{i['slug']}/")
     if not p: err(f"missing industry page {i['slug']}"); continue
     for cid, _ in i["cases"]:
         c = next(x for x in cases if x["id"] == cid)
         if f"/business-cases/{c['slug']}/" not in p.links: err(f"industry {i['slug']}: no link to {cid}")
-for u in ("/roi/", "/business-cases/", "/pilot/", "/evidence/", "/platform/", "/technology/", "/partners/", "/company/", "/industries/"):
+# solution families (commercial pillars)
+seen = [cid for pl in S.PILLARS for cid in pl["cases"]]
+if sorted(seen) != sorted(case_ids) or len(seen) != len(set(seen)): err("every business case must be in exactly one solution family")
+if not S.PILLARS[0]["flagship"] or "BC01" not in S.PILLARS[0]["cases"]: err("distributed enterprise intelligence must be the flagship family incl. OT/IT")
+for pl in S.PILLARS:
+    p = by_url.get(f"/solutions/{pl['slug']}/")
+    if not p: err(f"missing solution page {pl['slug']}"); continue
+    for cid in pl["cases"]:
+        c = next(x for x in cases if x["id"] == cid)
+        if f"/business-cases/{c['slug']}/" not in p.links: err(f"solution {pl['slug']}: no link to {cid}")
+    if "Illustrative enterprise scenario" not in " ".join(p.text): err(f"solution {pl['slug']}: scenario label missing")
+if home:
+    t = " ".join(home.text)
+    for k in ("Discuss your use case", "Explore business cases", "Illustrative enterprise scenario"):
+        if k not in t: err(f"home: '{k}' missing")
+    for pl in S.PILLARS:
+        if pl["name"] not in t: err(f"home: pillar {pl['name']} missing")
+    if re.search(r"production deployments|what we have not|validation backlog", t, re.I): err("home: defensive wording on the homepage")
+    order = ["solutions", "challenges", "scenario", "how", "evidence", "deployment", "engage"]
+    pos = [home.ids.index(x) if x in home.ids else -1 for x in order]
+    if -1 in pos or pos != sorted(pos): err(f"home: section hierarchy wrong {list(zip(order, pos))}")
+sim = by_url.get("/simulator/")
+if not sim: err("missing page /simulator/")
+else:
+    if "Illustrative architecture simulator" not in " ".join(sim.text): err("simulator: label missing")
+    if "/pilot/?type=assessment" not in sim.links: err("simulator: conversion CTA missing")
+for u in ("/roi/", "/business-cases/", "/pilot/", "/simulator/", "/evidence/", "/platform/", "/technology/", "/partners/", "/company/", "/industries/"):
     if u not in by_url: err(f"missing page {u}")
     elif u != "/" and "/pilot/" not in by_url[u].links: err(f"{u}: Request a Pilot CTA missing")
 
 # ----------------------------------------------------------------------------- claim hygiene
 BANNED = [r"revolutionar", r"game[- ]chang", r"unparalleled", r"trusted by", r"testimonial", r"award[- ]winning",
           r"guarantee", r"100% accura", r"happy clients", r"lorem", r"example\.com", r"sarah johnson", r"555",
-          r"industry[- ]leading", r"world[- ]class", r"\bproven\b", r"certified"]
+          r"industry[- ]leading", r"world[- ]class", r"\bproven\b", r"certified", r"same intelligence",
+          r"accuracy intact", r"radical", r"customer success", r"case study"]
 ALLOW_CTX = {r"certified": r"no(t| security)? ?certif|holds no security certifications",
-             r"guarantee": r"(\bno|\bnot) guarantee",
+             r"guarantee": r"(\bno|\bnot) guarantee|not provide the privacy guarantees|not claim equivalent privacy guarantees",
              r"\bproven\b": r"not yet been proven|designed to be proven|to be proven"}
 for rel, p in pages.items():
     t = " ".join(p.text).lower()
@@ -219,6 +253,8 @@ for rel, p in pages.items():
             ctx = t[max(0, m.start() - 60): m.end() + 60]
             if b in ALLOW_CTX and re.search(ALLOW_CTX[b], ctx): continue
             err(f"{url_for(rel)}: banned claim '{b}' … {ctx.strip()} …")
+    for m in re.finditer(r"\bbc\d{2}\b", t):
+        err(f"{url_for(rel)}: internal case ID visible to customers … {t[max(0, m.start() - 40): m.end() + 40].strip()} …")
     for m in re.finditer(r"real[- ]time", t):
         ctx = t[max(0, m.start() - 80): m.end() + 40]
         if not re.search(r"\bno\b|\bnot\b|never|without", ctx):
@@ -252,6 +288,12 @@ if not S.CONTACT_EMAIL:
     warn("RELEASE BLOCKER: content/site.py CONTACT_EMAIL is empty — the pilot form prepares a copyable request only.")
 for f in LEGACY:
     if not os.path.exists(os.path.join(ROOT, f)): err(f"legacy redirect missing: {f}")
+import subprocess
+try:
+    tracked = subprocess.run(["git", "ls-files", "internal"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+    if tracked: err(f"internal documents are tracked by git: {tracked.splitlines()[:3]}")
+except OSError:
+    warn("git not available: could not confirm internal/ is untracked")
 if not os.path.exists(os.path.join(ROOT, "internal")) or ".gitignore" not in os.listdir(ROOT) or \
         "internal/" not in open(os.path.join(ROOT, ".gitignore")).read():
     err("internal/ must exist and be git-ignored")

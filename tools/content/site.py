@@ -77,22 +77,113 @@ FILTERS = {
     ]),
 }
 
+# Calculation models used by the ROI calculator (and by each case's "roi_scenario").
 ROI_SCENARIOS = {
     "transfer": "Data movement & replication",
     "training": "Training & retraining spend",
     "infrastructure": "Storage, compute & energy",
 }
 
+# Commercial scenarios offered in the ROI calculator: (key, label, calculation model, label for a domain)
+ROI_PRESETS = [
+    ("ot-it", "Industrial OT/IT data movement", "transfer", "Plants or OT zones"),
+    ("distributed", "Distributed enterprise analytics", "transfer", "Subsidiaries or data domains"),
+    ("edge", "Edge-to-cloud optimization", "transfer", "Edge sites or device fleets"),
+    ("multicloud", "Multicloud optimization", "transfer", "Source clouds or environments"),
+    ("training", "AI training efficiency", "training", ""),
+    ("infrastructure", "AI infrastructure efficiency", "infrastructure", ""),
+]
+# Default commercial scenario per business case
+CASE_PRESET = {"BC01": "ot-it", "BC02": "distributed", "BC03": "training", "BC04": "ot-it", "BC05": "edge",
+               "BC06": "infrastructure", "BC07": "distributed", "BC08": "multicloud", "BC09": "training",
+               "BC10": "infrastructure", "BC11": "distributed"}
+
+# Three commercial solution families. Every business case belongs to exactly one.
+PILLARS = [
+    {"slug": "distributed-enterprise-intelligence", "name": "Distributed enterprise intelligence", "flagship": True,
+     "message": "Enable enterprise-wide intelligence without centralizing all your raw data.",
+     "problem": "Plants, subsidiaries, regions and acquired companies keep their data in separate, separately governed "
+                "environments. Central AI and analytics programs that first require a complete raw copy in one place "
+                "collide with segregation, ownership and transfer rules, and many initiatives never start.",
+     "outcome": "Central model training and analytics on approved, locally distilled datasets, while original data stays "
+                "in its authorized environment.",
+     "points": ["Analytical collaboration across segregated data domains",
+                "Centralized model training on approved, locally distilled datasets",
+                "Source data environments preserved as they are",
+                "Multi-site industrial intelligence",
+                "Less dependency on complete data consolidation",
+                "New analytical initiatives that data architecture would otherwise hold back"],
+     "cases": ["BC01", "BC02", "BC04", "BC07", "BC11"],
+     "cta": "Evaluate your distributed data environments",
+     "seo": "Enterprise analytics and AI training across data silos, OT/IT segregation and distributed industrial sites, without centralizing all raw data."},
+    {"slug": "ai-infrastructure-efficiency", "name": "AI infrastructure efficiency", "flagship": False,
+     "message": "Reduce the cost of developing, training and maintaining AI models.",
+     "problem": "Every training and retraining cycle reprocesses growing data histories. Compute, storage, energy and "
+                "wall-clock time scale with volume, while much of that volume adds little to the model.",
+     "outcome": "Lower data-proportional training and retraining cost and faster experimentation, net of the cost of distillation.",
+     "points": ["Training efficiency on task-specific datasets",
+                "Better use of shared compute capacity",
+                "Lower recurring processing costs",
+                "Faster experimentation cycles",
+                "More efficient retraining",
+                "Potential energy savings, measured per workload"],
+     "cases": ["BC03", "BC09", "BC06", "BC10"],
+     "cta": "Assess your AI training costs",
+     "seo": "Reduce enterprise AI training, retraining and infrastructure cost with task-aware dataset distillation, net of distillation overhead."},
+    {"slug": "intelligent-data-mobility", "name": "Intelligent data mobility", "flagship": False,
+     "message": "Move the information your AI needs, not every raw data record.",
+     "problem": "Edge devices, sites and clouds produce more data than networks, ingestion pipelines and central storage can "
+                "economically absorb. Large datasets are duplicated between environments simply to feed model training.",
+     "outcome": "Less raw data transferred and replicated for AI workloads, with distillation performed at the source.",
+     "points": ["Source-side dataset distillation",
+                "Less unnecessary data transfer",
+                "Less data replication between environments",
+                "Leaner distributed infrastructure",
+                "More efficient cloud ingestion",
+                "Lower dependence on high-bandwidth connectivity"],
+     "cases": ["BC05", "BC08"],
+     "cta": "Evaluate your edge-to-cloud data flows",
+     "seo": "Source-side dataset optimization for edge-to-cloud and multicloud AI: move the information models need, not every raw record."},
+]
+PILLAR_OF = {cid: p for p in PILLARS for cid in p["cases"]}
+
+# Three-stage commercial engagement. (type key used by the request form, label, call to action, description)
+ENGAGEMENT = [
+    ("discovery", "Architecture discovery", "Discuss your use case",
+     "A short conversation about your business problem, data architecture, segregation requirements, current AI workloads "
+     "and constraints, and whether GroundTruth AI is a plausible fit. No data is shared.",
+     ["Business problem and current AI workloads", "Existing data architecture and segregation requirements",
+      "Economic and operational constraints", "Initial view on applicability"]),
+    ("assessment", "Technical feasibility assessment", "Request a feasibility assessment",
+     "A scoped technical evaluation of one representative workload: data characteristics, existing baseline, integration "
+     "requirements, the dataset reduction worth testing, quality constraints and preliminary economics.",
+     ["Representative workload and baseline", "Data characteristics and quality constraints",
+      "Integration requirements", "Preliminary economic feasibility"]),
+    ("pilot", "Enterprise pilot", "Request an enterprise pilot",
+     "A structured evaluation in your environment with agreed business objectives and technical success criteria, ending "
+     "with an architecture assessment, an economic evaluation and deployment recommendations.",
+     ["Agreed business objectives and success criteria", "Experimental validation on your data",
+      "Architecture and economic evaluation", "Deployment recommendations"]),
+]
+
 EVIDENCE_LEVELS = [
     ("demonstrated", "Demonstrated business outcome",
-     "Measured in a customer production environment.", "None yet"),
+     "Measured in a customer production environment.", "Reported here once a pilot or deployment produces it"),
     ("experimental", "Experimentally supported technical outcome",
      "Measured in internal experiments on public benchmark datasets.", "Data reduction and accuracy on 4 benchmarks; internal energy measurements"),
-    ("proposed", "Proposed enterprise application",
+    ("proposed", "Enterprise application for pilot evaluation",
      "Architecture and value hypothesis, designed to be tested in a pilot.", "All 11 business cases"),
     ("illustrative", "Illustrative financial scenario",
      "Arithmetic on stated, editable assumptions. Not a forecast or a quote.", "ROI calculator"),
 ]
+
+# Public facts about the benchmark datasets (total samples in the public release, features).
+BENCHMARK_META = {
+    "Iris": ("150 samples · 4 features · 3 classes", "UCI / scikit-learn"),
+    "Wine": ("178 samples · 13 features · 3 classes", "UCI / scikit-learn"),
+    "Breast Cancer": ("569 samples · 30 features · 2 classes", "UCI Wisconsin Diagnostic / scikit-learn"),
+    "MNIST": ("70,000 images (60,000 train / 10,000 test) · 28×28 · 10 classes", "LeCun et al."),
+}
 
 BENCHMARKS = [
     # dataset, type, reduction %, baseline acc, distilled acc, delta pp

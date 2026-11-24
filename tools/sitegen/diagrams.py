@@ -209,14 +209,16 @@ def hero_visual():
         g.append(f'<g class="hv-gt"><rect x="240" y="{y + 15}" width="42" height="40" rx="11"/>'
                  f'<circle class="glyph-gt" cx="261" cy="{y + 35}" r="8"/><circle class="glyph-gt2" cx="261" cy="{y + 35}" r="3"/></g>')
         g.append(f'<path class="flow f-distilled hv-anim" d="M282 {y + 35} C352 {y + 35} 362 200 412 200" marker-end="url(#UID-a-distilled)"/>')
+    g.append('<path class="hv-bound" d="M330 8 V384"/>')
     g.append('<g class="hv-core"><circle cx="482" cy="200" r="64"/>'
              '<circle class="hv-core2" cx="482" cy="200" r="64" stroke="url(#UID-ring)"/>'
-             '<text class="hv-ct" x="482" y="195" text-anchor="middle">Central</text>'
-             '<text class="hv-ct" x="482" y="216" text-anchor="middle">model</text></g>')
+             '<text class="hv-ct" x="482" y="195" text-anchor="middle">Enterprise</text>'
+             '<text class="hv-ct" x="482" y="216" text-anchor="middle">AI</text></g>')
     g.append('<text class="hv-cap" x="261" y="398" text-anchor="middle">DISTILL AT SOURCE</text>'
-             '<text class="hv-cap" x="482" y="296" text-anchor="middle">TRAIN &amp; ANALYZE ON</text>'
-             '<text class="hv-cap" x="482" y="313" text-anchor="middle">APPROVED DATASETS</text>')
-    return _svg("0 0 560 410", "Raw data stays in four separate domains; each distills locally and only approved distilled datasets flow to the central model.",
+             '<text class="hv-cap hv-cap-b" x="338" y="398">AUTHORIZED TRANSFER</text>'
+             '<text class="hv-cap" x="482" y="296" text-anchor="middle">ANALYTICS &amp; TRAINING</text>'
+             '<text class="hv-cap" x="482" y="313" text-anchor="middle">ON APPROVED DATA</text>')
+    return _svg("0 0 560 410", "Original data stays in four segregated environments. Each one distills locally, and only approved, optimized datasets cross an authorized transfer boundary to centralized enterprise AI and analytics.",
                 "".join(g), "viz hero-viz")
 
 
@@ -281,3 +283,104 @@ def viz_bc04():
              '<text class="hv-cap" x="384" y="160" text-anchor="middle">rare failures pooled</text>'
              '<text class="hv-cap" x="384" y="174" text-anchor="middle">across regimes</text>')
     return _svg("0 0 460 216", "Three facilities with different operating regimes distill locally; distilled datasets train a shared equipment health model.", "".join(g))
+
+
+# ---------------------------------------------------------------------------
+# Solution-pillar schematics (no data; they show architecture, not results)
+# ---------------------------------------------------------------------------
+
+def viz_pillar_distributed():
+    doms = [("Plant OT zone", 12), ("Subsidiary", 78), ("Region", 144)]
+    g = []
+    for name, y in doms:
+        g.append(f'<g class="zone zone-source"><rect x="6" y="{y}" width="200" height="56" rx="10"/></g>'
+                 f'<text class="pv-t" x="18" y="{y + 22}">{name}</text>'
+                 f'<text class="pv-s" x="18" y="{y + 40}">original data stays</text>'
+                 f'<g class="pv-store"><rect x="128" y="{y + 14}" width="28" height="28" rx="6"/>'
+                 + "".join(f'<rect x="{133 + k * 6}" y="{y + 22 + (k % 2) * 4}" width="3" height="{14 - (k % 2) * 4}" rx="1"/>' for k in range(3))
+                 + f'</g><path class="pv-rawlink" d="M156 {y + 28} H170"/>'
+                 f'<g class="node node-gt"><rect x="170" y="{y + 16}" width="26" height="24" rx="6"/></g>'
+                 f'<path class="flow f-distilled" d="M196 {y + 28} C250 {y + 28} 262 106 318 106" marker-end="url(#UID-a-distilled)"/>'
+                 f'<rect class="pv-gate" x="234" y="{y + 20}" width="10" height="16" rx="3"/>')
+    g.append('<path class="pv-bound" d="M239 4 V206"/>')
+    g.append('<g class="zone zone-central"><rect x="322" y="40" width="132" height="132" rx="12"/></g>'
+             '<text class="zone-t" x="388" y="60" text-anchor="middle">ENTERPRISE</text>'
+             '<g class="node node-model"><rect x="334" y="72" width="108" height="36" rx="8"/><text x="388" y="95" text-anchor="middle">Analytics</text></g>'
+             '<g class="node node-model"><rect x="334" y="120" width="108" height="36" rx="8"/><text x="388" y="143" text-anchor="middle">ML training</text></g>')
+    return _svg("0 0 460 210", "Schematic: three segregated environments keep their original data, distill locally and pass approved datasets through an authorized boundary to central analytics and ML training.", "".join(g))
+
+
+def viz_pillar_efficiency():
+    g = ['<text class="pv-s" x="8" y="30">Full history</text>', '<text class="pv-s" x="8" y="118">Distilled</text>']
+    for k in range(4):
+        x = 104 + k * 88
+        h = 34 + k * 14
+        g.append(f'<rect class="pv-raw" x="{x}" y="{82 - h}" width="40" height="{h}" rx="4"/>'
+                 f'<rect class="pv-ovh" x="{x}" y="{150 - 8}" width="40" height="5" rx="2"/>'
+                 f'<rect class="pv-dist" x="{x}" y="{150 - 8 - 4 - 12}" width="40" height="12" rx="3"/>'
+                 f'<text class="hv-cap" x="{x + 20}" y="172" text-anchor="middle">cycle {k + 1}</text>')
+    g.append('<path class="pv-axis" d="M96 84 H452 M96 152 H452"/>'
+             '<text class="hv-cap" x="104" y="192">green: distilled training · grey: distillation</text>'
+             '<text class="hv-cap" x="104" y="206">compute per cycle · schematic, not measured</text>')
+    return _svg("0 0 460 214", "Schematic: training on the full history costs more every cycle as data grows; training on a distilled dataset costs less per cycle, plus a small distillation overhead. Not measured data.", "".join(g))
+
+
+def viz_pillar_mobility():
+    g = ['<text class="hv-cap" x="240" y="14" text-anchor="middle">NETWORK · EGRESS · INGESTION</text>']
+    for name, y in [("Edge site", 22), ("Edge site", 82), ("Cloud A", 142)]:
+        d = f"M148 {y + 20} C230 {y + 20} 236 102 330 102"
+        g.append(f'<g class="node node-system"><rect x="8" y="{y}" width="104" height="40" rx="8"/><text x="60" y="{y + 25}" text-anchor="middle">{name}</text></g>'
+                 f'<path class="pv-ghost" d="{d}"/>'
+                 f'<g class="node node-gt"><rect x="124" y="{y + 8}" width="24" height="24" rx="6"/></g>'
+                 f'<path class="flow f-distilled" d="{d}" marker-end="url(#UID-a-distilled)"/>')
+    g.append('<path class="pv-bound" d="M290 22 V186"/>'
+             '<text class="hv-cap" x="8" y="200">wide dashed: raw stream no longer moved · green: distilled dataset</text>'
+             '<g class="zone zone-central"><rect x="334" y="58" width="120" height="88" rx="12"/></g>'
+             '<text class="zone-t" x="394" y="80" text-anchor="middle">CLOUD B / CENTRAL</text>'
+             '<g class="node node-model"><rect x="346" y="92" width="96" height="40" rx="8"/><text x="394" y="117" text-anchor="middle">Training</text></g>')
+    return _svg("0 0 460 208", "Schematic: edge sites and a source cloud distill locally and send compact datasets across the network to the central or target cloud, instead of the full raw stream.", "".join(g))
+
+
+# Featured enterprise scenario (illustrative numbers, labelled as such where it is used)
+SCENARIO_A = {
+    "current": {
+        "title": "Before: eligible history from 20 facilities replicated into enterprise IT",
+        "zones": [
+            {"id": "ot", "label": "20 facilities · OT environments", "kind": "source",
+             "nodes": [["f", "Facility historians ×20", "store"]]},
+            {"id": "dmz", "label": "Industrial DMZs", "kind": "boundary",
+             "nodes": [["rep", "Replication paths ×20", "system"]]},
+            {"id": "it", "label": "Enterprise IT", "kind": "central",
+             "nodes": [["lake", "Raw OT data lake · 200 TB", "store"], ["ml", "Predictive-maintenance training", "model"]]},
+        ],
+        "flows": [["f", "rep", "raw", "200 TB eligible"], ["rep", "lake", "raw", "full history"], ["lake", "ml", "raw", ""]],
+    },
+    "proposed": {
+        "title": "After: each facility distills locally; approved datasets cross the existing DMZ",
+        "zones": [
+            {"id": "ot", "label": "20 facilities · OT environments", "kind": "source",
+             "nodes": [["f", "Facility historians ×20 · data stays", "store"], ["gt", "Distillation engine at each site", "gt"]]},
+            {"id": "dmz", "label": "Industrial DMZs", "kind": "boundary",
+             "nodes": [["gw", "Existing approved transfer", "system"]]},
+            {"id": "it", "label": "Enterprise IT", "kind": "central",
+             "nodes": [["ds", "Approved datasets · 20 TB", "store"], ["ml", "Predictive-maintenance training", "model"]]},
+        ],
+        "flows": [["f", "gt", "raw", ""], ["gt", "gw", "distilled", "validated + approved"],
+                  ["gw", "ds", "distilled", "20 TB"], ["ds", "ml", "distilled", ""], ["ml", "gt", "control", "task specification"]],
+    },
+}
+
+OEM_EMBED = {
+    "title": "Proposed OEM pattern: GroundTruth AI embedded inside a partner product",
+    "zones": [
+        {"id": "src", "label": "Customer source environment", "kind": "source",
+         "nodes": [["src", "Plant, edge or domain data sources", "system"]]},
+        {"id": "pp", "label": "Partner product · historian, gateway or platform", "kind": "external",
+         "nodes": [["core", "Partner product core", "system"], ["gt", "Embedded GroundTruth AI runtime", "gt"],
+                   ["exp", "Partner export and integration", "system"]]},
+        {"id": "c", "label": "Customer central platform", "kind": "central",
+         "nodes": [["ml", "Central analytics and ML", "model"]]},
+    ],
+    "flows": [["src", "core", "raw", "native ingestion"], ["core", "gt", "raw", ""], ["gt", "exp", "distilled", ""],
+              ["exp", "ml", "distilled", "distilled datasets"], ["ml", "gt", "control", "task specification"]],
+}

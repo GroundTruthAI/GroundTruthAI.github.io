@@ -1,4 +1,6 @@
-/* Pilot request form. No network requests: prepares a mailto: link or a copyable request. */
+/* Engagement request form (discovery, feasibility, pilot, partnership, diligence).
+   Sends via the FormSubmit AJAX endpoint; on any failure prepares a mailto: link and a copyable request.
+   Success is only reported when the delivery service confirms it. */
 (function () {
   "use strict";
   document.addEventListener("DOMContentLoaded", function () {
@@ -23,13 +25,13 @@
     setIf(indSel, q.get("industry"));
     setIf(typeSel, q.get("type"));
 
+    var LABELS = { assessment: "Request a feasibility assessment", pilot: "Request an enterprise pilot",
+                   partnership: "Discuss a technology integration", diligence: "Request technical due diligence" };
     function syncLabel() {
       var opt = caseSel.options[caseSel.selectedIndex];
       var t = typeSel.value;
-      if (t === "partnership") submit.textContent = "Discuss a partnership";
-      else if (t === "diligence") submit.textContent = "Request technical due diligence";
-      else if (t === "assessment") submit.textContent = "Request an architecture assessment";
-      else submit.textContent = (opt && opt.dataset.cta) ? opt.dataset.cta : "Request a Pilot";
+      if (LABELS[t]) submit.textContent = LABELS[t];
+      else submit.textContent = (opt && opt.dataset.cta) ? opt.dataset.cta : "Discuss your use case";
     }
     caseSel.addEventListener("change", syncLabel);
     typeSel.addEventListener("change", syncLabel);
@@ -110,7 +112,7 @@
             form.reset(); syncLabel();
             out.hidden = false; out.classList.add("ok");
             outH.textContent = "Request sent";
-            outMsg.textContent = "Thank you. Your request has reached the GroundTruth AI team; we will reply to " + payload.email + " with a scoping call proposal.";
+            outMsg.textContent = "Thank you. The delivery service confirmed your request for the GroundTruth AI team. We will reply to " + payload.email + " with a proposal for a short call.";
             copy.hidden = true; text.hidden = true;
             outH.focus();
           } else {
