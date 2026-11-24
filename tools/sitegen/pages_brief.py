@@ -6,6 +6,7 @@ Content uses only information already published on the site; the 20-plant scenar
 illustrative scenario (assumed 90% reduction) and is labelled as such.
 """
 import os
+import re
 
 from content import site as S
 from . import core
@@ -300,6 +301,11 @@ GRAD = ('<defs><linearGradient id="{u}-g" x1="0" x2="1"><stop offset="0" stop-co
         '<marker id="{u}-ar" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto"><path d="M0 0 10 5 0 10z" fill="#FF9466"/></marker></defs>')
 
 
+def hx(text):
+    """Escape a headline and tighten the space before sentence-ending periods (display font has a wide period)."""
+    return re.sub(r"\.(\s|$)", r'<span class="dot">.</span>\1', esc(text))
+
+
 def _svg(uid, vb, title, inner, cls):
     return (f'<svg class="{cls}" viewBox="{vb}" role="img" aria-labelledby="{uid}-t"><title id="{uid}-t">{esc(title)}</title>'
             + GRAD.format(u=uid) + inner + "</svg>")
@@ -395,7 +401,7 @@ def slides(t, lang):
     # 1 — value proposition
     sec(1, "s1",
         f'<div class="s-grid"><div class="s-text"><p class="sl-kick">{esc(t["kicker"])}</p>'
-        f'<h1 class="sl-h1">{esc(t["h1a"])} <span class="g">{esc(t["h1b"])}</span></h1>'
+        f'<h1 class="sl-h1">{hx(t["h1a"])} <span class="g">{hx(t["h1b"])}</span></h1>'
         f'<p class="sl-how">{esc(t["how"])}</p>'
         f'<p class="sl-lead"><strong class="sl-what">{esc(t["what_k"])}</strong> {esc(t["lead"])}</p>'
         '<ul class="sl-ben">' + "".join(f'<li><span class="ben-n">{i}</span>{esc(b)}</li>' for i, b in enumerate(t["benefits"], 1)) + "</ul>"
@@ -407,14 +413,14 @@ def slides(t, lang):
     obs = "".join(f'<li class="ob"><svg class="op-ic" viewBox="0 0 48 48" aria-hidden="true" focusable="false">{WHY_ICONS[i]}</svg>'
                   f'<h3>{esc(h)}</h3><p>{esc(d)}</p></li>' for i, (h, d) in enumerate(t["obstacles"]))
     sec(2, "s-why",
-        f'<h2 class="sl-h2">{esc(t["hw"])}</h2><p class="sl-lead sl-lead-w">{esc(t["w_lead"])}</p>'
+        f'<h2 class="sl-h2">{hx(t["hw"])}</h2><p class="sl-lead sl-lead-w">{esc(t["w_lead"])}</p>'
         f'<ul class="obs">{obs}</ul><p class="sl-key sl-key-w">{esc(t["w_key"])}</p>')
 
     # 3 — how it works
     steps = "".join(f'<li class="hw"><span class="hw-n">{i}</span><svg class="op-ic" viewBox="0 0 48 48" aria-hidden="true" focusable="false">{HOW_ICONS[i - 1]}</svg>'
                     f'<h3>{esc(h)}</h3><p>{esc(d)}</p></li>' for i, (h, d) in enumerate(t["h_steps"], 1))
     sec(3, "s-how",
-        f'<h2 class="sl-h2">{esc(t["hh"])}</h2>'
+        f'<h2 class="sl-h2">{hx(t["hh"])}</h2>'
         f'<p class="sl-def"><strong>{esc(t["h_def_k"])}</strong> {esc(t["h_def"])}</p>'
         f'<ol class="hws">{steps}</ol><p class="sl-proof sl-notc sl-notc-how"><strong>{esc(t["notc_k"])}.</strong> {esc(t["notc"])}</p>'
         f'<p class="sl-where">{esc(t["h_where"])}</p>')
@@ -425,7 +431,7 @@ def slides(t, lang):
         + (f'<p class="op-tag">{esc(t["opp_tag"])}</p>' if i == 0 else "")
         + f'<h3>{esc(h)}</h3><p class="op-d">{esc(dsc)}</p><ul>' + "".join(f"<li>{esc(x)}</li>" for x in ex) + "</ul></li>"
         for i, (h, dsc, ex) in enumerate(t["opps"]))
-    sec(4, "s2", f'<h2 class="sl-h2">{esc(t["h2"])}</h2><p class="sl-sub">{esc(t["h2_sub"])}</p><ol class="ops">{opps}</ol>')
+    sec(4, "s2", f'<h2 class="sl-h2">{hx(t["h2"])}</h2><p class="sl-sub">{esc(t["h2_sub"])}</p><ol class="ops">{opps}</ol>')
 
     # 5 — business cases
     cols = []
@@ -435,7 +441,7 @@ def slides(t, lang):
             f'<span>{esc(den if lang == "en" else des)}</span></li>' for slug, ten, den, tes, des in items)
         cols.append(f'<div class="cs-col{" cs-main" if i == 0 else ""}"><h3>{ICONS[i]}{esc(gen if lang == "en" else ges)}</h3><ul>{lis}</ul></div>')
     sec(5, "s-cases",
-        f'<h2 class="sl-h2">{esc(t["hc"])}</h2><p class="sl-lead sl-lead-c">{esc(t["c_lead"])} '
+        f'<h2 class="sl-h2">{hx(t["hc"])}</h2><p class="sl-lead sl-lead-c">{esc(t["c_lead"])} '
         f'<a href="{S.BASE_URL}/business-cases/">{esc(t["c_more"])}</a></p>'
         f'<div class="cs-grid">{"".join(cols)}</div><p class="sl-inds">{esc(t["inds"])}</p>')
 
@@ -451,7 +457,7 @@ def slides(t, lang):
              f'<tr class="tot"><th scope="row">{esc(t["break_t"])}</th><td>{esc(net)}</td></tr>')
     figs = "".join(f'<div><dt>{esc(lbl)}</dt><dd{" class=\"g\"" if k >= 2 else ""}>{esc(v)}</dd></div>' for k, (v, lbl) in enumerate(t["figs"]))
     sec(6, "s3 s-money",
-        f'<div class="s-grid s-grid-3"><div class="s-text"><h2 class="sl-h2">{esc(t["h3m"].format(**sc))}</h2>'
+        f'<div class="s-grid s-grid-3"><div class="s-text"><h2 class="sl-h2">{hx(t["h3m"].format(**sc))}</h2>'
         f'<div class="sl-money"><p class="mk">{esc(t["money_k"])}</p><p class="mv g">≈{esc(net)}</p><p class="ms">{esc(t["money_s"].format(net3=_k(ec["net3"], lang)))}</p></div>'
         f'<table class="sl-break"><tbody>{rows}</tbody></table></div>'
         f'<div class="s-art"><div class="sl-scale"><p class="mk">{esc(t["scale_k"])}</p><dl>'
@@ -463,7 +469,7 @@ def slides(t, lang):
     # 7 — call to action
     mail = S.CONTACT_EMAIL
     sec(7, "s4",
-        f'<div class="s-grid s-grid-4"><div class="s-text"><h2 class="sl-h2">{esc(t["h4"])}</h2><p class="sl-lead">{esc(t["s4_lead"])}</p>'
+        f'<div class="s-grid s-grid-4"><div class="s-text"><h2 class="sl-h2">{hx(t["h4"])}</h2><p class="sl-lead">{esc(t["s4_lead"])}</p>'
         '<ol class="sl-qs">' + "".join(f"<li>{esc(q)}</li>" for q in t["qs"]) + "</ol></div>"
         f'<div class="s-cta"><a class="sl-btn" href="{esc(CONTACT)}">{esc(t["cta"])}</a>'
         f'<p class="sl-nodata">{esc(t["nodata"])}</p>'

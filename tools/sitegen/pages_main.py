@@ -104,7 +104,7 @@ def render_home(cases, industries):
     body = (
         '<section class="hero" aria-labelledby="hero-h"><div class="wrap"><div class="hero-grid"><div class="hero-copy">'
         '<p class="eyebrow">Enterprise AI across distributed and segregated data</p>'
-        '<h1 id="hero-h">Keep data distributed. <span class="hl g">Centralize intelligence.</span></h1>'
+        '<h1 id="hero-h">Keep data distributed<span class="dot">.</span> <span class="hl g">Centralize intelligence<span class="dot">.</span></span></h1>'
         '<p class="hero-sub">Train AI models across industrial plants, business units and segregated data environments '
         'without centralizing entire raw datasets.</p>'
         '<p class="lead">Enable enterprise-wide analytics, reduce unnecessary data movement and optimize AI infrastructure efficiency.</p>'

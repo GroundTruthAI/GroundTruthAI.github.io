@@ -62,7 +62,7 @@
 .sl-kick{display:flex;align-items:center;gap:calc(var(--u)*1);font:700 calc(var(--u)*.95) var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--save);margin:0 0 calc(var(--u)*1.4)}
 .sl-kick::before{content:"";width:calc(var(--u)*2.6);height:2px;background:var(--grad)}
 .sl-h1{font:800 calc(var(--u)*4.3)/1.04 var(--display);letter-spacing:-.035em;margin:0 0 calc(var(--u)*1.6)}
-.sl-h1 .g{display:block}
+.sl-h1 .g{display:block;padding-bottom:.12em;margin-bottom:-.12em}
 .sl-h2{font:800 calc(var(--u)*3.4)/1.05 var(--display);letter-spacing:-.03em;margin:calc(var(--u)*1.2) 0 calc(var(--u)*1.6)}
 .sl-lead{font-size:calc(var(--u)*1.42);line-height:1.5;color:var(--muted);margin:0 0 calc(var(--u)*1.8)}
 .sl-ben{list-style:none;padding:0;margin:0;display:grid;gap:calc(var(--u)*.8)}
@@ -330,3 +330,4 @@
   .sl-contact a,.sl-btn{text-decoration:none}
   a{color:inherit}
 }
+.dot{margin-left:-.09em}
