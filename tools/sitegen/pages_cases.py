@@ -34,12 +34,12 @@ def _label(dim, key):
 
 
 TOC = [
-    ("challenge", "Business challenge"), ("opportunity", "The opportunity"), ("solution", "Solution"),
-    ("scenario", "Illustrative scenario"), ("architecture", "Before and after"), ("outcomes", "Outcomes and metrics"),
-    ("implementation", "Technical requirements"), ("evidence", "Available evidence"), ("validation", "Validation requirements"),
+    ("challenge", "Business challenge"), ("opportunity", "Business opportunity"), ("solution", "GroundTruth AI approach"),
+    ("scenario", "Illustrative scenario"), ("architecture", "Reference architecture"), ("outcomes", "Business outcomes"),
+    ("metrics", "Evaluation metrics"), ("considerations", "Technical considerations"), ("evidence", "Available evidence"),
     ("engage", "Commercial engagement"),
 ]
-PRINT_SKIP = {"opportunity", "scenario", "implementation", "validation"}
+PRINT_SKIP = {"opportunity", "scenario", "considerations"}
 
 
 def _sec(id_, num, title, inner, cls=""):
@@ -62,8 +62,7 @@ def scenario_block(c, heading="h3"):
     assum = ""
     if sc["assumptions"]:
         assum = ('<div class="sc-assume"><p class="sc-k">Illustrative assumptions</p>' + ul(sc["assumptions"])
-                 + '<p class="sc-fine">Planning values for discussion, not measurements or forecasts. The achievable reduction and '
-                   'the resulting model quality must be validated for the specific workload.</p></div>')
+                 + '<p class="sc-fine">Planning values, not measurements. The achievable reduction and model quality are validated per workload.</p></div>')
     cols = (
         '<div class="sc-grid">'
         f'<div><p class="sc-k">Technical constraints</p>{ul(sc["constraints"])}</div>'
@@ -72,12 +71,19 @@ def scenario_block(c, heading="h3"):
         f'<div><p class="sc-k">Technical validation requirements</p>{ul(sc["validation"])}</div></div>')
     return (
         '<div class="scenario">'
-        '<p class="sc-label"><span class="badge badge-illus">Illustrative enterprise scenario</span> Hypothetical; not a customer deployment.</p>'
+        '<p class="sc-label"><span class="badge badge-illus">Illustrative enterprise scenario</span> Hypothetical organization; assumptions are for discussion and not contractual.</p>'
         f'<{heading} class="sc-name">{esc(sc["name"])}</{heading}>'
         f'<dl class="sc-dl">{dl}</dl>{assum}{cols}'
         f'<p class="sc-stake"><span class="sc-k">Relevant stakeholder</span> {esc(sc["stakeholder"])}</p>'
         f'<div class="cta-row cta-row-s">{button(c["cta"], pilot_href(c))}'
         f'<a class="link-arrow" href="/simulator/">Model this architecture in the simulator</a></div></div>')
+
+
+STAGE_SHORT = {
+    "discovery": "A short conversation about your problem, data architecture and constraints, and whether GroundTruth AI fits. No data is shared.",
+    "assessment": "A scoped evaluation of one representative workload: data, baseline, integration, quality constraints and preliminary economics.",
+    "pilot": "A structured evaluation in your environment against agreed technical and economic success criteria.",
+}
 
 
 def engagement_block(c=None, compact=False):
@@ -88,7 +94,8 @@ def engagement_block(c=None, compact=False):
         href = (pilot_href(c, "" if key == "discovery" else key) if c else f"/pilot/?type={key}")
         kind = "primary" if i == 1 else "ghost"
         pts = "" if compact else ul(points)
-        items.append(f'<li class="eng eng-{key}"><p class="eng-n">Stage {i}</p><h3>{esc(name)}</h3><p>{esc(desc)}</p>{pts}'
+        text = STAGE_SHORT[key] if compact else desc
+        items.append(f'<li class="eng eng-{key}"><p class="eng-n">Stage {i}</p><h3>{esc(name)}</h3><p>{esc(text)}</p>{pts}'
                      f'{button(label, href, kind)}</li>')
     return f'<ol class="eng-list">{"".join(items)}</ol>'
 
@@ -138,62 +145,68 @@ def render_case(c, cases, industries):
 
     s = []
     s.append(_sec("challenge", 1, "Business challenge", paras(c["challenge"])))
-    s.append(_sec("opportunity", 2, "The opportunity",
+    s.append(_sec("opportunity", 2, "Business opportunity",
                   f'<p class="lead-s">{md(c["outcome_short"])}</p>'
-                  '<h3 class="h-s">Where existing approaches fall short</h3>'
+                  '<h3 class="h-s">Where conventional architectures fall short</h3>'
                   '<div class="approach-grid">' + "".join(
                       f'<div class="approach"><h4>{md(x["name"])}</h4><p>{md(x["limit"])}</p></div>' for x in c["approaches"])
-                  + '</div><p class="note">Trade-offs describe generic architectural approaches, not specific products. '
+                  + '</div><p class="note">Generic architectural approaches, not specific products. '
                     '<a href="/technology/#compare">How distillation compares with other techniques</a>.</p>'))
     sol = c["solution"]
     steps = "".join(f'<li><h3>{md(t)}</h3><p>{md(d)}</p></li>' for t, d in sol["steps"])
-    s.append(_sec("solution", 3, "GroundTruth AI solution",
+    s.append(_sec("solution", 3, "GroundTruth AI approach",
                   f'<p class="lead-s">{md(sol["intro"])}</p><ol class="steps">{steps}</ol>'
-                  f'<div class="callout callout-limit"><p class="callout-h">What this does not do</p>{ul(sol["not"])}</div>'))
+                  f'<div class="callout callout-limit"><p class="callout-h">What this does not do</p>{ul(sol["not"])}</div>'
+                  '<p class="note"><a href="/technology/">How task-aware dataset distillation works</a> · '
+                  '<a href="/platform/">What is available for evaluation today</a></p>'))
     s.append(_sec("scenario", 4, "Illustrative enterprise scenario", scenario_block(c)))
-    s.append(_sec("architecture", 5, "Before and after architecture",
-                  legend() + arch_figure(a["current"], f'{c["id"].lower()}-cur', "Before")
+    s.append(_sec("architecture", 5, "Reference architecture",
+                  '<p class="small">Reference architecture for pilot evaluation: it shows how the components would be placed, not an existing deployment.</p>'
+                  + legend() + arch_figure(a["current"], f'{c["id"].lower()}-cur', "Before")
                   + arch_figure(a["proposed"], f'{c["id"].lower()}-pro', "After")
                   + (f'<div class="arch-notes">{ul(a["notes"])}</div>' if a.get("notes") else "")))
     o = c["outcomes"]
     rows = "".join(f'<tr><th scope="row">{md(m)}</th><td>{md(h)}</td><td><span class="cat cat-{k}">{CAT_LABEL[k]}</span></td></tr>'
                    for m, h, k in c["metrics"])
-    s.append(_sec("outcomes", 6, "Economic and strategic outcomes",
+    s.append(_sec("outcomes", 6, "Business outcomes",
+                  '<p>Potential outcomes; their size depends on the workload and is established in an evaluation.</p>'
                   '<div class="outcome-grid">'
                   f'<div class="oc oc-strat"><h3>Strategic business enablement</h3>{ul(o["strategic"])}'
                   '<p class="oc-note">Assessed qualitatively; no monetary value is assigned.</p></div>'
                   f'<div class="oc oc-direct"><h3>Direct cost reduction</h3>{ul(o["direct"])}</div>'
                   f'<div class="oc oc-ops"><h3>Operational efficiency</h3>{ul(o["operational"])}</div></div>'
-                  f'<p class="note">Direct savings apply only to the data-proportional share of eligible cost lines and are net of the cost of distillation. '
-                  f'<a href="{roi_href}">Model them with your own assumptions</a>.</p>'
-                  '<h3 class="h-s" id="metrics">How value is measured</h3>'
+                  f'<p class="note">Direct savings apply only to the data-proportional share of eligible cost lines, net of distillation and evaluation. '
+                  f'<a href="{roi_href}">Model them with your own assumptions</a>.</p>'))
+    s.append(_sec("metrics", 7, "Evaluation metrics",
                   '<p>Measured before and after on the same workload.</p>'
                   f'<div class="table-wrap"><table class="tbl"><thead><tr><th scope="col">Metric</th><th scope="col">How it is measured</th>'
                   f'<th scope="col">Category</th></tr></thead><tbody>{rows}</tbody></table></div>'))
     ip = "".join(f'<tr><th scope="row">{md(n)}</th><td><span class="st st-{k}">{STATUS_LABEL[k]}</span></td><td>{md(note)}</td></tr>'
                  for n, k, note in imp["integration_points"])
-    s.append(_sec("implementation", 7, "Technical requirements",
+    caveats = ""
+    if c.get("caveats"):
+        caveats = f'<aside class="callout callout-legal" aria-label="Data governance"><p class="callout-h">Data governance</p>{ul(c["caveats"])}</aside>'
+    s.append(_sec("considerations", 8, "Technical considerations",
                   f'<p>{md(imp["deployment"])}</p>'
                   '<div class="two-col">'
                   f'<div><h3 class="h-s">Required infrastructure</h3>{ul(imp["infrastructure"])}</div>'
                   f'<div><h3 class="h-s">Operational constraints</h3>{ul(imp["constraints"])}</div></div>'
+                  '<h3 class="h-s">To be validated in an evaluation</h3>'
+                  '<div class="ev-grid ev-grid-2">'
+                  f'<div class="ev ev-gap"><h4>Open questions</h4>{ul(ev["gaps"])}</div>'
+                  f'<div class="ev ev-risk"><h4>Risks managed in the pilot</h4>{ul(ev["risks"])}</div></div>'
+                  + caveats +
                   '<h3 class="h-s">Integration points</h3>'
                   f'<div class="table-wrap"><table class="tbl"><thead><tr><th scope="col">Integration</th><th scope="col">Status</th>'
                   f'<th scope="col">Notes</th></tr></thead><tbody>{ip}</tbody></table></div>'
                   '<p class="note"><strong>Verified in prototype</strong>: exercised in the prototype used for internal experiments. '
-                  '<strong>Proposed</strong>: designed, not yet built or tested. <strong>Customer system</strong>: owned and operated by the customer. '
-                  '<a href="/platform/">What is available today</a>.</p>'))
-    s.append(_sec("evidence", 8, "Available evidence",
+                  '<strong>Proposed</strong>: designed, not built or tested. <strong>Customer system</strong>: owned and operated by the customer.</p>'))
+    s.append(_sec("evidence", 9, "Available evidence",
                   f'<p class="status-line">{badge(ev["status"], "proposed")}</p>'
                   f'<p>{md(ev["summary"])}</p>'
                   f'<div class="ev ev-yes ev-wide"><h3>What supports it today</h3>{ul(ev["supports"])}</div>'
-                  '<p class="note"><a href="/evidence/">Benchmark data, methodology notes and the evidence classification</a>.</p>'))
-    s.append(_sec("validation", 9, "Validation requirements",
-                  '<p>What a feasibility assessment or pilot must establish before production use.</p>'
-                  '<div class="ev-grid ev-grid-2">'
-                  f'<div class="ev ev-gap"><h3>To be validated</h3>{ul(ev["gaps"])}</div>'
-                  f'<div class="ev ev-risk"><h3>Risks managed in the pilot</h3>{ul(ev["risks"])}</div></div>'
-                  '<p class="note"><a href="/evidence/#roadmap">Technical validation roadmap</a>.</p>'))
+                  '<p class="note"><a href="/evidence/">Benchmark results, methodology and evidence classification</a> · '
+                  '<a href="/evidence/#roadmap">Validation roadmap</a></p>'))
     ops = "".join(f'<li><strong>{md(r)}</strong> — {md(n)}</li>' for r, n in st["operational"])
     pilot = (
         f'<p class="pilot-meta"><strong>Indicative duration:</strong> {esc(p["duration"])} · '
@@ -220,10 +233,6 @@ def render_case(c, cases, industries):
                   f'<ul class="plain no-print">{ops}</ul>'
                   '<h3 class="h-s" id="pilot">Enterprise pilot design</h3>' + pilot))
 
-    caveats = ""
-    if c.get("caveats"):
-        caveats = f'<aside class="callout callout-legal" aria-label="Important qualification"><p class="callout-h">Important</p>{ul(c["caveats"])}</aside>'
-
     rel = "".join(
         f'<li><a class="rel" href="{case_url(by_id[r])}"><span class="rel-p">{esc(S.PILLAR_OF[r]["name"])}</span><strong>{esc(by_id[r]["title"])}</strong>'
         f'<span>{esc(by_id[r]["outcome_short"])}</span></a></li>' for r in c["related"] if r in by_id)
@@ -243,7 +252,7 @@ def render_case(c, cases, industries):
                   f'{esc(S.BASE_URL)}/pilot/. Business case for pilot evaluation; not yet validated in production.</p></div>')
 
     body = (hero + print_head + '<div class="wrap case-layout">' + toc
-            + f'<div class="case-main">{caveats}{"".join(s)}{print_foot}</div></div>' + close)
+            + f'<div class="case-main">{"".join(s)}{print_foot}</div></div>' + close)
     title = f'{c["title"]} — {pil["name"]}'
     page(case_url(c), title, f'{c["headline"]} {c["summary"]}'[:300], body,
          active="business-cases", cases=cases, priority="0.9" if flag else "0.8", body_class="pg-case")

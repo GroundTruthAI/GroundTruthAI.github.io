@@ -17,6 +17,7 @@ from sitegen.pages_cases import load_cases, render_case, render_explorer   # noq
 from sitegen.pages_industries import render_industry, render_industries_index  # noqa: E402
 from sitegen import pages_main as M                # noqa: E402
 from sitegen.pages_pillars import render_pillar     # noqa: E402
+from sitegen.pages_legal import render_legal        # noqa: E402
 
 
 def main():
@@ -44,6 +45,7 @@ def main():
     M.render_company(cases)
     M.render_pilot(cases, INDUSTRIES)
     M.render_404(cases)
+    render_legal(cases)
     M.render_legacy()
 
     urls = [(p, pr) for p, pr in core.PAGES if pr]

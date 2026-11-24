@@ -251,7 +251,7 @@ CASE = {
             "Positive annualized net saving for the selected workloads.",
         ],
         "deliverables": [
-            "Fidelity report per workload",
+            "Evaluation report per workload",
             "Metered compute, storage and energy comparison, including distillation overhead",
             "Workload eligibility assessment for the wider training portfolio",
             "Production adoption plan",

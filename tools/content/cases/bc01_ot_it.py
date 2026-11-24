@@ -13,7 +13,7 @@ CASE = {
     "tier": "flagship",              # "flagship" | "explorer"
     "title": "OT/IT data segregation",
     "eyebrow": "Industrial data architecture",
-    "headline": "Train enterprise AI without centralizing all your OT data.",
+    "headline": "Enable centralized enterprise AI training without complete raw OT data centralization.",
     "summary": (
         "Distill industrial datasets within authorized OT-side environments and transfer approved, "
         "task-relevant datasets to enterprise IT for centralized analytics and model training."
@@ -81,12 +81,13 @@ CASE = {
             ("Distill close to the source", "The engine reads authorized historian extracts in an approved "
              "OT-side computing environment and generates a compact, task-specific dataset. Original data "
              "stays in its zone, under existing retention and operating policies."),
-            ("Validate fidelity", "A fidelity report compares models trained on full and distilled data "
-             "and checks coverage of operating regimes and labeled events."),
+            ("Evaluate downstream performance", "The same model is trained on full and on distilled data and both are "
+             "compared on the same test data. Coverage of labeled events and operating regimes is checked against "
+             "the targets agreed for the evaluation. Training the full-data reference model is part of the evaluation cost."),
             ("Approve and transfer", "OT and data owners approve the dataset; it crosses the boundary "
              "through the existing DMZ or gateway path, under existing controls."),
-            ("Train centrally across facilities", "Data science teams combine approved datasets from several "
-             "facilities, train and iterate on central platforms, and request regeneration when the task changes."),
+            ("Train centrally", "Data science teams train and iterate on enterprise platforms with the approved "
+             "datasets, and request a new distilled dataset through the change process when the task changes."),
         ],
         "not": [
             "It does not replace network segmentation, firewalls, data diodes or OT security controls.",
@@ -165,7 +166,7 @@ CASE = {
                            ["hist", "Industrial historian", "store"]]},
                 {"id": "ops", "label": "Approved OT-side computing · site operations zone", "kind": "source",
                  "nodes": [["gt", "GroundTruth AI distillation engine", "gt"],
-                           ["ds", "Distilled dataset + validation and provenance report", "store"],
+                           ["ds", "Distilled dataset + evaluation results", "store"],
                            ["more", "Plants B…N: same pattern, distilled locally", "system"]]},
                 {"id": "dmz", "label": "Industrial DMZ · approved OT/IT gateway", "kind": "boundary",
                  "nodes": [["gw", "Existing approved transfer mechanism", "system"]]},
@@ -183,7 +184,7 @@ CASE = {
                 ["gw", "plat", "distilled", "distilled sets"],
                 ["plat", "ana", "distilled", ""],
                 ["plat", "ml", "distilled", ""],
-                ["ml", "gt", "control", "task spec via change process"],
+                ["ml", "gt", "control", "approved change process"],
             ],
         },
         "notes": [
@@ -191,10 +192,12 @@ CASE = {
             "retention and operating policies. Nothing is deleted or moved by default.",
             "The engine runs in a computing environment the OT owner approves (typically the level 3 site "
             "operations zone), never on control-level devices, and it does not alter control loops.",
-            "Only approved distilled datasets, with their validation and provenance report, cross the "
-            "boundary, through the existing DMZ or gateway. There is no direct cloud connectivity from "
-            "industrial control systems and no bypass of existing security controls.",
-            "Task specifications flow inward through the customer's existing change process.",
+            "Only approved distilled datasets, with their evaluation results, cross the boundary, through "
+            "the existing DMZ or gateway. There is no direct cloud connectivity from industrial control "
+            "systems and no bypass of existing security controls.",
+            "The dotted return path is an administrative change process (an approved task specification "
+            "installed by OT staff), not a network connection. The data path is one-way, so the pattern "
+            "also fits sites that use unidirectional gateways or data diodes.",
         ],
     },
 
@@ -211,10 +214,11 @@ CASE = {
             "Faster onboarding of new plant use cases, because datasets are smaller and task-specific.",
         ],
         "strategic": [
-            "Enterprise-wide predictive maintenance and cross-facility equipment-health models.",
-            "Global industrial anomaly detection and centralized quality prediction.",
-            "Analytical collaboration between industrial sites.",
-            "Centralized AI development without complete OT data consolidation.",
+            "Centralized AI development on OT data without complete raw OT data consolidation.",
+            "Original industrial data retained in authorized OT environments.",
+            "A repeatable, boundary-respecting pattern for each new industrial use case.",
+            "Use cases previously blocked by OT/IT transfer policy become candidates for evaluation.",
+            "A foundation for multi-facility models (see Distributed industrial intelligence).",
         ],
     },
 
@@ -320,7 +324,7 @@ CASE = {
             "Net saving remains positive after source-side overhead.",
         ],
         "deliverables": [
-            "Fidelity report (full vs. distilled), including coverage analysis",
+            "Evaluation report (full vs. distilled), including coverage analysis",
             "Measured transfer, storage, compute and energy comparison",
             "Reference architecture for the customer's zone model",
             "Production adoption plan and risk register",

@@ -106,7 +106,7 @@ by_url = {url_for(r): p for r, p in pages.items()}
 # ----------------------------------------------------------------------------- per-page checks
 for rel, p in pages.items():
     where = url_for(rel)
-    if p.lang != "en": err(f"{where}: missing lang")
+    if p.lang not in ("en", "es"): err(f"{where}: missing lang")
     if not p.title: err(f"{where}: missing <title>")
     if not p.desc and rel != "404.html": err(f"{where}: missing meta description")
     if p.inline_style or p.style_tag: err(f"{where}: inline style violates CSP")
@@ -188,8 +188,8 @@ for c in cases:
     u = f"/business-cases/{c['slug']}/"
     p = by_url.get(u)
     if not p: err(f"missing page {u}"); continue
-    order = ("challenge", "opportunity", "solution", "scenario", "architecture", "outcomes", "implementation", "evidence", "validation", "engage")
-    for sid in order + ("metrics", "pilot"):
+    order = ("challenge", "opportunity", "solution", "scenario", "architecture", "outcomes", "metrics", "considerations", "evidence", "engage")
+    for sid in order + ("pilot",):
         if sid not in p.ids: err(f"{u}: missing section #{sid}")
     pos = [p.ids.index(x) for x in order if x in p.ids]
     if pos != sorted(pos): err(f"{u}: sections out of the required order")
@@ -226,9 +226,25 @@ if home:
     for pl in S.PILLARS:
         if pl["name"] not in t: err(f"home: pillar {pl['name']} missing")
     if re.search(r"production deployments|what we have not|validation backlog", t, re.I): err("home: defensive wording on the homepage")
-    order = ["solutions", "challenges", "scenario", "how", "evidence", "deployment", "engage"]
+    order = ["solutions", "scenario", "challenges", "how", "evidence", "engage"]
     pos = [home.ids.index(x) if x in home.ids else -1 for x in order]
     if -1 in pos or pos != sorted(pos): err(f"home: section hierarchy wrong {list(zip(order, pos))}")
+for rel, p in pages.items():
+    if rel != "404.html" and "have no contractual value" not in " ".join(p.text):
+        err(f"{url_for(rel)}: legal disclaimer missing from footer")
+for u in ("/aviso-legal/", "/privacidad/", "/cookies/"):
+    if u not in by_url: err(f"missing legal page {u}")
+for rel, p in pages.items():
+    for u in ("/aviso-legal/", "/privacidad/", "/cookies/"):
+        if u not in p.links: err(f"{url_for(rel)}: footer link to {u} missing"); break
+missing = [k for k in ("owner", "nif", "address", "email") if not S.LEGAL.get(k)]
+if missing:
+    err(f"RELEASE BLOCKER: legal owner data missing in content/site.py LEGAL: {missing} (required by LSSI-CE art. 10 and RGPD art. 13)")
+pending = [k for k in ("nif", "address", "registry") if "pendiente" in S.LEGAL.get(k, "").lower()]
+if pending:
+    warn(f"Legal data still pending ({', '.join(pending)}): replace in content/site.py LEGAL as soon as the company has them")
+for u in ("/simulator/", "/roi/"):
+    if u in by_url and "Not contractual." not in " ".join(by_url[u].text): err(f"{u}: non-contractual note missing next to results")
 sim = by_url.get("/simulator/")
 if not sim: err("missing page /simulator/")
 else:
@@ -244,7 +260,7 @@ BANNED = [r"revolutionar", r"game[- ]chang", r"unparalleled", r"trusted by", r"t
           r"industry[- ]leading", r"world[- ]class", r"\bproven\b", r"certified", r"same intelligence",
           r"accuracy intact", r"radical", r"customer success", r"case study"]
 ALLOW_CTX = {r"certified": r"no(t| security)? ?certif|holds no security certifications",
-             r"guarantee": r"(\bno|\bnot) guarantee|not provide the privacy guarantees|not claim equivalent privacy guarantees",
+             r"guarantee": r"(\bno|\bnot) guarantee|not provide the privacy guarantees|not claim equivalent privacy guarantees|guarantee privacy or anonymization\? no|no warranty or guarantee",
              r"\bproven\b": r"not yet been proven|designed to be proven|to be proven"}
 for rel, p in pages.items():
     t = " ".join(p.text).lower()

@@ -52,7 +52,7 @@ CASE = {
 
     "solution": {
         "intro": "GroundTruth AI runs distillation inside each authorized source environment. For a defined "
-                 "analytical task, it produces a compact training dataset and a fidelity report. The data "
+                 "analytical task, it produces a compact training dataset, which is then evaluated. The data "
                  "owner and the customer's legal and privacy functions then decide whether, and under which "
                  "safeguards, that dataset may be shared. Where transfer is permitted, the volume moved is "
                  "smaller and task-specific; original datasets stay where they are.",
@@ -61,7 +61,7 @@ CASE = {
              "analytical task and the conditions under which derived datasets may be shared."),
             ("Distill in each jurisdiction", "The runtime operates inside each authorized regional environment; original "
              "data does not leave it."),
-            ("Validate and review", "Each distilled dataset is accompanied by a fidelity report and reviewed by the data "
+            ("Validate and review", "Each distilled dataset is accompanied by its evaluation results and reviewed by the data "
              "owner and privacy function before any transfer."),
             ("Transfer only where permitted", "Approved datasets move through existing, authorized transfer mechanisms."),
             ("Analyze centrally", "Group teams train and evaluate models on the combined approved datasets."),
@@ -142,7 +142,7 @@ CASE = {
         },
         "notes": [
             "Each runtime operates inside the authorized environment of its jurisdiction or legal entity.",
-            "The review step is a customer governance control; GroundTruth AI supplies the fidelity report, "
+            "The review step is a customer governance control; GroundTruth AI supplies the evaluation results, "
             "not the legal assessment.",
         ],
     },
@@ -257,7 +257,7 @@ CASE = {
             "Net saving or avoided cost positive after regional overhead.",
         ],
         "deliverables": [
-            "Fidelity report per region and for the combined model",
+            "Evaluation report per region and for the combined model",
             "Transfer, storage and overhead comparison",
             "Documentation of the derivation process to support the customer's own legal assessment",
             "Production adoption plan",

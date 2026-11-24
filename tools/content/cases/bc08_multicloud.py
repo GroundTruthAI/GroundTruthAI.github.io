@@ -52,7 +52,7 @@ CASE = {
 
     "solution": {
         "intro": "GroundTruth AI inserts a distillation step before authorized transfers. In the environment where "
-                 "the data resides, the engine produces a workload-specific training dataset and fidelity report. "
+                 "the data resides, the engine produces a workload-specific training dataset, which is then evaluated. "
                  "Only that dataset is transferred to the target platform, through the customer's existing "
                  "transfer tooling. The full dataset stays in its home environment.",
         "steps": [
@@ -253,7 +253,7 @@ CASE = {
             "Net saving positive after source-side overhead at the customer's transfer frequency.",
         ],
         "deliverables": [
-            "Fidelity report",
+            "Evaluation report",
             "Transfer, storage, processing and overhead comparison at the customer's rates",
             "Assessment of other eligible cross-platform workloads",
             "Production adoption plan",

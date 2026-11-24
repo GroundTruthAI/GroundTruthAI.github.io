@@ -133,25 +133,27 @@ def footer(cases):
         '<li><a href="/evidence/">Evidence</a></li>'
         '<li><a href="/partners/">Partners and OEM</a></li>'
         '<li><a href="/company/">Company</a></li>'
-        '<li><a href="/pilot/#privacy">Privacy</a></li>'
+        '<li><a href="/aviso-legal/">Aviso legal</a></li>'
         '</ul></div></nav></div>'
-        '<div class="ft-legal"><p>Business cases describe enterprise applications for pilot evaluation; they have not yet been validated in production. '
+        '<div class="ft-legal" id="site-disclaimer"><p>Business cases describe enterprise applications for pilot evaluation; they have not yet been validated in production. '
         'Technical results come from internal experiments on public benchmark datasets. '
         'Scenarios and financial figures are illustrative and based on stated assumptions. '
         '<a href="/evidence/">How we classify evidence</a>.</p>'
         '<p>Distilled datasets remain subject to applicable data protection, residency, transfer and security requirements.</p>'
+        '<p class="ft-disc"><strong>Disclaimer.</strong> All figures, scenarios, simulations and calculations on this website, including the architecture simulator and the ROI calculator, are illustrative estimates derived from internal experiments on public benchmark datasets and from assumptions stated on the page or entered by the user. They are provided for information only, are not an offer or a commitment, carry no warranty or guarantee of results and have no contractual value. Actual results depend on each workload and environment and can only be determined in a specific evaluation. Any commercial commitment requires a separate written agreement.</p>'
+        '<p class="ft-links"><a href="/aviso-legal/">Aviso legal</a> · <a href="/privacidad/">Política de privacidad</a> · <a href="/cookies/">Política de cookies</a></p>'
         '<p>© 2026 GroundTruth AI</p></div>'
         '</div></footer>')
 
 
-def page(path, title, description, body, active="", cases=(), priority="0.6", extra_js=(), body_class="", connect="'none'"):
+def page(path, title, description, body, active="", cases=(), priority="0.6", extra_js=(), body_class="", connect="'none'", lang="en"):
     """Render and write a full page. `path` is the URL path, e.g. '/business-cases/'."""
     canonical = S.BASE_URL + path
     full_title = title if title.startswith(S.SITE_NAME) else f"{title} · {S.SITE_NAME}"
     js = "".join(f'<script src="{asset(j)}" defer></script>' for j in ("/assets/js/site.js",) + tuple(extra_js))
     bc = f' class="{body_class}"' if body_class else ""
     doc = (
-        '<!doctype html>\n<html lang="en">\n<head>\n'
+        f'<!doctype html>\n<html lang="{lang}">\n<head>\n'
         '<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
         f'<meta http-equiv="Content-Security-Policy" content="{CSP.format(connect=connect)}">\n'

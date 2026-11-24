@@ -66,7 +66,7 @@ CASE = {
              "a common feature contract and acceptance thresholds before any data moves."),
             ("Distill in each domain", "The runtime runs inside each subsidiary's or region's environment "
              "and produces a task-specific distilled dataset. Source data stays where it is owned."),
-            ("Validate locally", "Each domain receives a fidelity report: a model trained on its distilled "
+            ("Validate locally", "Each domain receives evaluation results: a model trained on its distilled "
              "set compared with one trained on its full data."),
             ("Approve and combine", "Domain owners approve release under their own policies; approved "
              "datasets are combined in the central environment."),
@@ -278,7 +278,7 @@ CASE = {
             "Net saving positive after in-domain distillation overhead.",
         ],
         "deliverables": [
-            "Per-domain fidelity reports and combined-model evaluation",
+            "Per-domain evaluation reports and combined-model evaluation",
             "Measured comparison of replication, storage and compute",
             "Reference architecture and release workflow for the customer's domains",
             "Production adoption plan, including legal and governance checkpoints",

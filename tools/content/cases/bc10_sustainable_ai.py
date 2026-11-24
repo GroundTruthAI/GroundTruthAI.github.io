@@ -266,7 +266,7 @@ CASE = {
         "deliverables": [
             "Net energy and cost report, distillation included",
             "Documented measurement method and boundaries",
-            "Fidelity report (full vs. distilled)",
+            "Evaluation report (full vs. distilled)",
             "Roll-out plan for further eligible workloads",
         ],
         "adoption": [

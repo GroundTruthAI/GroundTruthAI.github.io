@@ -65,7 +65,7 @@ CASE = {
             ("Agree the common definition", "Data teams map the features and labels the workload needs "
              "to a shared definition. This semantic work is still required."),
             ("Distill in each domain", "The runtime runs separately in each company's environment and "
-             "produces a distilled dataset and fidelity report for the task."),
+             "produces a distilled dataset for the task, which is then evaluated."),
             ("Approve and combine", "Data owners on each side approve their dataset; approved sets are "
              "combined in a governed joint environment."),
             ("Train and evaluate", "The joint model is trained on the combined distilled data and "
@@ -264,7 +264,7 @@ CASE = {
             "Raw data copied for the workload reduced by a customer-defined target.",
         ],
         "deliverables": [
-            "Per-domain fidelity reports and a joint model evaluation",
+            "Per-domain evaluation reports and a joint model evaluation",
             "Reference architecture for interim joint analytics",
             "Governance and approval playbook for further workloads",
             "Assessment of fit with the integration roadmap",

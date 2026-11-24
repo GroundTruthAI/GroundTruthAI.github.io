@@ -10,12 +10,13 @@
   function simulate(inp) {
     var original = inp.n * inp.vol;
     var baseline = original * inp.tx;
+    var eligible = baseline * inp.el;                     // transferred data that distillation can replace
     var rawResidual = baseline * (1 - inp.el);          // still transferred raw (not eligible)
     var distilled = baseline * inp.el * (1 - inp.red);  // optimized datasets transferred
     var optimized = rawResidual + distilled;
     var avoided = baseline - optimized;                  // = baseline * el * red
     return {
-      original: original, baseline: baseline, rawResidual: rawResidual, distilled: distilled,
+      original: original, baseline: baseline, eligible: eligible, rawResidual: rawResidual, distilled: distilled,
       optimized: optimized, avoided: avoided,
       relative: baseline > 0 ? avoided / baseline : 0,
       money: avoided * ((inp.ctr || 0) + (inp.cproc || 0))
@@ -75,43 +76,52 @@
       return { n: v.s_n, vol: v.s_vol, tx: v.s_tx / 100, el: v.s_el / 100, red: v.s_red / 100, ctr: v.s_ctr, cproc: v.s_cproc };
     }
 
+    var lastDraw = null;
     function draw(inp, r) {
-      var shown = Math.min(inp.n, 6), extra = inp.n - shown;
+      lastDraw = [inp, r];
+      var narrow = host.clientWidth > 0 && host.clientWidth < 520;
+      var L = narrow
+        ? { W: 420, max: 4, domW: 170, origX: 82, origW: 30, val: false, gtX: 140, bx: 206, cx: 248, cw: 166, bar: 134,
+            capL: "DATA STAYS AT SOURCE", capB: "BOUNDARY" }
+        : { W: 660, max: 6, domW: 240, origX: 92, origW: 70, val: true, gtX: 214, bx: 318, cx: 452, cw: 200, bar: 168,
+            capL: "ORIGINAL DATA STAYS AT SOURCE", capB: "AUTHORIZED BOUNDARY" };
+      var shown = Math.min(inp.n, L.max), extra = inp.n - shown;
       var rowH = 52, top = 34, rows = shown + (extra > 0 ? 1 : 0);
-      var H = Math.max(top + rows * rowH + 24, 230), W = 660, cx = 452;
+      var H = Math.max(top + rows * rowH + 24, 230), W = L.W, cx = L.cx;
       var svg = el("svg", { viewBox: "0 0 " + W + " " + H, class: "viz sim-viz", role: "img" });
       var perBase = inp.n ? r.baseline / inp.n : 0;
       var perRaw = inp.n ? r.rawResidual / inp.n : 0;
       var perDist = inp.n ? r.distilled / inp.n : 0;
       var perOrig = inp.vol;
       var scale = perBase > 0 ? 12 / perBase : 0;
-      svg.appendChild(el("text", { x: 12, y: 18, class: "hv-cap" }, "ORIGINAL DATA STAYS AT SOURCE"));
-      svg.appendChild(el("text", { x: 318, y: 18, class: "hv-cap", "text-anchor": "middle" }, "AUTHORIZED BOUNDARY"));
+      svg.appendChild(el("text", { x: 12, y: 18, class: "hv-cap" }, L.capL));
+      svg.appendChild(el("text", { x: L.bx, y: 18, class: "hv-cap", "text-anchor": "middle" }, L.capB));
       var midY = top + (rows * rowH) / 2 - 6;
       for (var i = 0; i < rows; i++) {
         var y = top + i * rowH, cy = y + 20;
         var g = el("g", {});
         if (i === shown) {
-          g.appendChild(el("text", { x: 20, y: cy + 4, class: "sim-more" }, "+ " + extra + " more domains, same pattern"));
+          g.appendChild(el("text", { x: 20, y: cy + 4, class: "sim-more" }, "+ " + extra + " more, same pattern"));
           svg.appendChild(g); continue;
         }
-        g.appendChild(el("rect", { x: 8, y: y, width: 240, height: 40, rx: 9, class: "sim-dom" }));
+        var gx = L.gtX + 24;
+        g.appendChild(el("rect", { x: 8, y: y, width: L.domW, height: 40, rx: 9, class: "sim-dom" }));
         g.appendChild(el("text", { x: 20, y: cy + 4, class: "sim-t" }, "Domain " + (i + 1)));
-        var wOrig = perOrig > 0 ? 70 : 0;
-        g.appendChild(el("rect", { x: 92, y: cy - 6, width: wOrig, height: 12, rx: 3, class: "sim-orig" }));
-        g.appendChild(el("text", { x: 92 + wOrig + 6, y: cy + 4, class: "sim-v" }, fmtTB(perOrig)));
-        g.appendChild(el("rect", { x: 214, y: cy - 11, width: 24, height: 22, rx: 6, class: "sim-gt" }));
-        var path = "M238 " + cy + " C330 " + cy + " 360 " + midY + " " + (cx - 6) + " " + midY;
+        var wOrig = perOrig > 0 ? L.origW : 0;
+        g.appendChild(el("rect", { x: L.origX, y: cy - 6, width: wOrig, height: 12, rx: 3, class: "sim-orig" }));
+        if (L.val) g.appendChild(el("text", { x: L.origX + wOrig + 6, y: cy + 4, class: "sim-v" }, fmtTB(perOrig)));
+        g.appendChild(el("rect", { x: L.gtX, y: cy - 11, width: 24, height: 22, rx: 6, class: "sim-gt" }));
+        var path = "M" + gx + " " + cy + " C" + (L.bx + 12) + " " + cy + " " + (L.bx + 42) + " " + midY + " " + (cx - 6) + " " + midY;
         if (perBase > 0) g.appendChild(el("path", { d: path, class: "sim-ghost", "stroke-width": Math.max(perBase * scale, 1) }));
         if (perRaw > 0) g.appendChild(el("path", { d: path, class: "sim-raw", "stroke-width": Math.max(perRaw * scale, 1.2) }));
         if (perDist > 0) g.appendChild(el("path", { d: path, class: "sim-dist", "stroke-width": Math.max(perDist * scale, 1.2) }));
         svg.appendChild(g);
       }
-      svg.appendChild(el("path", { d: "M318 26 V" + (H - 8), class: "sim-bound" }));
+      svg.appendChild(el("path", { d: "M" + L.bx + " 26 V" + (H - 8), class: "sim-bound" }));
       var bh = 150, by = Math.max(midY - bh / 2, 24);
-      svg.appendChild(el("rect", { x: cx, y: by, width: 200, height: bh, rx: 12, class: "sim-central" }));
-      svg.appendChild(el("text", { x: cx + 100, y: by + 22, class: "sim-t", "text-anchor": "middle" }, "Central enterprise AI"));
-      var maxW = 168, wb = r.baseline > 0 ? maxW : 0, wo = r.baseline > 0 ? maxW * r.optimized / r.baseline : 0;
+      svg.appendChild(el("rect", { x: cx, y: by, width: L.cw, height: bh, rx: 12, class: "sim-central" }));
+      svg.appendChild(el("text", { x: cx + L.cw / 2, y: by + 22, class: "sim-t", "text-anchor": "middle" }, "Central enterprise AI"));
+      var maxW = L.bar, wb = r.baseline > 0 ? maxW : 0, wo = r.baseline > 0 ? maxW * r.optimized / r.baseline : 0;
       svg.appendChild(el("text", { x: cx + 16, y: by + 52, class: "hv-cap" }, "BASELINE TRANSFER"));
       svg.appendChild(el("rect", { x: cx + 16, y: by + 58, width: wb, height: 12, rx: 3, class: "sim-bar-base" }));
       svg.appendChild(el("text", { x: cx + 16, y: by + 86, class: "sim-v" }, fmtTB(r.baseline)));
@@ -119,7 +129,7 @@
       svg.appendChild(el("rect", { x: cx + 16, y: by + 114, width: Math.max(wo, r.optimized > 0 ? 2 : 0), height: 12, rx: 3, class: "sim-bar-opt" }));
       svg.appendChild(el("text", { x: cx + 16, y: by + 142, class: "sim-v" }, fmtTB(r.optimized)));
       svg.setAttribute("aria-label", "Illustrative architecture: " + inp.n + " domains each keep " + fmtTB(perOrig) +
-        " of original data at source and distill locally. Baseline transfer " + fmtTB(r.baseline) + "; estimated optimized transfer " +
+        " of source data in place and distill locally. Baseline transfer " + fmtTB(r.baseline) + "; estimated optimized transfer " +
         fmtTB(r.optimized) + " across the authorized boundary to central enterprise AI.");
       host.replaceChildren(svg);
     }
@@ -131,6 +141,13 @@
     function update() {
       var inp = read(), r = simulate(inp);
       document.getElementById("k-orig").textContent = fmtTB(r.original);
+      document.getElementById("k-elig").textContent = fmtTB(r.eligible);
+      document.getElementById("k-elig-s").textContent = Math.round(inp.el * 100) + "% of the baseline transfer";
+      var f = { "f-n": inp.n, "f-vol": fmtTB(inp.vol), "f-tx": Math.round(inp.tx * 100) + "%", "f-base": fmtTB(r.baseline),
+                "f-el": Math.round(inp.el * 100) + "%", "f-elig": fmtTB(r.eligible), "f-red": Math.round(inp.red * 100) + "%",
+                "f-raw": fmtTB(r.rawResidual), "f-dist": fmtTB(r.distilled), "f-opt": fmtTB(r.optimized), "f-avoid": fmtTB(r.avoided),
+                "f-cost": money((inp.ctr || 0) + (inp.cproc || 0)), "f-money": money(r.money) };
+      Object.keys(f).forEach(function (k) { var e = document.getElementById(k); if (e) e.textContent = String(f[k]); });
       document.getElementById("k-base").textContent = fmtTB(r.baseline);
       document.getElementById("k-opt").textContent = fmtTB(r.optimized);
       document.getElementById("k-opt-s").textContent = r.rawResidual > 0
@@ -145,6 +162,11 @@
     }
 
     form.addEventListener("input", update);
+    var rt;
+    window.addEventListener("resize", function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () { if (lastDraw) draw(lastDraw[0], lastDraw[1]); }, 150);
+    });
     form.addEventListener("submit", function (e) { e.preventDefault(); });
     Array.prototype.forEach.call(form.querySelectorAll("[data-preset]"), function (b) {
       b.addEventListener("click", function () {

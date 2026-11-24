@@ -56,4 +56,28 @@ eq("roi zero red payback", o.payback === null ? 0 : 1, 0);
 // operational hours are reported but not added to net
 v = Object.assign({}, base, { c_hrs: 2000, c_hsave: 0.25, c_rate: 80, r_spend: 0, r_share: 0, r_runs: 0, r_rcost: 0, r_kwh: 0, r_dkwh: 0, r_price: 0, r_hours: 0 });
 o = roi.calc("training", v); eq("ops hours", o.ops[0][1], 500); eq("ops value", o.ops[1][1], 40000); eq("ops not in net", o.net, -15000);
+
+// --- second round: eligibility, baseline/eligible expenditure, first year, ROI and payback states
+r = sim.simulate({ n: 4, vol: 25, tx: 0.8, el: 0.25, red: 0.6 });
+eq("sim elig", r.eligible, 4 * 25 * 0.8 * 0.25); eq("sim raw kept", r.rawResidual, 80 * 0.75);
+eq("sim opt partial", r.optimized, 60 + 20 * 0.4); eq("sim avoid partial", r.avoided, 20 * 0.6);
+eq("sim conservation", r.optimized + r.avoided, r.baseline);
+eq("sim zero elig avoided", sim.simulate({ n: 3, vol: 7, tx: 1, el: 0, red: 0.9 }).avoided, 0);
+eq("sim zero elig dist", sim.simulate({ n: 3, vol: 7, tx: 1, el: 0, red: 0.9 }).distilled, 0);
+eq("sim min", sim.simulate({ n: 1, vol: 0.001, tx: 0.01, el: 0.01, red: 0.01 }).avoided, 0.001 * 0.01 * 0.01 * 0.01);
+v = Object.assign({}, base, { t_dom: 4, t_vol: 20, t_elig: 0.5, t_ctr: 20, t_cing: 10, t_cproc: 20, t_cst: 25, t_ret: 12, t_over: 5 });
+o = roi.calc("transfer", v);
+eq("roi baseline", o.baseline, 4 * 20 * 12 * 50 + 4 * 20 * 12 * 25 * 12); eq("roi eligible", o.eligible, o.baseline * 0.5);
+eq("roi gross = eligible x r", o.gross, o.eligible * 0.7);
+eq("roi first (no impl)", o.first, o.net); eq("roi payback immediate", o.payback, 0);
+eq("roi roi", o.roi, o.first / o.deductions);
+v.c_val = 0; v.t_over = 0; o = roi.calc("transfer", v); eq("roi undefined roi", o.roi === null ? 1 : 0, 1);
+v = Object.assign({}, base, { c_val: 0, r_spend: 0, r_share: 0.6, r_runs: 0, r_rcost: 0, r_kwh: 0, r_dkwh: 0, r_price: 0, r_hours: 0 });
+o = roi.calc("training", v); eq("roi zero baseline", o.baseline, 0); eq("roi zero baseline net", o.net, 0);
+eq("roi zero baseline payback", o.payback === null ? 1 : 0, 1);
+v = Object.assign({}, base, { c_impl: 50000, r_spend: 100000, r_share: 0.5, r_runs: 10, r_rcost: 5000, r_kwh: 0, r_dkwh: 0, r_price: 0, r_hours: 0 });
+o = roi.calc("training", v); eq("roi negative net", o.net, 35000 - 50000 - 15000);
+eq("roi negative roi", o.roi, (o.net - 50000) / (65000 + 50000)); eq("roi negative payback", o.payback === null ? 1 : 0, 1);
+v = Object.assign({}, base, { i_tb: 1e6, i_cst: 1000, i_comp: 1e12, i_share: 1, i_kwh: 0, i_price: 0, i_ocost: 0, i_okwh: 0, i_grid: 0, c_red: 0.99 });
+o = roi.calc("infrastructure", v); n++; if (!isFinite(o.net) || !isFinite(o.roi)) { fails++; console.log("FAIL huge inputs not finite"); }
 console.log(`${n - fails}/${n} assertions passed`); process.exit(fails ? 1 : 0);

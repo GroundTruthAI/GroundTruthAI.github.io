@@ -207,7 +207,7 @@ CASE = {
         "infrastructure": [
             "Compute in the customer's ML environment for distillation runs (CPU-first; sizing set in the pilot).",
             "Read access to the training history for the selected model.",
-            "A storage location for versioned distilled datasets and fidelity reports.",
+            "A storage location for versioned distilled datasets and evaluation reports.",
         ],
         "deployment": "For a pilot, distillation runs as a batch job in the customer's cloud account or "
                       "data center, and the pilot compares several retraining cycles on full and distilled "
@@ -268,7 +268,7 @@ CASE = {
             "Net annual saving positive after distillation and regeneration overhead.",
         ],
         "deliverables": [
-            "Cycle-by-cycle fidelity report (full vs. distilled)",
+            "Cycle-by-cycle evaluation report (full vs. distilled)",
             "Measured cost, run-time and energy comparison per cycle",
             "Recommended regeneration policy for the model",
             "Integration design for the customer's pipeline and registry",

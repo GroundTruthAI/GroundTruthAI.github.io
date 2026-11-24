@@ -145,7 +145,7 @@ CASE = {
                 ["gt", "link", "distilled", "distilled batches"],
                 ["link", "ds", "distilled", "approved only"],
                 ["ds", "ml", "distilled", ""],
-                ["ml", "gt", "control", "task spec updates"],
+                ["ml", "gt", "control", "approved task spec"],
             ],
         },
         "notes": [
@@ -266,7 +266,7 @@ CASE = {
             "Net saving remains positive after edge-side overhead.",
         ],
         "deliverables": [
-            "Fidelity report (raw vs. distilled), including event coverage",
+            "Evaluation report (raw vs. distilled), including event coverage",
             "Measured uplink, ingestion, storage, compute and energy comparison",
             "Gateway sizing and placement recommendation",
             "Fleet rollout plan and risk register",

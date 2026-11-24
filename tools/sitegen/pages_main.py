@@ -8,7 +8,7 @@ from .pages_cases import case_url, engagement_block
 # Technical support available for each case (public summary of the evidence matrix)
 SUPPORT = {
     "BC03": ("Direct", "Benchmark data reduction and accuracy; 86% workstation training-energy measurement."),
-    "BC09": ("Direct", "Same benchmark evidence as AI training cost optimization; repeated retraining cycles not yet measured."),
+    "BC09": ("Partial", "Benchmarks cover single training runs; repeated retraining cycles have not been evaluated."),
     "BC05": ("Partial", "39% edge energy measurement; no device characterization yet."),
     "BC06": ("Partial", "Per-run training energy measurement; no data-center-level measurement."),
     "BC10": ("Partial", "Per-run training energy measurement; no lifecycle assessment."),
@@ -19,8 +19,8 @@ PILLAR_VIZ = {"distributed-enterprise-intelligence": viz_pillar_distributed,
               "intelligent-data-mobility": viz_pillar_mobility}
 
 # Status vocabulary for what exists today (platform, deployment, integrations)
-STATUS = {"available": ("Available for pilots", "proto"), "experimental": ("Experimental", "proto"),
-          "reference": ("Reference architecture", "ref"), "planned": ("Planned", "prop"),
+STATUS = {"available": ("Available for evaluation", "proto"), "experimental": ("Experimental", "proto"),
+          "reference": ("Reference architecture", "ref"),
           "proposed": ("Proposed", "prop"), "customer": ("Customer system", "cust")}
 
 
@@ -40,28 +40,44 @@ def _names(cases, ids):
 
 
 # ---------------------------------------------------------------------------- HOME
+def _volume_bars():
+    """Numeric comparison for the featured scenario (illustrative figures, drawn to scale)."""
+    rows = [("Conventional: eligible history replicated", 200, "bv-full", "200 TB"),
+            ("With source-side distillation (assumed 90%)", 20, "bv-dist", "20 TB")]
+    out = []
+    for i, (label, v, cls, txt) in enumerate(rows):
+        y = 8 + i * 46
+        w = round(360 * v / 200)
+        out.append(f'<text class="bv-n" x="0" y="{y + 10}">{esc(label)}</text>'
+                   f'<rect class="{cls}" x="0" y="{y + 18}" width="{w}" height="14" rx="4"' + (' fill="url(#UID-g)"' if cls == "bv-dist" else "") + '/>'
+                   f'<text class="bv-v" x="{w + 8}" y="{y + 30}">{txt}</text>')
+    inner = ('<defs><linearGradient id="UID-g" x1="0" x2="1"><stop offset="0" stop-color="#2EE6A6"/><stop offset="1" stop-color="#3CC8F5"/></linearGradient></defs>'
+             + "".join(out))
+    from .diagrams import _svg
+    return _svg("0 0 460 100", "Illustrative scenario: 200 TB of eligible history replicated conventionally versus 20 TB of approved distilled datasets, 180 TB of transfer avoided.", inner, "viz sc-bars")
+
+
 def render_home(cases, industries):
     by = {c["id"]: c for c in cases}
 
-    # Section 2 — three strategic solutions
     def pillar_panel(p, layout):
         apps = "".join(f'<li><a href="{case_url(by[cid])}">{esc(by[cid]["title"])}</a></li>' for cid in p["cases"])
+        viz = f'<div class="fc-viz">{PILLAR_VIZ[p["slug"]]()}</div>' if p["flagship"] else ""
         return (
             f'<article class="pl pl-{layout}" aria-labelledby="pl-{p["slug"]}">'
             f'<div class="pl-text"><p class="pl-k">{"Flagship solution" if p["flagship"] else "Solution"}</p>'
             f'<h3 id="pl-{p["slug"]}"><a href="/solutions/{p["slug"]}/">{esc(p["name"])}</a></h3>'
             f'<p class="pl-msg">{esc(p["message"])}</p>'
             '<dl class="fc-dl">'
-            f'<div><dt>Enterprise problem</dt><dd>{md(p["problem"])}</dd></div>'
-            f'<div class="fc-outcome"><dt>Business outcome</dt><dd>{md(p["outcome"])}</dd></div></dl>'
-            f'<p class="pl-apps-h">Applications</p><ul class="pl-apps">{apps}</ul>'
+            f'<div><dt>Challenge</dt><dd>{md(p["challenge_short"])}</dd></div>'
+            f'<div class="fc-outcome"><dt>Outcome</dt><dd>{md(p["outcome_short"])}</dd></div></dl>'
+            f'<ul class="pl-apps" aria-label="Business cases">{apps}</ul>'
             f'<a class="link-arrow" href="/solutions/{p["slug"]}/">Explore {esc(p["name"].lower())}</a></div>'
-            f'<div class="fc-viz">{PILLAR_VIZ[p["slug"]]()}</div></article>')
+            f'{viz}</article>')
 
     p1, p2, p3 = S.PILLARS
     pillars = pillar_panel(p1, "wide") + '<div class="pl-pair">' + pillar_panel(p2, "half") + pillar_panel(p3, "half") + '</div>'
 
-    # Section 3 — flagship business cases (rows, not another card grid)
     rows = "".join(
         f'<li class="fl-row"><div class="fl-t"><p class="fl-p">{esc(S.PILLAR_OF[cid]["name"])}</p>'
         f'<h3><a href="{case_url(by[cid])}">{esc(by[cid]["title"])}</a></h3><p>{md(by[cid]["headline"])}</p></div>'
@@ -69,152 +85,138 @@ def render_home(cases, industries):
         f'<p class="fl-out"><span class="fl-k">Outcome</span>{md(by[cid]["outcome_short"])}</p></div>'
         f'<div class="fl-a"><a class="link-arrow" href="{case_url(by[cid])}">Business case</a>'
         f'<a class="link-arrow link-muted" href="/pilot/?case={cid}">{esc(by[cid]["cta"])}</a></div></li>'
-        for cid in ("BC01", "BC02", "BC03", "BC04"))
-    inds = "".join(f'<li><a class="chip" href="/industries/{i["slug"]}/">{esc(i["name"])}</a></li>' for i in industries)
+        for cid in ("BC01", "BC04", "BC02", "BC03"))
 
-    # Section 5 — workflow with implementation status per step
     flow = [
-        ("Data remains in its authorized source environment", "Original data stays where it is, under existing access, retention and operating policies.", "reference"),
-        ("GroundTruth AI generates a task-specific optimized dataset", "The distillation runtime builds a compact training dataset for a defined model and task.", "experimental"),
-        ("The dataset is evaluated against agreed quality requirements", "Models trained on full and distilled data are compared on the same test set.", "experimental"),
-        ("Approved datasets move through existing authorized mechanisms", "Data owners approve; transfer uses the DMZ, gateway or pipeline you already control.", "reference"),
-        ("Enterprise analytics and AI training run centrally", "Central teams use the datasets as ordinary training data on their existing platforms.", "customer"),
-        ("Downstream performance is validated", "Model performance is checked against the full-data baseline and the agreed tolerance.", "reference"),
+        ("Access authorized source datasets", "Read-only access, granted by the data owner, inside the source environment.", "reference"),
+        ("Generate a task-specific optimized dataset", "The runtime builds a compact training dataset for a defined model and task.", "experimental"),
+        ("Evaluate downstream predictive performance", "The same model is trained on full and optimized data and compared on the same test data.", "experimental"),
+        ("Transfer approved datasets where required", "Through the DMZ, gateway or pipeline you already control.", "reference"),
+        ("Train centrally or run the validated workload", "On your existing ML and analytics platforms.", "customer"),
     ]
     flow_html = "".join(f'<li><span class="fs-n">{i}</span>{status_badge(k)}<h3>{esc(t)}</h3><p>{esc(d)}</p></li>'
                         for i, (t, d, k) in enumerate(flow, 1))
-
-    # Section 7 — deployment architectures
-    deploy = [
-        ("Private infrastructure", "Server or VM you control, next to the data domain it serves.", "available"),
-        ("On-premises environments", "Plant, data center or OT-side operations zone, operated offline on file exports.", "available"),
-        ("Private cloud", "Inside your own cloud account or VPC.", "available"),
-        ("Enterprise IT", "Distilled datasets are consumed as ordinary training data by your existing ML and analytics platforms.", "customer"),
-        ("Distributed enterprise data environments", "One runtime per domain, coordinated across plants, subsidiaries or regions.", "reference"),
-        ("Industrial edge", "Distillation on gateways close to sensors and devices. No specific device validated yet.", "reference"),
-        ("OEM integration", "Runtime embedded in a partner's historian, gateway or data platform.", "proposed"),
-    ]
-    dep_html = "".join(f'<li class="dep"><div class="comp-h"><h3>{esc(n)}</h3>{status_badge(k)}</div><p>{esc(d)}</p></li>' for n, d, k in deploy)
+    deploy = [("Customer server, VM or private cloud", "available"), ("Multi-domain and industrial edge deployments", "reference"),
+              ("Embedding in partner products (OEM)", "proposed")]
+    dep_html = "".join(f'<li>{status_badge(k)} {esc(n)}</li>' for n, k in deploy)
 
     body = (
-        # 1 — hero
         '<section class="hero" aria-labelledby="hero-h"><div class="wrap"><div class="hero-grid"><div class="hero-copy">'
         '<p class="eyebrow">Enterprise AI across distributed and segregated data</p>'
         '<h1 id="hero-h">Keep data distributed. <span class="hl g">Centralize intelligence.</span></h1>'
         '<p class="hero-sub">Train AI models across industrial plants, business units and segregated data environments '
         'without centralizing entire raw datasets.</p>'
-        '<p class="lead">Enable enterprise-wide analytics, reduce unnecessary data movement and lower AI training costs '
-        'while respecting existing data boundaries.</p>'
+        '<p class="lead">Enable enterprise-wide analytics, reduce unnecessary data movement and optimize AI infrastructure efficiency.</p>'
         '<div class="cta-row"><a class="btn btn-primary btn-lg" href="/pilot/">Discuss your use case</a>'
         '<a class="btn btn-ghost btn-lg" href="/business-cases/">Explore business cases</a></div>'
         f'</div><div class="hero-art">{hero_visual()}</div></div></div></section>'
 
-        # 2 — three strategic solutions
         '<section class="sec sec-pillars" id="solutions" aria-labelledby="sol-h"><div class="wrap">'
         '<p class="eyebrow">Three strategic solutions</p>'
         '<h2 id="sol-h">One capability, three enterprise problems it solves</h2>'
         f'{pillars}</div></section>'
 
-        # 3 — flagship business cases
+        '<section class="sec sec-scen" id="scenario" aria-labelledby="sc-h"><div class="wrap">'
+        '<p class="eyebrow">Featured industrial scenario</p>'
+        '<h2 id="sc-h">Train one predictive-maintenance model across 20 facilities without centralizing raw OT data</h2>'
+        '<p class="sc-label"><span class="badge badge-illus">Illustrative enterprise scenario</span> Assumptions for discussion, not contractual; results depend on workload-specific validation.</p>'
+        '<div class="two-col sc-intro"><div><p class="lead-s">A manufacturer wants centralized predictive-maintenance training on data from all '
+        '20 of its facilities, while each facility keeps its original OT data in its authorized environment.</p>'
+        '<p>Each facility distills a task-specific dataset on site. After evaluation and owner approval, only that dataset crosses the existing DMZ.</p>'
+        + _volume_bars() + '</div>'
+        '<dl class="sc-figs">'
+        '<div><dt>Eligible training data</dt><dd>200 TB</dd><dd class="sc-sub">20 facilities × 10 TB</dd></div>'
+        '<div><dt>Assumed reduction</dt><dd>90%</dd><dd class="sc-sub">to be validated per workload</dd></div>'
+        '<div><dt>Optimized transfer</dt><dd class="g">20 TB</dd><dd class="sc-sub">approved datasets</dd></div>'
+        '<div><dt>Potentially avoided</dt><dd class="g">180 TB</dd><dd class="sc-sub">original data stays on site</dd></div></dl></div>'
+        + legend() + arch_figure(SCENARIO_A["proposed"], "sca-pro", "Reference architecture") +
+        '<p class="note">To be validated per workload: predictive performance against a full-data baseline, rare-failure coverage at every facility, '
+        'generalization to a facility held out from training, and the compute cost of distillation on site hardware.</p>'
+        '<div class="cta-row"><a class="btn btn-primary" href="/business-cases/ot-it-data-segregation/">See the OT/IT data segregation case</a>'
+        '<a class="btn btn-ghost" href="/simulator/">Change the assumptions in the simulator</a></div>'
+        '</div></section>'
+
         '<section class="sec sec-alt" id="challenges" aria-labelledby="ch-h"><div class="wrap">'
         '<p class="eyebrow">Flagship business cases</p>'
         '<h2 id="ch-h">Solve your most critical data challenges</h2>'
-        '<p class="lead">Four enterprise problems where moving less data changes what is possible, not only what it costs.</p>'
         f'<ol class="fl-list">{rows}</ol>'
-        '<div class="sec-head sec-foot"><a class="link-arrow" href="/business-cases/">All 11 business cases in the explorer</a>'
-        f'<ul class="chips chips-s" aria-label="Business cases by industry">{inds}</ul></div>'
+        '<div class="sec-head sec-foot"><a class="link-arrow" href="/business-cases/">All 11 business cases</a>'
+        '<a class="link-arrow link-muted" href="/industries/">Business cases by industry</a></div>'
         '</div></section>'
 
-        # 4 — featured enterprise scenario
-        '<section class="sec" id="scenario" aria-labelledby="sc-h"><div class="wrap">'
-        '<p class="eyebrow">Featured enterprise scenario</p>'
-        '<h2 id="sc-h">One predictive-maintenance model, 20 facilities, no central copy of every historian</h2>'
-        '<p class="sc-label"><span class="badge badge-illus">Illustrative enterprise scenario</span> Hypothetical; numbers are planning assumptions, not results.</p>'
-        '<div class="two-col sc-intro"><div><p class="lead-s">A manufacturing group runs 20 facilities, each with its own authorized OT environment. '
-        'Its central AI team wants one predictive-maintenance model trained on data from every facility. Replicating the eligible '
-        'history would mean moving about 200 TB into enterprise IT.</p>'
-        '<p>With GroundTruth AI, each facility distills a task-specific dataset on site, validates it and sends it, once approved, '
-        'through the DMZ path it already uses. Raw historian data never leaves the plant.</p></div>'
-        '<dl class="sc-figs">'
-        '<div><dt>Eligible training data</dt><dd>200 TB</dd><dd class="sc-sub">20 facilities × 10 TB</dd></div>'
-        '<div><dt>Assumed reduction</dt><dd>90%</dd><dd class="sc-sub">planning value, to be validated</dd></div>'
-        '<div><dt>Optimized transfer</dt><dd class="g">20 TB</dd><dd class="sc-sub">approved datasets</dd></div>'
-        '<div><dt>Potential avoided transfer</dt><dd class="g">180 TB</dd><dd class="sc-sub">raw data stays on site</dd></div></dl></div>'
-        + legend() + '<div class="arch-pair">' + arch_figure(SCENARIO_A["current"], "sca-cur", "Before")
-        + arch_figure(SCENARIO_A["proposed"], "sca-pro", "After") + '</div>'
-        '<p class="note">What must be validated: predictive performance against a full-data baseline, rare-failure coverage in every facility, '
-        'cross-site generalization including a facility held out from training, and the compute cost of distillation on site hardware.</p>'
-        '<div class="cta-row"><a class="btn btn-primary" href="/simulator/">Try it in the architecture simulator</a>'
-        f'<a class="btn btn-ghost" href="{case_url(by["BC01"])}">OT/IT data segregation business case</a></div>'
-        '</div></section>'
-
-        # 5 — how the technology works
-        + section("how", "How the technology works",
-                  '<p class="lead-s">Prepare the data a model needs where the data lives, and move only that, under the controls you already have.</p>'
-                  f'<ol class="flow-steps flow-6">{flow_html}</ol>'
-                  '<p class="note"><strong>Experimental</strong>: implemented in the prototype used for internal experiments. '
+        + section("how", "How it works",
+                  f'<ol class="flow-steps flow-5">{flow_html}</ol>'
+                  '<p class="note"><strong>Experimental</strong>: implemented in the prototype used in internal experiments. '
                   '<strong>Reference architecture</strong>: the deployment pattern a pilot implements with your teams. '
-                  '<strong>Customer system</strong>: your existing platforms.</p>'
-                  '<p><a class="link-arrow" href="/technology/">How dataset distillation works</a></p>',
-                  eyebrow="Technology", cls="sec-alt")
+                  '<strong>Customer system</strong>: your existing platforms. '
+                  '<a href="/technology/">How dataset distillation works</a></p>',
+                  eyebrow="Technology")
 
-        # 6 — technical evidence
-        + section("evidence", "Experimental validation and technical evidence",
-                  '<div class="two-col ev-home2"><div>'
-                  '<div class="ev-pair"><div class="ev-stat"><p class="big g">86–95<span>%</span></p><p>less training data across four public benchmarks</p></div>'
-                  '<div class="ev-stat"><p class="big g">≤2.8<span> pp</span></p><p>largest accuracy change versus the full-data model</p></div></div>'
-                  '<p class="note">Internal experiments on Iris, Wine and Breast Cancer (tabular, MLP) and MNIST (image, CNN), classification tasks. '
-                  'Industrial time-series and multi-domain experiments are on the <a href="/evidence/#roadmap">technical validation roadmap</a>.</p>'
-                  '<p><a class="link-arrow" href="/evidence/">Methodology, results and evidence classification</a></p></div>'
-                  f'<div class="fc-viz">{viz_bc03(S.BENCHMARKS)}</div></div>',
-                  eyebrow="Evidence")
+        + '<section class="sec sec-alt" id="evidence" aria-labelledby="ev-h"><div class="wrap">'
+        '<p class="eyebrow">Evidence and deployment</p><h2 id="ev-h">What has been measured, and where it runs</h2>'
+        '<div class="two-col ev-home2"><div>'
+        '<div class="ev-pair"><div class="ev-stat"><p class="big g">86–95<span>%</span></p><p>less training data on four public classification benchmarks</p></div>'
+        '<div class="ev-stat"><p class="big g">1.4–2.8<span> pp</span></p><p>lower accuracy than the full-data model, in percentage points</p></div></div>'
+        f'<div class="fc-viz">{viz_bc03(S.BENCHMARKS)}</div>'
+        '<p><a class="link-arrow" href="/evidence/">Results, methodology and validation roadmap</a></p></div>'
+        f'<div><ul class="dep-mini">{dep_html}</ul>'
+        '<p><a class="link-arrow" href="/platform/">What is available for evaluation today</a></p></div></div>'
+        '</div></section>'
 
-        # 7 — enterprise deployment
-        + section("deployment", "Deploys inside the architecture you already run",
-                  f'<ul class="dep-list">{dep_html}</ul>'
-                  '<p class="note"><strong>Available for pilots</strong>: the prototype runtime can be installed there for an evaluation today. '
-                  '<strong>Reference architecture</strong>: designed and documented, implemented with the first customer that needs it. '
-                  '<strong>Proposed</strong>: a commercial and technical opportunity, not yet built.</p>'
-                  '<p><a class="link-arrow" href="/platform/">What an enterprise customer acquires today</a></p>',
-                  eyebrow="Enterprise deployment", cls="sec-alt")
-
-        # 8 — commercial engagement
         + '<section class="sec sec-cta" id="engage" aria-labelledby="cta-h"><div class="wrap">'
         '<p class="eyebrow">Commercial engagement</p><h2 id="cta-h">Start with a conversation about your architecture</h2>'
-        '<p class="lead">Begin with a short discovery call. Move to a scoped feasibility assessment, and only then to a pilot, when the case is clear.</p>'
-        + engagement_block() + '</div></section>')
+        + engagement_block(compact=True) +
+        '<div class="cta-band eng-final"><div><h3 class="h-m">Have a distributed-data problem in mind?</h3>'
+        '<p>Tell us where your data lives and what you want to train. <a href="/technology/#faq">Read the FAQ</a> first if you prefer.</p></div>'
+        '<div class="cta-stack"><a class="btn btn-primary btn-lg" href="/pilot/">Discuss your use case</a></div></div>'
+        '</div></section>')
 
     page("/", "GroundTruth AI — Keep data distributed. Centralize intelligence.",
-         "Train enterprise AI and run analytics across industrial plants, business units and segregated data environments without centralizing entire raw datasets. Reduce data movement and AI training costs.",
+         "Train enterprise AI across industrial plants, business units and segregated data environments without centralizing entire raw datasets: OT/IT data segregation, distributed industrial intelligence and AI infrastructure efficiency.",
          body, active="", cases=cases, priority="1.0", body_class="pg-home")
 
 
 # ---------------------------------------------------------------------------- PLATFORM
+PRODUCT_DIAGRAM = {
+    "title": "Available for evaluation: the GroundTruth AI runtime and its outputs",
+    "zones": [
+        {"id": "in", "label": "Your environment · inputs", "kind": "source",
+         "nodes": [["data", "Customer dataset (tabular or image arrays)", "store"], ["task", "Task specification: target, model, metric", "user"]]},
+        {"id": "rt", "label": "GroundTruth AI runtime · Python prototype", "kind": "external",
+         "nodes": [["gt", "Task-aware distillation", "gt"], ["ev", "Evaluation: same model on full vs. distilled data", "system"]]},
+        {"id": "out", "label": "Outputs · stay in your environment", "kind": "central",
+         "nodes": [["ds", "Distilled training dataset", "store"], ["res", "Evaluation results (task metrics)", "system"]]},
+    ],
+    "flows": [["data", "gt", "raw", "read access"], ["task", "gt", "control", ""], ["gt", "ev", "distilled", ""],
+              ["gt", "ds", "distilled", ""], ["ev", "res", "model", ""]],
+}
+
+
 def render_platform(cases):
     comps = [
         ("Distillation runtime", "experimental",
-         "Builds a compact, task-specific training dataset from source data inside the customer environment. Python runtime; tabular and image data exercised in internal experiments. Available for installation in pilot evaluations."),
-        ("Fidelity validation", "experimental",
-         "Trains the same model on full and distilled data and compares task metrics on the same test set. Uses a scikit-learn-compatible model adapter."),
-        ("Coverage and regime checks", "planned",
-         "Confirms labeled events, rare classes and operating regimes remain represented. Designed for industrial and multi-domain cases."),
-        ("Approval, provenance and export package", "planned",
-         "Packages the dataset with its validation report and lineage for review by data owners before transfer."),
+         "Builds a compact, task-specific training dataset from source data. Python runtime; tabular data via pandas / NumPy and image arrays; classification tasks."),
+        ("Performance evaluation", "experimental",
+         "The evaluation method used in internal experiments: the same model is trained on full and distilled data and compared on the same test data, through a scikit-learn-compatible adapter."),
+        ("Rare-event and regime coverage checks", "proposed",
+         "Checks that labeled events, rare classes and operating regimes remain represented. Today coverage is an evaluation requirement agreed per pilot, not an automated check."),
+        ("Approval, lineage and export package", "proposed",
+         "Packaging each dataset with its evaluation results and derivation record for review by data owners."),
         ("Multi-domain coordination", "reference",
-         "One runtime per plant, subsidiary or region with a shared task specification. Documented as a reference architecture."),
+         "One runtime per plant, subsidiary or region with a shared task specification."),
         ("Edge gateway deployment", "reference",
          "Distillation close to sensors and devices. No specific device has been validated; no real-time execution is claimed."),
-        ("Regeneration and drift-triggered refresh", "planned",
-         "Re-runs distillation when the task, data distribution or operating conditions change. Drift detection exists as a separate prototype capability."),
+        ("Drift-triggered regeneration", "proposed",
+         "Re-running distillation when data or conditions change. Drift detection exists as a separate prototype capability."),
     ]
     comp_html = "".join(f'<li class="comp"><div class="comp-h"><h3>{esc(n)}</h3>{status_badge(k)}</div><p>{esc(d)}</p></li>' for n, k, d in comps)
 
     deploy = [
-        ("Source-side server or VM", "available", "Customer hardware in the authorized zone (for example, the OT-side operations zone or a subsidiary data center). Operates on file exports."),
-        ("Private cloud or customer VPC", "available", "Runs inside the customer's own cloud account, next to the data domain it serves."),
         ("Workstation", "experimental", "Internal benchmarks and energy measurements were run on workstation-class hardware."),
+        ("Customer server or VM", "available", "In the authorized zone (for example an OT-side operations zone or a subsidiary data center), operating on file exports."),
+        ("Private cloud or customer VPC", "available", "Inside the customer's own cloud account, next to the data domain it serves."),
         ("Edge gateway", "reference", "Distillation close to sensors and devices. No specific device validated."),
-        ("Embedded / OEM", "proposed", "Runtime embedded in a partner's appliance, historian or platform. See Partners and OEM."),
+        ("Embedded / OEM", "proposed", "Runtime embedded in a partner's product. See Partners."),
     ]
     dep_html = "".join(f'<tr><th scope="row">{esc(n)}</th><td>{status_badge(k)}</td><td>{esc(d)}</td></tr>' for n, k, d in deploy)
 
@@ -229,65 +231,61 @@ def render_platform(cases):
     lab = {"verified": "Verified in prototype", "proposed": "Proposed integration", "customer": "Customer system"}
     int_html = "".join(f'<tr><th scope="row">{esc(n)}</th><td><span class="st st-{k}">{lab[k]}</span></td></tr>' for n, k in integ)
 
-    acquire = [
-        ("What you get in an evaluation", ["The GroundTruth AI distillation runtime (prototype), installed in your environment",
-                                           "Fidelity validation reports comparing full-data and distilled-data models",
-                                           "A reference architecture for your zone model and transfer paths",
-                                           "Direct engineering support from the GroundTruth AI team"]),
-        ("Inputs and outputs", ["**In:** source data in its home environment, as files or arrays, plus a task specification",
-                                "**Out:** a distilled training dataset in standard formats",
-                                "**Out:** a validation report and lineage metadata"]),
-        ("Data and models exercised", ["Tabular data with deep learning (MLP) and image data with a CNN, on classification tasks",
-                                       "scikit-learn-compatible model adapters",
-                                       "Industrial time series, regression and forecasting: on the validation roadmap"]),
-        ("Operating requirements", ["CPU-first runtime on a server or VM you provide; sizing set during the evaluation",
-                                    "Read access to the data in scope; no inbound connection from GroundTruth AI",
-                                    "No customer data is sent to GroundTruth AI"]),
-        ("Your responsibilities", ["Data access and approvals by data owners",
-                                   "Transfer through your existing DMZ, gateway or pipeline",
-                                   "Training on your own ML and analytics platforms"]),
-        ("Licensing and support", ["Evaluations are scoped per engagement",
-                                   "Production subscription, embedded and OEM licensing are discussed per customer or partner",
-                                   "Support terms are defined at production adoption; no prices are published"]),
+    avail = [
+        ("Runtime", ["Experimental Python prototype used in the internal experiments",
+                     "Tabular data via pandas / NumPy; image arrays (MNIST benchmark)",
+                     "Classification tasks with scikit-learn-compatible models"]),
+        ("Inputs and outputs", ["**In:** a dataset in your environment and a task specification (target, model family, metric)",
+                                "**Out:** a distilled training dataset for that task",
+                                "**Out:** evaluation results comparing the same model trained on full and on distilled data"]),
+        ("Evaluation workflow", ["Agree the task and the acceptance tolerance",
+                                 "Distill, then train the same model on both datasets",
+                                 "Compare task metrics on the same test data; the full-data reference training also consumes compute"]),
+        ("Current limitations", ["Classification only; industrial time series, regression and forecasting not yet evaluated",
+                                 "No connectors or packaging: data is exchanged as files or arrays",
+                                 "Each dataset is task-specific; new objectives need a new dataset",
+                                 "Compute and energy of distillation itself not yet reported"]),
     ]
-    acq_html = "".join(f'<div class="acq"><h3>{esc(t)}</h3>{ul(items)}</div>' for t, items in acquire)
+    av_html = "".join(f'<div class="acq"><h3>{esc(t)}</h3>{ul(items)}</div>' for t, items in avail)
 
     body = (
-        _hero("A distillation layer that runs where your data lives",
-              "GroundTruth AI is deployed inside the environment that owns the data. It produces task-specific training datasets, "
-              "validates them against the full data, and hands them to the transfer paths and ML platforms you already operate.",
+        _hero("A distillation runtime that runs where your data lives",
+              "What is available for technical evaluation today, what each component's status is, and how it fits the platforms you already operate.",
               [("Home", "/"), ("Platform", None)], "Platform",
-              button("Discuss your use case", "/pilot/") + button("See the business cases", "/business-cases/", "ghost"))
-        + section("acquire", "What an enterprise customer acquires today", f'<div class="acq-grid">{acq_html}</div>')
-        + section("components", "Platform components and their status",
-                  '<p><strong>Experimental</strong>: implemented and used in internal experiments, available for pilot evaluation. '
-                  '<strong>Reference architecture</strong>: designed and documented, implemented with a customer. '
-                  '<strong>Planned</strong>: scoped, not yet built.</p>'
+              button("Request a feasibility assessment", "/pilot/?type=assessment") + button("See the business cases", "/business-cases/", "ghost"))
+        + section("available", "Available for technical evaluation",
+                  legend() + arch_figure(PRODUCT_DIAGRAM, "prod", "Available")
+                  + f'<div class="acq-grid acq-grid-2">{av_html}</div>'
+                  '<p class="note">How an optimized dataset is constructed is part of the proprietary method and is not published; it is available for technical due diligence under NDA.</p>')
+        + section("components", "Components and their status",
+                  '<p><strong>Experimental</strong>: implemented and used in internal experiments; available for evaluation. '
+                  '<strong>Reference architecture</strong>: a documented deployment pattern, implemented with a customer. '
+                  '<strong>Proposed</strong>: designed, not built.</p>'
                   f'<ul class="comp-list">{comp_html}</ul>', cls="sec-alt")
-        + section("deployment", "Deployment options",
-                  f'<div class="table-wrap"><table class="tbl"><thead><tr><th scope="col">Option</th><th scope="col">Status</th><th scope="col">Description</th></tr></thead><tbody>{dep_html}</tbody></table></div>')
+        + section("deployment", "Execution environments",
+                  f'<div class="table-wrap"><table class="tbl"><thead><tr><th scope="col">Environment</th><th scope="col">Status</th><th scope="col">Description</th></tr></thead><tbody>{dep_html}</tbody></table></div>')
         + section("integrations", "Integration status",
-                  '<p>What has been exercised, what is planned and what stays a customer system. Proposed integrations are built with the first customer that needs them.</p>'
+                  '<p>What has been exercised, what is proposed and what stays a customer system. Proposed integrations are built with the first customer that needs them.</p>'
                   f'<div class="table-wrap"><table class="tbl tbl-narrow"><thead><tr><th scope="col">Integration</th><th scope="col">Status</th></tr></thead><tbody>{int_html}</tbody></table></div>',
                   cls="sec-alt")
-        + section("security", "Security and data governance",
+        + section("security", "Data governance in the reference architecture",
                   '<div class="two-col"><div>' + ul([
                       "**Customer-controlled execution.** The runtime operates inside your environment, under your access controls.",
-                      "**No data egress to GroundTruth AI.** Customer data, distilled or raw, is not sent to us.",
-                      "**Owner approval before transfer.** Every distilled dataset is reviewed with its validation report before it moves.",
+                      "**No data sent to GroundTruth AI.** Customer data, distilled or raw, stays with you.",
+                      "**Owner approval before transfer.** Data owners review each distilled dataset and its evaluation results before it moves.",
                       "**Least-privilege access.** Read access limited to the variables and period in scope.",
-                      "**Lineage.** Each dataset records its source scope, task specification and generation parameters.",
                   ]) + '</div><div class="callout callout-legal"><p class="callout-h">What distillation does not change</p>' + ul([
                       "Distilled data is derived from source data and is classified like it; it may still contain sensitive information.",
                       "It is not anonymization, differential privacy or encryption, and grants no legal authorization for any transfer.",
                       "It does not replace network segmentation, OT security controls, data integration or compliance processes.",
                       "GroundTruth AI holds no security certifications today.",
                   ]) + '</div></div>')
-        + section("next", "Evaluate the platform on your architecture",
-                  '<p>A feasibility assessment starts with an architecture review: where the runtime would sit, which data it reads, which path the dataset takes and who approves it.</p>'
+        + section("next", "Evaluate it on your architecture",
+                  '<p>A feasibility assessment starts with an architecture review: where the runtime would sit, which data it reads, which path the dataset takes and who approves it. '
+                  '<a href="/technology/#faq">Frequently asked questions</a></p>'
                   '<div class="cta-row">' + button("Request a feasibility assessment", "/pilot/?type=assessment") + button("Read the technology", "/technology/", "ghost") + '</div>',
                   cls="sec-alt"))
-    page("/platform/", "Platform and availability", "What an enterprise customer acquires from GroundTruth AI today: components and their status, deployment options, integration status and data governance.",
+    page("/platform/", "Platform: what is available for evaluation", "The GroundTruth AI distillation runtime available for technical evaluation: inputs, outputs, evaluation workflow, component status, execution environments and integrations.",
          body, active="platform", cases=cases, priority="0.7")
 
 
@@ -341,13 +339,19 @@ def render_technology(cases):
                   '<div class="two-col"><div>'
                   '<p>A distilled dataset is not a general-purpose summary. What is kept depends on the <strong>task</strong>: the target variable, the model family and the '
                   'acceptance metric. The same source data can produce different distilled sets for a failure-prediction model and for a quality model.</p>'
-                  '<p>That is why distillation can run at the source: the task specification travels to the data, and only the result travels back.</p></div>'
+                  '<p>That is why distillation can run at the source: the task specification travels to the data, and only the result travels back.</p>'
+                  '<h3 class="h-s">What this means for enterprise analytics</h3>' + ul([
+                      "Each optimized dataset serves a defined analytical or machine learning objective; different objectives may need different datasets.",
+                      "A dataset optimized for one prediction task may not be suitable for another.",
+                      "Optimized datasets complement original data repositories; they do not replace them.",
+                      "New analytical requirements may need a new optimized dataset, generated from the original data.",
+                      "Downstream performance is evaluated for each workload before the dataset is used.",
+                  ]) + '</div>'
                   '<div class="side-card"><p class="side-h">Inputs and outputs</p>' + ul([
                       "**In:** source data in its home environment, plus a task specification",
                       "**Out:** a distilled training dataset",
-                      "**Out:** a validation report comparing full-data and distilled-data models",
-                      "**Out:** lineage metadata for governance",
-                  ]) + '</div></div>')
+                      "**Out:** evaluation results comparing models trained on full and on distilled data",
+                  ]) + '<p class="small">Evaluation trains a reference model on the full data (or reuses an existing baseline), which consumes compute; it is part of the cost of an evaluation.</p></div></div>')
         + section("position", "Between centralizing everything and training everywhere",
                   f'<div class="sp-grid">{sp}</div>' + ul([
                       "Original datasets remain distributed; distillation runs inside authorized source environments.",
@@ -365,8 +369,8 @@ def render_technology(cases):
                   '<li><span class="fs-n">1</span><h3>Task specification</h3><p>Target, features, model family, metric and tolerance.</p></li>'
                   '<li><span class="fs-n">2</span><h3>Profiling</h3><p>Distributions, classes, regimes and labeled events in scope.</p></li>'
                   '<li><span class="fs-n">3</span><h3>Distillation</h3><p>The engine constructs the compact training set for the task.</p></li>'
-                  '<li><span class="fs-n">4</span><h3>Fidelity validation</h3><p>Full vs. distilled models compared on the same test data.</p></li>'
-                  '<li><span class="fs-n">5</span><h3>Approval and regeneration</h3><p>Owners approve; datasets are regenerated when the task or data change.</p></li></ol>'
+                  '<li><span class="fs-n">4</span><h3>Performance evaluation</h3><p>Full vs. distilled models compared on the same test data.</p></li>'
+                  '<li><span class="fs-n">5</span><h3>Approval and regeneration</h3><p>In the reference architecture, owners approve; datasets are regenerated when the task or data change.</p></li></ol>'
                   '<p class="note">Proprietary method details are not published. They are available for technical due diligence under NDA.</p>', cls="sec-alt")
         + section("scope", "Current scope",
                   '<div class="ev-grid">'
@@ -382,6 +386,9 @@ def render_technology(cases):
                       "A distilled set is task-specific; new tasks need regeneration",
                       "Distillation has its own compute and energy cost"]) + '</div></div>'
                   '<p><a class="link-arrow" href="/evidence/#roadmap">Technical validation roadmap</a></p>')
+        + section("faq", "Frequently asked questions",
+                  f'<div class="faq"><div class="faq-i"><h3>Does GroundTruth AI replace our data lake?</h3><p>No. Original data stays in its repositories under your retention policies. GroundTruth AI produces task-specific training datasets from it; it does not replace data lakes, historians or warehouses.</p></div><div class="faq-i"><h3>Can original industrial data remain within OT?</h3><p>In the source-side reference architecture, yes. Distillation runs in an approved OT-side computing environment, and only approved optimized datasets cross the boundary through existing exchange mechanisms such as the industrial DMZ. The OT and data owners decide what may cross.</p></div><div class="faq-i"><h3>Is GroundTruth AI equivalent to conventional data compression?</h3><p>No. Compression encodes every byte more compactly and is decompressed before use, so the training volume is unchanged. Distillation builds a smaller training dataset for a defined task; it is not designed to reproduce the original data.</p></div><div class="faq-i"><h3>Is GroundTruth AI equivalent to federated learning?</h3><p>No. Federated learning trains models inside every domain and exchanges model updates repeatedly. Source-side distillation sends approved optimized datasets to a central environment, where training can stay centralized. It does not provide the privacy guarantees of privacy-preserving federated learning, and the two approaches can be combined.</p></div><div class="faq-i"><h3>Does dataset distillation guarantee privacy or anonymization?</h3><p>No. Distillation is not anonymization, differential privacy or encryption. Optimized datasets are derived from the source data, may still contain sensitive information and remain subject to the same classification, protection and transfer rules.</p></div><div class="faq-i"><h3>Can the same optimized dataset support multiple analytical tasks?</h3><p>Not by default. An optimized dataset is built and evaluated for a defined target, model family and metric. Using it for another task requires evaluating it for that task, and often generating a new dataset.</p></div><div class="faq-i"><h3>What happens when analytical requirements change?</h3><p>A new or changed objective generally needs a new optimized dataset, generated from the original data that remains in its source environment, and evaluated for the new workload.</p></div><div class="faq-i"><h3>How can an enterprise evaluate the technology?</h3><p>In three stages: an architecture discovery conversation, a technical feasibility assessment on one representative workload, and an enterprise pilot with success criteria agreed in advance.</p></div></div>'
+                  '<p><a class="link-arrow" href="/pilot/">Discuss your use case</a></p>')
         + section("adjacent", "The wider engine and adjacent capabilities",
                   '<p>Distillation is part of a multimodal intelligence engine designed to fuse tabular, image, behavioral and time-series signals. '
                   'The same engine supports capabilities that are <strong>prototypes</strong>, not validated on customer data and outside the scope of the business cases on this site:</p>'
@@ -430,8 +437,9 @@ ROADMAP = [
 def render_evidence(cases):
     lv = "".join(f'<li class="lvl lvl-{k}"><h3>{esc(n)}</h3><p>{esc(d)}</p><p class="lvl-now"><span>Today:</span> {esc(now)}</p></li>'
                  for k, n, d, now in S.EVIDENCE_LEVELS)
-    bm = "".join(f'<tr><th scope="row">{esc(n)}</th><td>{esc(S.BENCHMARK_META[n][0])}</td><td>{esc(t)}</td><td class="num">{r}%</td><td class="num">{b:.1f}%</td>'
-                 f'<td class="num">{d:.1f}%</td><td class="num">{delta:+.1f} pp</td></tr>' for n, t, r, b, d, delta in S.BENCHMARKS)
+    bm = "".join(f'<tr><th scope="row">{esc(n)}</th><td>{esc(S.BENCHMARK_META[n][0])}</td><td>{esc(t)}</td><td class="num">{r}%</td>'
+                 f'<td class="num">{100 - r}%</td><td class="num">{b:.1f}%</td><td class="num">{d:.1f}%</td><td class="num">{delta:+.1f} pp</td></tr>'
+                 for n, t, r, b, d, delta in S.BENCHMARKS)
     per = []
     for p in S.PILLARS:
         for cid in p["cases"]:
@@ -440,7 +448,7 @@ def render_evidence(cases):
             per.append(f'<tr><th scope="row"><a href="{case_url(c)}#evidence">{esc(c["title"])}</a></th><td>{esc(p["name"])}</td>'
                        f'<td><span class="sup sup-{lvl.lower()}">{lvl}</span></td><td>{esc(note)}</td></tr>')
     rm = "".join(f'<tr><td><span class="prio prio-{pr.lower()}">{pr}</span></td><th scope="row">{esc(n)}</th><td>{esc(d)}</td><td>{esc(m)}</td>'
-                 f'<td>{esc(_names(cases, ids))}</td><td>Planned</td></tr>' for pr, n, d, m, ids in ROADMAP)
+                 f'<td>{esc(_names(cases, ids))}</td><td>Proposed</td></tr>' for pr, n, d, m, ids in ROADMAP)
     ctx = [
         ("95.6% of enterprise file data inactive or redundant, obsolete or trivial", "CTERA, Cold Data Report (2026), 16 PB across 856 NAS scans; vendor-commissioned",
          "https://www.blocksandfiles.com/"),
@@ -452,52 +460,46 @@ def render_evidence(cases):
         ("Global data-center electricity ≈415 TWh in 2024", "IEA, Energy and AI (2025)", "https://www.iea.org/reports/energy-and-ai"),
     ]
     ctx_html = "".join(f'<tr><th scope="row">{esc(a)}</th><td>{esc(b)} · <a href="{esc(u)}" rel="noopener">source</a></td></tr>' for a, b, u in ctx)
-    scope = [
-        ("Dataset-level experimental results", "Measured", "Data reduction and accuracy on four public classification benchmarks; internal energy measurements.", "experimental"),
-        ("Industrial application hypotheses", "To be tested", "Industrial time series, rare failures and operating regimes: designed into the OT/IT and multi-site pilots.", "proposed"),
-        ("Multi-domain architecture proposals", "To be tested", "Distilling separately in several domains and training centrally: the P0 experiment on the roadmap.", "proposed"),
-        ("Validated customer outcomes", "Reported when available", "Results from enterprise pilots will be published here, with the customer's permission.", "demonstrated"),
-    ]
-    sc_html = "".join(f'<li class="lvl lvl-{k}"><h3>{esc(n)}</h3><p class="lvl-now"><span>Status:</span> {esc(s)}</p><p>{esc(d)}</p></li>' for n, s, d, k in scope)
     body = (
         _hero("Experimental validation and technical evidence",
-              "Every statement on this site is classified by the evidence behind it. This page shows the experimental results, how to read them, "
-              "and the validation roadmap that pilots are designed to complete.",
+              "Results from internal experiments on public benchmarks, how to read them, how each claim on this site is classified, "
+              "and the validation work that pilots are designed to complete.",
               [("Home", "/"), ("Evidence", None)], "Evidence",
-              button("Discuss your use case", "/pilot/") + button("ROI calculator", "/roi/", "ghost"))
-        + section("levels", "How we classify evidence", f'<ul class="lvl-list">{lv}</ul>')
-        + section("scope-ev", "What the evidence covers", f'<ul class="lvl-list">{sc_html}</ul>'
-                  '<p class="note">Results on small public datasets are not extrapolated to industrial-scale deployments, and independently distilled datasets '
-                  'are not assumed to combine successfully without validation.</p>', cls="sec-alt")
-        + section("benchmarks", "Experimentally supported technical outcomes",
-                  '<p>Internal experiments on public benchmark datasets. Accuracy compares models trained on the full training data and on the distilled training data, '
-                  'evaluated on the same test data.</p>'
-                  '<div class="table-wrap"><table class="tbl"><caption class="sr-only">Benchmark results</caption><thead><tr><th scope="col">Dataset</th><th scope="col">Public dataset</th>'
-                  '<th scope="col">Model</th><th scope="col" class="num">Data reduction</th><th scope="col" class="num">Full-data accuracy</th><th scope="col" class="num">Distilled accuracy</th>'
-                  f'<th scope="col" class="num">Change</th></tr></thead><tbody>{bm}</tbody></table></div>'
-                  '<div class="two-col"><div><h3 class="h-s">Methodology and reporting</h3>' + ul([
-                      "Classification tasks; the same model architecture is trained on full and distilled data.",
-                      "Data reduction is the share of training records removed by distillation.",
-                      "Absolute distilled-set sizes, distillation runtime, peak memory and compute cost are not yet published; they are part of the P0 cost study.",
-                      "Hardware: workstation-class machines.",
+              button("Discuss your use case", "/pilot/") + button("Validation roadmap", "#roadmap", "ghost"))
+        + section("benchmarks", "Results on public benchmarks",
+                  '<p>The same model architecture was trained on the full training data and on the distilled training data, and both were evaluated on the same test data.</p>'
+                  '<div class="table-wrap"><table class="tbl tbl-bm"><caption class="sr-only">Benchmark results</caption><thead><tr><th scope="col">Dataset</th><th scope="col">Public dataset</th>'
+                  '<th scope="col">Model</th><th scope="col" class="num">Training data removed</th><th scope="col" class="num">Training data kept</th>'
+                  '<th scope="col" class="num">Full-data accuracy</th><th scope="col" class="num">Distilled accuracy</th>'
+                  f'<th scope="col" class="num">Difference</th></tr></thead><tbody>{bm}</tbody></table></div>'
+                  '<div class="two-col"><div><h3 class="h-s">How to read the results</h3>' + ul([
+                      "**Training data removed** is a relative share of training records: 95% removed means the model trained on 5% of the records.",
+                      "**Difference** is in percentage points: the absolute gap between two accuracies. Iris: 97.4% → 94.7% is −2.7 pp.",
+                      "Absolute sizes of the distilled training sets, distillation runtime and memory are not yet reported.",
+                      "Four results do not define a reduction-versus-accuracy curve; no trade-off curve is inferred from them.",
+                  ]) + '<h3 class="h-s">Scope and limitations</h3>' + ul([
+                      "Small, public, classification datasets; workstation-class hardware.",
                       "Not yet independently replicated.",
-                  ]) + '<h3 class="h-s">Energy measurements</h3>' + ul([
-                      "**86%** less energy per model training run on a workstation after data reduction.",
-                      "**39%** less energy on IoT / edge devices at the point of capture.",
-                      "Internal measurements; energy estimated with Schneider Electric reference data. Methodology not yet published.",
-                      "The figures do not separately report the energy consumed by the distillation step; pilots measure it explicitly.",
-                  ]) + f'</div><div><div class="fc-viz">{viz_bc03(S.BENCHMARKS)}</div><h3 class="h-s">Limitations</h3>' + ul([
-                      "Small, clean, public datasets; classification only.",
-                      "Results do not transfer automatically to industrial time series, logs or multi-domain data.",
-                      "No enterprise production deployment has been measured yet.",
-                  ]) + '</div></div>')
+                      "Not extrapolated to industrial time series, multi-domain data or industrial scale.",
+                      "The OT/IT, multi-domain and edge architectures on this site are reference architectures that have not been validated experimentally.",
+                  ]) + f'</div><div class="fc-viz">{viz_bc03(S.BENCHMARKS)}</div></div>')
+        + section("energy", "Energy measurements",
+                  '<p>Two internal measurements, energy estimated with Schneider Electric reference data. The methodology is not yet published.</p>'
+                  '<div class="table-wrap"><table class="tbl"><thead><tr><th scope="col">Measurement</th><th scope="col">What it covers</th><th scope="col">Not included</th></tr></thead><tbody>'
+                  '<tr><th scope="row">86% less energy per training run</th><td>Model training on a workstation, after data reduction</td>'
+                  '<td>Energy of the distillation step; total end-to-end or lifecycle energy; financial savings</td></tr>'
+                  '<tr><th scope="row">39% less energy on IoT / edge devices</th><td>Processing at the point of capture</td>'
+                  '<td>Energy of the distillation step; network and central infrastructure; financial savings</td></tr>'
+                  '</tbody></table></div>'
+                  '<p class="note">Net, end-to-end energy (training saved minus distillation used) is measured per workload in pilots.</p>', cls="sec-alt")
+        + section("levels", "How every claim is classified", f'<ul class="lvl-list">{lv}</ul>')
         + section("by-case", "Evidence by business case",
                   '<p><strong>Direct</strong>: the experiments measure the outcome the case depends on. <strong>Partial</strong>: related measurements exist. '
                   '<strong>Indirect</strong>: the case relies on an architectural hypothesis that has not yet been benchmarked.</p>'
                   '<div class="table-wrap"><table class="tbl"><thead><tr><th scope="col">Business case</th><th scope="col">Solution family</th>'
                   f'<th scope="col">Technical support</th><th scope="col">Notes</th></tr></thead><tbody>{"".join(per)}</tbody></table></div>', cls="sec-alt")
         + section("roadmap", "Technical validation roadmap",
-                  '<p>Prioritized by commercial relevance. These are planned experiments, not completed work; no dates are published. '
+                  '<p>Proposed experiments, prioritized by commercial relevance; none has been run yet and no dates are published. '
                   'Enterprise pilots are designed to generate this evidence on customer data, with measurements the customer keeps.</p>'
                   '<div class="table-wrap"><table class="tbl tbl-rm"><thead><tr><th scope="col">Priority</th><th scope="col">Experiment</th><th scope="col">Design</th>'
                   f'<th scope="col">Measures</th><th scope="col">Supports</th><th scope="col">Status</th></tr></thead><tbody>{rm}</tbody></table></div>')
@@ -602,11 +604,14 @@ def render_roi(cases):
         '<button class="btn btn-ghost btn-sm" type="button" id="o-copy" hidden>Copy summary</button>'
         '<a class="btn btn-primary btn-sm" id="o-pilot" href="/pilot/?type=assessment">Validate these assumptions</a></div>'
         '<p class="small" id="o-copy-s" role="status"></p>'
+        '<p class="disc-note"><strong>Not contractual.</strong> Illustrative estimates based on internal experiments and on the assumptions entered here; no warranty or guarantee of results. Actual results require a workload-specific evaluation. <a href="#site-disclaimer">Full disclaimer</a>.</p>'
         '</div></form></div></section>'
         + section("method", "Method and limits",
                   ul([
                       "Only the **eligible, data-proportional share** of each cost line is reduced. A reduction in dataset records is not an equivalent reduction in total infrastructure spend.",
                       "Transfer, ingestion, processing, storage, training compute and energy are separate lines; energy already paid inside compute spend is not counted again.",
+                      "Unit costs per TB are treated as **variable** costs; leave fixed costs (committed contracts, reserved capacity, licenses) out of them.",
+                      "**ROI** is first-year net value divided by the costs entered (recurring costs plus implementation); it is not shown when no costs are entered.",
                       "**Distillation compute**, **validation and dataset maintenance**, the **license** and **implementation** are deducted from gross savings.",
                       "Original source data is assumed to be **retained**; only central training copies are affected.",
                       "Energy results are operational estimates. Environmental claims require lifecycle measurement.",
@@ -621,7 +626,7 @@ def render_roi(cases):
 def render_simulator(cases):
     fields = (
         _num("s_n", "Industrial facilities or data domains", 20, "", "1", hint="1 to 200.", mx=200)
-        + _num("s_vol", "Eligible training data per domain", 10, "TB", hint="Data a central model would need, per training cycle.", mx=100000)
+        + _num("s_vol", "Training-relevant source data per domain", 10, "TB", hint="Data a central model would need, per training cycle.", mx=100000)
         + _num("s_tx", "Share of that data transferred centrally today", 100, "%", hint="Baseline: what a conventional architecture would move.", mx=100)
         + _num("s_el", "Share of transferred data eligible for distillation", 100, "%", hint="Data used only for model training.", mx=100)
         + _num("s_red", "Assumed dataset reduction", 90, "%", hint="Illustrative. Must be validated per workload.", mx=99)
@@ -630,7 +635,7 @@ def render_simulator(cases):
     body = (
         _hero("Distributed intelligence simulator",
               "See how source-side distillation changes what crosses your authorized boundaries when central teams train AI on data from many plants, "
-              "subsidiaries or regions. Adjust the assumptions; the architecture updates as you type.",
+              "subsidiaries or regions. This is an architectural simulation of your assumptions: it does not run the GroundTruth AI algorithm and is not an experimental result.",
               [("Home", "/"), ("Business cases", "/business-cases/"), ("Architecture simulator", None)], "Illustrative architecture simulator")
         + '<section class="sec sec-tight" aria-labelledby="sim-h"><div class="wrap">'
         '<h2 id="sim-h" class="sr-only">Simulator</h2>'
@@ -648,12 +653,23 @@ def render_simulator(cases):
         '<li><span class="lg-line lg-distilled" aria-hidden="true"></span>Optimized dataset</li>'
         '<li><span class="lg-node" aria-hidden="true"></span>GroundTruth AI component</li><li><span class="lg-bound" aria-hidden="true"></span>Authorized transfer boundary</li></ul></figure>'
         '<dl class="sim-kpis" aria-live="polite">'
-        '<div><dt>Original eligible data</dt><dd id="k-orig">—</dd><dd class="sc-sub">retained at source in both architectures</dd></div>'
+        '<div><dt>Total source data in scope</dt><dd id="k-orig">—</dd><dd class="sc-sub">stays at source in both architectures</dd></div>'
         '<div><dt>Baseline transfer</dt><dd id="k-base">—</dd><dd class="sc-sub">conventional centralization</dd></div>'
+        '<div><dt>Eligible for distillation</dt><dd id="k-elig">—</dd><dd class="sc-sub" id="k-elig-s"></dd></div>'
         '<div><dt>Estimated optimized transfer</dt><dd id="k-opt" class="g">—</dd><dd class="sc-sub" id="k-opt-s"></dd></div>'
         '<div><dt>Potential avoided data movement</dt><dd id="k-avoid" class="g">—</dd><dd class="sc-sub" id="k-rel"></dd></div>'
         '<div class="sim-money" id="k-money-w" hidden><dt>Illustrative gross saving</dt><dd id="k-money">—</dd><dd class="sc-sub">per training cycle, before distillation, validation and license costs</dd></div>'
-        '</dl></div></form>'
+        '</dl>'
+        '<details class="sim-calc"><summary>How the numbers are calculated</summary><ol>'
+        '<li>Baseline transfer = <span id="f-n"></span> domains × <span id="f-vol"></span> × <span id="f-tx"></span> transferred = <strong id="f-base"></strong></li>'
+        '<li>Eligible for distillation = baseline × <span id="f-el"></span> = <strong id="f-elig"></strong></li>'
+        '<li>Optimized transfer = non-eligible raw data <span id="f-raw"></span> + eligible data reduced by <span id="f-red"></span> '
+        '<span id="f-dist"></span> = <strong id="f-opt"></strong></li>'
+        '<li>Avoided transfer = eligible × reduction = <strong id="f-avoid"></strong></li>'
+        '<li>Illustrative gross saving = avoided × <span id="f-cost"></span> per TB = <strong id="f-money"></strong></li></ol>'
+        '<p class="small">Volumes per training cycle. The non-eligible share is still transferred raw. Costs of distillation, evaluation and licensing are not deducted here; the ROI calculator deducts them.</p></details>'
+        '<p class="disc-note"><strong>Not contractual.</strong> Illustrative estimates based on internal experiments and on the assumptions entered here; no warranty or guarantee of results. Actual results require a workload-specific evaluation. <a href="#site-disclaimer">Full disclaimer</a>.</p>'
+        '</div></form>'
         '<div class="callout callout-limit sim-qual"><p class="callout-h">Read this before using the numbers</p>' + ul([
             "The dataset reduction is an assumption. The achievable reduction and the downstream model performance must be validated for each workload.",
             "Data retained at source stays subject to your normal retention policies; nothing here implies it is unaffected by them or that it is deleted.",
@@ -672,47 +688,33 @@ def render_simulator(cases):
 
 # ---------------------------------------------------------------------------- PARTNERS
 def render_partners(cases):
-    targets = ["Industrial automation platforms", "Industrial historians", "OT/IT integration platforms", "Industrial gateways",
-               "Edge computing platforms", "Enterprise data integration products", "Cloud infrastructure platforms", "MLOps platforms",
-               "AI development infrastructure"]
-    models = [
-        ("Embedded software licensing", "The runtime ships inside your product and runs where your product already runs."),
-        ("OEM licensing", "Source-side distillation offered under your brand as a feature or module of your platform."),
-        ("Technology licensing", "Access to the method for a defined field of use, under NDA and license terms."),
-        ("Joint technical validation", "A shared experiment plan on your target data before any co-marketing claim."),
-        ("Joint enterprise solutions", "A combined offer for a business case such as OT/IT data segregation or edge-to-cloud."),
-        ("Distribution partnerships", "Systems integrators and resellers delivering assessments, pilots and rollouts."),
-    ]
-    m_html = "".join(f'<li class="pm"><h3>{esc(n)}</h3><p>{esc(d)}</p></li>' for n, d in models)
-    status = [("Python runtime for evaluation", "available"), ("Packaging for embedding (container, library, SDK)", "planned"),
-              ("Integration with any specific third-party product", "proposed"), ("Joint validation on partner data", "proposed")]
-    st_html = "".join(f'<tr><th scope="row">{esc(n)}</th><td>{status_badge(k)}</td></tr>' for n, k in status)
+    targets = [("Industrial data platforms and historians", "Distill where plant data is already collected, before it is exported."),
+               ("Industrial edge environments", "Reduce what leaves the site for central training."),
+               ("Data integration architectures", "Move task-specific datasets instead of full replicas between domains."),
+               ("Enterprise AI infrastructure and MLOps", "Train and retrain on validated distilled datasets."),
+               ("Distributed analytical systems", "Enable central models across domains that keep their data.")]
+    t_html = "".join(f'<li class="dep"><h3>{esc(n)}</h3><p>{esc(d)}</p></li>' for n, d in targets)
     body = (
         _hero("Embed source-side distillation in your product",
-              "GroundTruth AI is a software component designed to sit inside other architectures. For platforms that already run next to "
-              "industrial, edge or enterprise data, it adds a differentiated capability: task-specific training datasets produced at the source.",
-              [("Home", "/"), ("Partners and OEM", None)], "Partners and OEM",
+              "For platforms that already run next to industrial, edge or enterprise data, GroundTruth AI can add a differentiated capability: "
+              "task-specific training datasets produced where the data lives.",
+              [("Home", "/"), ("Partners", None)], "Partners and OEM",
               button("Discuss a technology integration", "/pilot/?type=partnership"))
-        + section("why", "Why it adds value to an existing product",
-                  '<div class="two-col"><div>' + ul([
-                      "Your customers want central AI on data your product already holds or moves, without replicating all of it.",
-                      "Source-side distillation turns that data into approved, task-specific training datasets inside your product's footprint.",
-                      "It complements, rather than replaces, automation, historians, data integration and security infrastructure.",
-                      "It creates a new reason to keep data processing in your platform rather than exporting raw data elsewhere.",
-                  ]) + '</div><div class="side-card"><p class="side-h">Where it can be embedded</p>' + ul(targets) + '</div></div>')
-        + section("pattern", "Where GroundTruth AI sits inside a partner product",
+        + section("where", "Where it could be embedded",
+                  f'<ul class="dep-list">{t_html}</ul>'
+                  '<p class="note">GroundTruth AI complements automation, historians, data integration and security infrastructure; it does not replace them.</p>')
+        + section("pattern", "Proposed integration pattern",
                   legend() + arch_figure(OEM_EMBED, "oem", "Proposed")
-                  + '<p class="note">A proposed integration pattern, not an existing integration. Compatibility with a partner product is claimed only after it has been built and tested together.</p>',
-                  cls="sec-alt")
-        + section("status", "What exists and what is proposed",
-                  f'<div class="table-wrap"><table class="tbl tbl-narrow"><thead><tr><th scope="col">Capability</th><th scope="col">Status</th></tr></thead><tbody>{st_html}</tbody></table></div>'
-                  '<p class="note">The partnership models below describe what we are seeking; no partnerships have been announced.</p>')
-        + section("models", "Commercial models", f'<ul class="pm-grid">{m_html}</ul>'
-                  '<p class="note">Licensing terms are discussed per partnership; no prices are published.</p>', cls="sec-alt")
-        + section("start", "Discuss a technology integration",
-                  '<p>Tell us where your product sits in your customers\' architecture and which business case they face. We will propose a joint validation plan.</p>'
-                  '<div class="cta-row">' + button("Discuss a technology integration", "/pilot/?type=partnership") + button("Review the business cases", "/business-cases/", "ghost") + '</div>'))
-    page("/partners/", "Partners and OEM licensing", "Embed source-side dataset distillation in industrial platforms, historians, gateways, edge, data integration, cloud and MLOps products: OEM, embedded and technology licensing.",
+                  + '<p class="note">Today GroundTruth AI is an experimental Python runtime available for evaluation. No integration with a third-party product has been built, '
+                    'and none is claimed until it has been built and tested together. No partnerships have been announced.</p>', cls="sec-alt")
+        + section("models", "How we work with technology partners",
+                  ul(["**Joint technical validation** on your target data, before any joint claim.",
+                      "**OEM, embedded or technology licensing** for a defined field of use, discussed per partnership. No prices are published.",
+                      "**Joint solutions** for a business case such as OT/IT data segregation or edge-to-cloud optimization.",
+                      "**Delivery partnerships** with systems integrators for assessments and pilots."])
+                  + '<div class="cta-row">' + button("Discuss a technology integration", "/pilot/?type=partnership")
+                  + button("Review the business cases", "/business-cases/", "ghost") + '</div>'))
+    page("/partners/", "Partners and OEM", "Embed source-side dataset distillation in industrial data platforms, edge environments, data integration and enterprise AI infrastructure: joint validation, OEM and technology licensing.",
          body, active="partners", cases=cases, priority="0.7")
 
 
@@ -776,7 +778,7 @@ def render_pilot(cases, industries):
         '<div class="privacy" id="privacy"><h3 class="h-s">Privacy</h3>'
         '<p class="small">We collect the details you enter here only to reply to your request and to prepare the conversation. Your request is delivered by email to the '
         'GroundTruth AI team through <a href="https://formsubmit.co/" rel="noopener">FormSubmit</a>, a third-party form delivery service, which processes it to deliver it. '
-        'To ask for access to or deletion of your details, reply to our email. '
+        'Full details and your rights: <a href="/privacidad/">Política de privacidad</a>. '
         'No cookies or analytics are used on this site. If online delivery fails, the page offers to open your own email client instead.</p></div></div>'
         '<noscript><p class="callout">The request form needs JavaScript. Please contact your GroundTruth AI representative directly.</p></noscript>'
         f'<form class="pilot-form" id="pilot-form" novalidate data-to="{esc(S.CONTACT_EMAIL)}" data-endpoint="{esc(S.FORM_ENDPOINT)}">'
@@ -792,7 +794,7 @@ def render_pilot(cases, industries):
         'placeholder="For example: historian data in 6 plants behind an industrial DMZ; central ML team on Azure; transfer policy limits raw replication."></textarea></div>'
         '<div class="fld"><label for="p-time">Timeline</label><select id="p-time" name="timeline"><option value="">Select</option>'
         '<option>Exploring</option><option>Within 3 months</option><option>3–6 months</option><option>Budgeted this year</option></select></div>'
-        '<div class="fld fld-check"><label><input type="checkbox" id="p-consent" name="consent" required> I agree that GroundTruth AI may use these details to respond to this request, and that they are transmitted by email through FormSubmit. <span class="req">(required)</span></label></div>'
+        '<div class="fld fld-check"><label><input type="checkbox" id="p-consent" name="consent" required> I have read the <a href="/privacidad/">privacy policy (Política de privacidad)</a> and agree that GroundTruth AI may use these details to respond to this request, transmitted by email through FormSubmit. <span class="req">(required)</span></label></div>'
         '<p class="form-err" id="p-err" role="alert" hidden></p>'
         '<p class="form-status" id="p-status" role="status" aria-live="polite"></p>'
         '<button class="btn btn-primary" type="submit" id="p-submit">Discuss your use case</button>'

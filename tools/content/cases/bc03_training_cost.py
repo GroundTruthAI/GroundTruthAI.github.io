@@ -15,7 +15,7 @@ CASE = {
     "problem_short": "Training and retraining on ever-larger datasets drives compute spend, slows experimentation and ties up shared infrastructure.",
     "solution_short": "Distill each training dataset to a compact, task-specific core and validate it against a full-data baseline before use.",
     "outcome_short": "Lower compute per training run and faster experimentation, within an agreed accuracy tolerance.",
-    "cta": "Assess your AI training costs",
+    "cta": "Evaluate your AI training costs",
     "industries": ["financial-services", "telecommunications", "retail-consumer", "manufacturing", "ai-infrastructure"],
     "filters": {
         "objectives": ["training-cost", "operational-efficiency", "energy"],
@@ -63,7 +63,7 @@ CASE = {
             ("Set the tolerance", "Model owners define the acceptable change in the task metric and any "
              "mandatory coverage (for example, minority classes)."),
             ("Distill", "The runtime generates a task-specific distilled dataset from the full training data."),
-            ("Validate", "A fidelity report compares models trained on full and distilled data on the same "
+            ("Validate", "An evaluation compares models trained on full and distilled data on the same "
              "held-out test set, including per-class results."),
             ("Train on the distilled set", "Approved distilled datasets feed experiments and retrains; "
              "the dataset is regenerated when data or task change materially."),
@@ -133,7 +133,7 @@ CASE = {
                 {"id": "data", "label": "Data platform", "kind": "source",
                  "nodes": [["raw", "Full training dataset", "store"], ["gt", "GroundTruth distillation runtime", "gt"]]},
                 {"id": "val", "label": "Validation", "kind": "boundary",
-                 "nodes": [["fid", "Fidelity report vs. full data", "system"]]},
+                 "nodes": [["fid", "Evaluation report vs. full data", "system"]]},
                 {"id": "train", "label": "Training infrastructure", "kind": "central",
                  "nodes": [["ds", "Distilled training set", "store"], ["exp", "Experiments + retraining", "model"]]},
                 {"id": "reg", "label": "Model lifecycle", "kind": "external",
@@ -208,7 +208,7 @@ CASE = {
         "infrastructure": [
             "A CPU or GPU host near the training data (sizing set during the pilot).",
             "Read access to the training dataset and the current training code.",
-            "Storage for the distilled dataset and fidelity reports.",
+            "Storage for the distilled dataset and evaluation reports.",
         ],
         "deployment": "In a pilot, the runtime runs as an offline step against an export of the training "
                       "data, and the customer's existing training code is pointed at the distilled set. "
@@ -273,7 +273,7 @@ CASE = {
             "Net annual saving positive after distillation overhead at actual retraining frequency.",
         ],
         "deliverables": [
-            "Fidelity report, overall and per class",
+            "Evaluation report, overall and per class",
             "Measured cost, time and energy comparison per run, including overhead",
             "Annualized savings model using the customer's own assumptions",
             "Integration plan for the customer's training pipeline",

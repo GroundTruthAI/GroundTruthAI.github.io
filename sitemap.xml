@@ -35,4 +35,7 @@
   <url><loc>https://groundtruthai.github.io/partners/</loc><priority>0.7</priority></url>
   <url><loc>https://groundtruthai.github.io/company/</loc><priority>0.5</priority></url>
   <url><loc>https://groundtruthai.github.io/pilot/</loc><priority>0.9</priority></url>
+  <url><loc>https://groundtruthai.github.io/aviso-legal/</loc><priority>0.2</priority></url>
+  <url><loc>https://groundtruthai.github.io/privacidad/</loc><priority>0.2</priority></url>
+  <url><loc>https://groundtruthai.github.io/cookies/</loc><priority>0.2</priority></url>
 </urlset>

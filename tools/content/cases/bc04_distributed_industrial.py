@@ -14,8 +14,8 @@ CASE = {
     ),
     "problem_short": "Failure patterns are scattered across plants with different equipment and conditions, and centralizing all their history is impractical.",
     "solution_short": "Each facility distills a task-specific dataset locally; approved sets train shared cross-site models centrally.",
-    "outcome_short": "Multi-site predictive models built from distributed data preparation.",
-    "cta": "Explore multi-site industrial intelligence",
+    "outcome_short": "Shared predictive models that learn across facilities and operating conditions.",
+    "cta": "Explore distributed industrial intelligence",
     "industries": ["manufacturing", "energy-utilities", "oil-gas-mining", "transportation-logistics"],
     "filters": {
         "objectives": ["segregated-analytics", "data-movement", "distributed-infra", "operational-efficiency"],
@@ -64,8 +64,8 @@ CASE = {
              "(for example, a failure mode on a common asset class), the feature contract and coverage targets."),
             ("Distill at each facility", "The runtime processes local history on site and keeps every "
              "labeled failure event and each operating regime represented, while compressing routine operation."),
-            ("Validate per site", "Each site receives a fidelity report against its own full data, including "
-             "rare-event and regime coverage."),
+            ("Validate per site", "Each site's distilled set is evaluated against its own full data, and rare-event "
+             "and regime coverage is assessed against the agreed targets."),
             ("Approve and combine", "Site and OT owners approve release through existing transfer paths; "
              "approved sets are combined centrally."),
             ("Train and evaluate across sites", "Shared models are trained centrally and evaluated on "
@@ -84,7 +84,7 @@ CASE = {
         "context": "An energy company operates generation and distribution assets in several countries: plants, substations and wind farms with different equipment generations and operating regimes.",
         "current": "Operational data stays in regional control environments and plant historians. Central analytics see aggregated reports; asset-health models are built region by region, with uneven quality.",
         "problem": "A central analytics team wants global asset-health, failure-prediction and operational-forecasting models. Rare failures are spread thinly across regions, so no single region has enough examples, yet consolidating every historian across segregated infrastructure is impractical.",
-        "proposed": "Each region distills task-specific datasets locally, under coverage constraints that keep rare failures and every operating regime represented. Approved datasets move through authorized exchange paths to the central team, which trains a shared model and evaluates it region by region.",
+        "proposed": "Each region distills task-specific datasets locally, with rare-failure and operating-regime coverage set as evaluation targets. Approved datasets move through authorized exchange paths to the central team, which trains a shared model and evaluates it region by region.",
         "assumptions": [],
         "constraints": [
             "Infrastructure segregation between regions and between OT and IT",
@@ -151,7 +151,7 @@ CASE = {
                 ["g2", "ds", "distilled", "approved set"],
                 ["g3", "ds", "distilled", "approved set"],
                 ["ds", "ml", "distilled", ""],
-                ["ml", "g2", "control", "shared task + coverage"],
+                ["ml", "g2", "control", "approved task spec"],
             ],
         },
         "notes": [
@@ -176,7 +176,7 @@ CASE = {
         "strategic": [
             "Multi-site predictive maintenance and shared equipment health models.",
             "Cross-facility anomaly detection that learns from failures wherever they occur.",
-            "Centralized AI development without complete industrial data consolidation.",
+            "Cross-site analytical collaboration and models that generalize across operating conditions.",
         ],
     },
 

@@ -12,6 +12,17 @@ CONTACT_EMAIL = "joseluis.salmeron@gmail.com"
 FORM_ORIGIN = "https://formsubmit.co"
 FORM_ENDPOINT = FORM_ORIGIN + "/ajax/" + CONTACT_EMAIL
 
+# Owner identification for the Spanish legal pages (LSSI-CE art. 10, RGPD art. 13).
+# Fill in with verified data only. verify.py fails while owner, nif and address are empty.
+LEGAL = {
+    # Company in formation (no NIF or registered address yet). Replace the pending values as soon as they exist.
+    "owner": "GroundTruth AI (sociedad en constitución)",
+    "nif": "Pendiente de asignación",
+    "address": "Pendiente de asignación; mientras tanto, contacto por correo electrónico",
+    "email": CONTACT_EMAIL,
+    "registry": "Pendiente de inscripción en el Registro Mercantil",
+}
+
 NAV = [
     # (label, href, key)
     ("Business Cases", "/business-cases/", "business-cases"),
@@ -114,7 +125,9 @@ PILLARS = [
                 "Less dependency on complete data consolidation",
                 "New analytical initiatives that data architecture would otherwise hold back"],
      "cases": ["BC01", "BC02", "BC04", "BC07", "BC11"],
-     "cta": "Evaluate your distributed data environments",
+     "challenge_short": "Plants, subsidiaries and regions keep data in separately governed environments; central AI stalls when it needs a complete raw copy.",
+     "outcome_short": "Central training and analytics on approved, locally distilled datasets.",
+     "cta": "Assess your distributed data environments",
      "seo": "Enterprise analytics and AI training across data silos, OT/IT segregation and distributed industrial sites, without centralizing all raw data."},
     {"slug": "ai-infrastructure-efficiency", "name": "AI infrastructure efficiency", "flagship": False,
      "message": "Reduce the cost of developing, training and maintaining AI models.",
@@ -128,7 +141,9 @@ PILLARS = [
                 "More efficient retraining",
                 "Potential energy savings, measured per workload"],
      "cases": ["BC03", "BC09", "BC06", "BC10"],
-     "cta": "Assess your AI training costs",
+     "challenge_short": "Every training and retraining cycle reprocesses growing data histories.",
+     "outcome_short": "Lower data-proportional training cost and faster experimentation, net of distillation.",
+     "cta": "Evaluate your AI training costs",
      "seo": "Reduce enterprise AI training, retraining and infrastructure cost with task-aware dataset distillation, net of distillation overhead."},
     {"slug": "intelligent-data-mobility", "name": "Intelligent data mobility", "flagship": False,
      "message": "Move the information your AI needs, not every raw data record.",
@@ -142,6 +157,8 @@ PILLARS = [
                 "More efficient cloud ingestion",
                 "Lower dependence on high-bandwidth connectivity"],
      "cases": ["BC05", "BC08"],
+     "challenge_short": "Edge sites and clouds produce more data than networks and ingestion pipelines can economically move.",
+     "outcome_short": "Less raw data transferred and replicated to feed AI workloads.",
      "cta": "Evaluate your edge-to-cloud data flows",
      "seo": "Source-side dataset optimization for edge-to-cloud and multicloud AI: move the information models need, not every raw record."},
 ]

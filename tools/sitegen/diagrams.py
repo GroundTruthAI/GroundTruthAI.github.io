@@ -15,7 +15,7 @@ ROWGAP = 40     # vertical gap between nodes (room for vertical flow labels)
 LH = 15         # node text line height
 BACK_LANE = 34  # spacing of return-flow lanes under the zones
 
-FLOW_LABEL = {"raw": "Raw data", "distilled": "Distilled dataset", "model": "Model / results", "control": "Control / approvals"}
+FLOW_LABEL = {"raw": "Original (raw) data", "distilled": "Optimized (distilled) dataset", "model": "Model / results", "control": "Approved process (not a data path)"}
 NODE_KIND = {"system": "System", "store": "Data store", "gt": "GroundTruth AI component", "model": "Model training / analytics", "user": "People"}
 
 
@@ -366,7 +366,7 @@ SCENARIO_A = {
              "nodes": [["ds", "Approved datasets · 20 TB", "store"], ["ml", "Predictive-maintenance training", "model"]]},
         ],
         "flows": [["f", "gt", "raw", ""], ["gt", "gw", "distilled", "validated + approved"],
-                  ["gw", "ds", "distilled", "20 TB"], ["ds", "ml", "distilled", ""], ["ml", "gt", "control", "task specification"]],
+                  ["gw", "ds", "distilled", "20 TB"], ["ds", "ml", "distilled", ""], ["ml", "gt", "control", "approved change process"]],
     },
 }
 
@@ -382,5 +382,5 @@ OEM_EMBED = {
          "nodes": [["ml", "Central analytics and ML", "model"]]},
     ],
     "flows": [["src", "core", "raw", "native ingestion"], ["core", "gt", "raw", ""], ["gt", "exp", "distilled", ""],
-              ["exp", "ml", "distilled", "distilled datasets"], ["ml", "gt", "control", "task specification"]],
+              ["exp", "ml", "distilled", "distilled datasets"], ["ml", "gt", "control", "approved change process"]],
 }
