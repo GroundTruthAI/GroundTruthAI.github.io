@@ -111,7 +111,7 @@ T = {
         "notc_k": "Dataset distillation, not compression",
         "notc": "Compression shrinks the same data, which must be unpacked before use, so the AI still processes all of it. "
                 "Distillation builds a much smaller dataset that the AI uses directly to learn.",
-        "stats": [("86–95%", "less training data"), ("86%", "less energy per training run"), ("≈{net}", "saved a year, 20-plant example · illustrative*")],
+        "stats": [("86–95%", "less training data"), ("86%", "less energy per training run"), ("≈{net}", "saved a year by one AI system, 20-plant example · illustrative*")],
         "stats_note": "Internal tests on four public datasets: models trained on 5–14% of the data came within 1.4–2.8 accuracy points of "
                       "models trained on all of it. Energy: internal measurement, excluding the distillation step. *Illustrative estimate based on "
                       "planning assumptions, detailed on slide 6; before license costs. Results vary by use case; not contractual.",
@@ -160,11 +160,11 @@ T = {
         "inds": "Industries: manufacturing · energy and utilities · oil, gas and mining · transport and logistics · financial services · healthcare · telecom · retail · multinational groups · AI infrastructure",
         # 5 scenario
         "h3": "20 industrial plants. One AI model.",
-        "h3m": "≈{per} saved per plant, every year.",
-        "money_k": "Estimated net saving per year · 20 plants, one AI program",
-        "scale_k": "It grows with every plant and every AI use case",
-        "scale": [("Per plant", "{per}"), ("50 plants", "{p50}"), ("100 plants", "{p100}")],
-        "scale_n": "Assumes spend grows in proportion to the number of plants. Each additional AI use case (quality, energy, anomaly detection…) adds its own savings.",
+        "h3m": "One AI system. ≈{net} saved every year.",
+        "money_k": "Estimated net saving per year · ONE AI system (predictive maintenance) across 20 plants",
+        "scale_k": "Each additional AI system adds its own savings",
+        "scale": [("1 system", "{s1}"), ("3 systems", "{s3}"), ("5 systems", "{s5}")],
+        "scale_n": "Other AI systems on the same plants (quality, energy, anomaly detection…), assuming similar data and compute spend per system. More plants also increase the saving.",
         "money_s": "≈{net3} over three years · before license costs",
         "break_d": ("Distillation and validation", "compute at the plants + dataset checks"),
         "break_t": "Net saving per year",
@@ -213,7 +213,7 @@ T = {
         "notc_k": "Destilación de datos, no compresión",
         "notc": "La compresión reduce el tamaño de los mismos datos, que hay que descomprimir para usarlos: la IA sigue procesándolos "
                 "todos. La destilación crea un conjunto de datos mucho más pequeño que la IA usa directamente para aprender.",
-        "stats": [("86–95\u00a0%", "menos datos de entrenamiento"), ("86\u00a0%", "menos energía por entrenamiento"), ("≈{net}", "de ahorro al año, ejemplo de 20 plantas · ilustrativo*")],
+        "stats": [("86–95\u00a0%", "menos datos de entrenamiento"), ("86\u00a0%", "menos energía por entrenamiento"), ("≈{net}", "de ahorro al año con un solo sistema de IA, ejemplo de 20 plantas · ilustrativo*")],
         "stats_note": "Ensayos internos con cuatro conjuntos de datos públicos: con el 5–14 % de los datos, los modelos quedaron a 1,4–2,8 "
                       "puntos de precisión de los entrenados con todos. Energía: medición interna, sin incluir el paso de destilación. "
                       "*Estimación ilustrativa basada en supuestos de planificación, detallados en la diapositiva 6; antes del coste de "
@@ -258,11 +258,11 @@ T = {
         "c_more": "Detalle completo en groundtruthai.github.io/business-cases (en inglés)",
         "inds": "Sectores: industria · energía y utilities · petróleo, gas y minería · transporte y logística · servicios financieros · salud · telecomunicaciones · retail · grupos multinacionales · infraestructura de IA",
         "h3": "20 plantas industriales. Un modelo de IA común.",
-        "h3m": "≈{per} de ahorro por planta, cada año.",
-        "money_k": "Ahorro neto estimado al año · 20 plantas, un programa de IA",
-        "scale_k": "Crece con cada planta y con cada caso de uso de IA",
-        "scale": [("Por planta", "{per}"), ("50 plantas", "{p50}"), ("100 plantas", "{p100}")],
-        "scale_n": "Supone que el gasto crece en proporción al número de plantas. Cada caso de uso de IA adicional (calidad, energía, detección de anomalías…) suma sus propios ahorros.",
+        "h3m": "Un solo sistema de IA. ≈{net} de ahorro al año.",
+        "money_k": "Ahorro neto estimado al año · UN solo sistema de IA (mantenimiento predictivo) en 20 plantas",
+        "scale_k": "Cada sistema de IA adicional suma sus propios ahorros",
+        "scale": [("1 sistema", "{s1}"), ("3 sistemas", "{s3}"), ("5 sistemas", "{s5}")],
+        "scale_n": "Otros sistemas de IA en las mismas plantas (calidad, energía, detección de anomalías…), suponiendo un gasto en datos y cómputo similar por sistema. Con más plantas, el ahorro también crece.",
         "money_s": "≈{net3} en tres años · antes del coste de licencia",
         "break_d": ("Destilación y validación", "cómputo en planta + revisión de los datos"),
         "break_t": "Ahorro neto al año",
@@ -439,8 +439,7 @@ def slides(t, lang):
     # 6 — scenario, focused on money
     ec = economics()
     net = _k(ec["net"], lang)
-    per_v = ec["net"] / 20
-    sc = {"per": _k(per_v, lang), "p50": _k(per_v * 50, lang), "p100": _k(per_v * 100, lang)}
+    sc = {"net": net, "s1": _k(ec["net"], lang), "s3": _k(ec["net"] * 3, lang), "s5": _k(ec["net"] * 5, lang)}
     rows = "".join(f'<tr><th scope="row">{esc(en if lang == "en" else es)}<span>{esc(_calc_text(key, spend, red, lang))}</span></th>'
                    f'<td>{esc(_k(ec["lines"][key], lang))}</td></tr>'
                    for key, en, es, spend, red, _h1, _h2 in S.SAVINGS_LINES)
