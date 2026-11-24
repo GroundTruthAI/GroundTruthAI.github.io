@@ -63,6 +63,7 @@
 /* slide 2 */
 .s2{display:flex;flex-direction:column}
 .s2 .sl-h2{max-width:75%;margin-top:calc(var(--u)*2.4)}
+.s1 .sl-h1{margin-bottom:calc(var(--u)*1.2)}
 .s2 .ops{flex:0 0 auto;margin:auto 0}
 .op{display:flex;flex-direction:column}
 .ops{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:calc(var(--u)*1.6);align-items:stretch}
@@ -115,6 +116,8 @@
 .sl-proof strong{color:var(--save)}
 .sl-proof+.sl-proof{margin-top:calc(var(--u)*.8)}
 .sl-notc strong{color:var(--cyan)}
+.sl-what{color:var(--text)}
+.sl-sub{margin:calc(var(--u)*-.6) 0 calc(var(--u)*1.6);font:700 calc(var(--u)*1.4)/1.35 var(--display);color:var(--cyan)}
 .s1 .sl-lead{font-size:calc(var(--u)*1.22);margin-bottom:calc(var(--u)*1.2)}
 .s1 .sl-h1{font-size:calc(var(--u)*3.9)}
 .sl-next{margin:0;font-size:calc(var(--u)*1.02);line-height:1.45;color:var(--muted)}
@@ -214,6 +217,7 @@
   .cs-col h3 .op-ic{width:26px;height:26px}
   .sl-inds{font-size:.82rem;margin:16px 0 0}
   .sl-key-w{margin:16px 0 0}
+  .sl-sub{font-size:1rem;margin:0 0 16px}
   .sl-lead-c a{white-space:normal;overflow-wrap:anywhere}
 }
 

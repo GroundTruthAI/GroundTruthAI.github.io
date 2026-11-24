@@ -61,9 +61,10 @@ T = {
         "legal": [("Legal notice", "/legal-notice/"), ("Privacy policy", "/privacy/"), ("Cookie policy", "/cookie-policy/")],
         # 1 value proposition
         "h1a": "Keep data distributed.", "h1b": "Centralize intelligence.",
-        "lead": "GroundTruth AI is software that works inside each plant, business unit or region. It builds a much smaller "
-                "version of the data that contains what an AI model needs for a specific purpose. Only that smaller dataset is "
-                "shared; the original data stays where it is.",
+        "what_k": "What we do:",
+        "lead": "GroundTruth AI applies dataset distillation. Our software runs inside each plant, business unit or region and "
+                "distills the data into a much smaller training dataset that contains what an AI model needs for a specific purpose. "
+                "Only that distilled dataset is shared; the original data stays where it is.",
         "benefits": ["Enable new AI and analytics projects", "Reduce unnecessary data movement", "Optimize AI infrastructure costs"],
         "notc_k": "Dataset distillation, not compression",
         "notc": "Compression shrinks the same data, which must be unpacked before use, so the AI still processes all of it. "
@@ -72,7 +73,7 @@ T = {
         "proof": "In internal tests on four public datasets, models trained on 5–14% of the data came within 1.4–2.8 accuracy "
                  "points of models trained on all of it.",
         "d1_src": ["Industrial plants", "Business units", "Regions"], "d1_sub": "original data stays here",
-        "d1_core": ["Enterprise", "intelligence"], "d1_cap": "ONLY SMALL, APPROVED DATASETS TRAVEL",
+        "d1_core": ["Enterprise", "intelligence"], "d1_cap": "ONLY DISTILLED, APPROVED DATASETS TRAVEL",
         "d1_title": "Original data stays in industrial plants, business units and regions; only small, approved datasets reach a common enterprise intelligence environment.",
         # 2 why it matters
         "hw": "Your data is spread out. Your AI needs all of it.",
@@ -87,6 +88,7 @@ T = {
         "w_key": "The result: valuable AI projects are delayed, scaled down or never started.",
         # 3 opportunities
         "h2": "Three business opportunities. One technology.",
+        "h2_sub": "All three rest on the same technology: dataset distillation.",
         "opps": [
             ("Unlock new AI projects", "Train AI and run analytics with data from all your plants, subsidiaries and countries, even when that data cannot be centralized.",
              ["One predictive maintenance model for all plants", "Analytics across business units and countries", "AI on industrial data that cannot leave the plant network"]),
@@ -106,7 +108,7 @@ T = {
         "s3_lead": "Imagine a global manufacturer that wants to anticipate equipment failures across all its facilities while keeping "
                    "original operational data within its existing industrial environments.",
         "s3_key": "Enterprise-wide predictive maintenance without complete raw data consolidation.",
-        "s3_steps": ["Each plant keeps its historical data where it is", "GroundTruth AI, installed in each plant, prepares a much smaller dataset for the maintenance model",
+        "s3_steps": ["Each plant keeps its historical data where it is", "GroundTruth AI, installed in each plant, distills the data into a much smaller dataset for the maintenance model",
                      "After review and approval, only that dataset travels through the existing connection", "The central team trains one model with data from all 20 plants"],
         "s3_approach": "How it works, step by step",
         "figs": [("200 TB", "eligible data"), ("90%", "assumed reduction"), ("20 TB", "transferred"), ("180 TB", "potentially avoided")],
@@ -135,9 +137,10 @@ T = {
         "note": "Información orientativa para conversar. Las cifras y los escenarios son estimaciones y no tienen valor contractual.",
         "legal": [("Aviso legal", "/aviso-legal/"), ("Política de privacidad", "/privacidad/"), ("Política de cookies", "/cookies/")],
         "h1a": "Datos distribuidos.", "h1b": "Inteligencia centralizada.",
-        "lead": "GroundTruth AI es un software que trabaja dentro de cada planta, unidad de negocio o región. Genera una versión "
-                "mucho más pequeña de los datos con lo que un modelo de IA necesita para un objetivo concreto. Solo se comparte "
-                "ese conjunto reducido; los datos originales se quedan donde están.",
+        "what_k": "Qué hacemos:",
+        "lead": "GroundTruth AI aplica la destilación de datos. Nuestro software funciona dentro de cada planta, unidad de negocio "
+                "o región y destila los datos en un conjunto de entrenamiento mucho más pequeño, con lo que un modelo de IA necesita "
+                "para un objetivo concreto. Solo se comparte ese conjunto destilado; los datos originales se quedan donde están.",
         "benefits": ["Habilitar nuevos proyectos de IA y analítica", "Reducir el movimiento innecesario de datos", "Optimizar los costes de infraestructura de IA"],
         "notc_k": "Destilación de datos, no compresión",
         "notc": "La compresión reduce el tamaño de los mismos datos, que hay que descomprimir para usarlos: la IA sigue procesándolos "
@@ -146,7 +149,7 @@ T = {
         "proof": "En ensayos internos con cuatro conjuntos de datos públicos, los modelos entrenados con el 5–14 % de los datos "
                  "quedaron a 1,4–2,8 puntos de precisión de los entrenados con todos.",
         "d1_src": ["Plantas industriales", "Unidades de negocio", "Regiones"], "d1_sub": "datos originales en origen",
-        "d1_core": ["Inteligencia", "empresarial"], "d1_cap": "SOLO VIAJAN DATOS REDUCIDOS Y APROBADOS",
+        "d1_core": ["Inteligencia", "empresarial"], "d1_cap": "SOLO VIAJAN DATOS DESTILADOS Y APROBADOS",
         "d1_title": "Los datos originales se quedan en plantas, unidades de negocio y regiones; solo llegan a un entorno común de inteligencia empresarial conjuntos de datos reducidos y aprobados.",
         "hw": "Tus datos están repartidos. Tu IA los necesita todos.",
         "w_lead": "Las grandes empresas quieren una IA que aprenda de todas sus plantas, filiales y países. Pero sus datos están en "
@@ -159,6 +162,7 @@ T = {
         ],
         "w_key": "Resultado: proyectos de IA valiosos se retrasan, se recortan o nunca empiezan.",
         "h2": "Tres oportunidades de negocio. Una tecnología.",
+        "h2_sub": "Las tres se apoyan en la misma tecnología: la destilación de datos.",
         "opps": [
             ("Habilitar nuevos proyectos de IA", "Entrena IA y haz analítica con datos de todas tus plantas, filiales y países, aunque esos datos no se puedan centralizar.",
              ["Un modelo de mantenimiento predictivo para todas las plantas", "Analítica entre unidades de negocio y países", "IA con datos industriales que no pueden salir de la red de planta"]),
@@ -176,7 +180,7 @@ T = {
         "s3_lead": "Una empresa industrial quiere anticipar fallos de equipos en todas sus instalaciones, manteniendo los datos operativos "
                    "originales dentro de sus entornos industriales.",
         "s3_key": "Mantenimiento predictivo global sin centralizar todos los datos industriales originales.",
-        "s3_steps": ["Cada planta conserva su histórico de datos donde está", "GroundTruth AI, instalado en cada planta, prepara un conjunto de datos mucho menor para el modelo de mantenimiento",
+        "s3_steps": ["Cada planta conserva su histórico de datos donde está", "GroundTruth AI, instalado en cada planta, destila los datos en un conjunto mucho menor para el modelo de mantenimiento",
                      "Tras revisarlo y aprobarlo, solo ese conjunto viaja por la conexión ya existente", "El equipo central entrena un único modelo con datos de las 20 plantas"],
         "s3_approach": "Cómo funciona, paso a paso",
         "figs": [("200 TB", "datos elegibles"), ("90 %", "reducción supuesta"), ("20 TB", "transferidos"), ("180 TB", "que podrían no moverse")],
@@ -289,7 +293,7 @@ def slides(t, lang):
     sec(1, "s1",
         f'<div class="s-grid"><div class="s-text"><p class="sl-kick">{esc(t["kicker"])}</p>'
         f'<h1 class="sl-h1">{esc(t["h1a"])} <span class="g">{esc(t["h1b"])}</span></h1>'
-        f'<p class="sl-lead">{esc(t["lead"])}</p>'
+        f'<p class="sl-lead"><strong class="sl-what">{esc(t["what_k"])}</strong> {esc(t["lead"])}</p>'
         '<ul class="sl-ben">' + "".join(f'<li><span class="ben-n">{i}</span>{esc(b)}</li>' for i, b in enumerate(t["benefits"], 1)) + "</ul>"
         f'<p class="sl-proof sl-notc"><strong>{esc(t["notc_k"])}.</strong> {esc(t["notc"])}</p>'
         f'<p class="sl-proof"><strong>{esc(t["proof_k"])}.</strong> {esc(t["proof"])}</p></div>'
@@ -308,7 +312,7 @@ def slides(t, lang):
         + (f'<p class="op-tag">{esc(t["opp_tag"])}</p>' if i == 0 else "")
         + f'<h3>{esc(h)}</h3><p class="op-d">{esc(dsc)}</p><ul>' + "".join(f"<li>{esc(x)}</li>" for x in ex) + "</ul></li>"
         for i, (h, dsc, ex) in enumerate(t["opps"]))
-    sec(3, "s2", f'<h2 class="sl-h2">{esc(t["h2"])}</h2><ol class="ops">{opps}</ol>')
+    sec(3, "s2", f'<h2 class="sl-h2">{esc(t["h2"])}</h2><p class="sl-sub">{esc(t["h2_sub"])}</p><ol class="ops">{opps}</ol>')
 
     # 4 — business cases
     cols = []
