@@ -109,6 +109,8 @@ def render_home(cases, industries):
         '<p class="lead">Enable enterprise-wide analytics, reduce unnecessary data movement and optimize AI infrastructure efficiency.</p>'
         '<div class="cta-row"><a class="btn btn-primary btn-lg" href="/pilot/">Discuss your use case</a>'
         '<a class="btn btn-ghost btn-lg" href="/business-cases/">Explore business cases</a></div>'
+        '<p class="hero-brief"><a href="/resources/executive-brief/">Executive overview — GroundTruth AI in 4 slides</a>'
+        ' <span aria-hidden="true">·</span> <a href="/resources/executive-brief/es.html" hreflang="es" lang="es">Resumen ejecutivo en español</a></p>'
         f'</div><div class="hero-art">{hero_visual()}</div></div></div></section>'
 
         '<section class="sec sec-pillars" id="solutions" aria-labelledby="sol-h"><div class="wrap">'
@@ -773,6 +775,9 @@ def render_pilot(cases, industries):
         + '<section class="sec sec-alt" id="request" aria-labelledby="form-h"><div class="wrap two-col two-col-form">'
         '<div><h2 id="form-h">Tell us about your situation</h2>'
         '<p>We reply with a proposal for a short call. If distillation is not a good fit, we will say so.</p>'
+        '<p class="small">Sharing this internally first? <a href="/resources/executive-brief/">Executive overview in 4 slides</a> '
+        '(<a href="/resources/executive-brief/GroundTruthAI_Executive_Brief_EN.pdf">PDF</a> · '
+        '<a href="/resources/executive-brief/GroundTruthAI_Resumen_Comercial_ES.pdf" hreflang="es">PDF en español</a>)</p>'
         + ul(["Which data, where it lives, and why it cannot simply be centralized", "The model or analytics you want to build", "The baseline you would compare against"])
         + '<p class="small"><strong>No proprietary data needed.</strong> Please do not include confidential data, files or credentials in this form.</p>'
         '<div class="privacy" id="privacy"><h3 class="h-s">Privacy</h3>'

@@ -7,6 +7,7 @@ Usage: python3 tools/build.py && python3 tools/verify.py
 import glob
 import os
 import re
+import subprocess
 import sys
 from html.parser import HTMLParser
 from urllib.parse import urlparse
@@ -24,7 +25,7 @@ errors, warnings = [], []
 def err(m): errors.append(m)
 def warn(m): warnings.append(m)
 
-SKIP_DIRS = ("tools", "internal", "resources", ".git", "_dbg")
+SKIP_DIRS = ("tools", "internal", ".git", "_dbg")
 LEGACY = set(LEGACY_MAP)
 
 
@@ -230,14 +231,14 @@ if home:
     pos = [home.ids.index(x) if x in home.ids else -1 for x in order]
     if -1 in pos or pos != sorted(pos): err(f"home: section hierarchy wrong {list(zip(order, pos))}")
 for rel, p in pages.items():
-    if rel != "404.html" and "have no contractual value" not in " ".join(p.text):
+    if rel != "404.html" and not re.search(r"have no contractual value|no tienen valor contractual", " ".join(p.text)):
         err(f"{url_for(rel)}: legal disclaimer missing from footer")
 LEGAL_URLS = ("/aviso-legal/", "/privacidad/", "/cookies/", "/legal-notice/", "/privacy/", "/cookie-policy/")
 for u in LEGAL_URLS:
     if u not in by_url: err(f"missing legal page {u}")
 for rel, p in pages.items():
-    for u in LEGAL_URLS:
-        if u not in p.links: err(f"{url_for(rel)}: footer link to {u} missing"); break
+    if not (all(u in p.links for u in LEGAL_URLS[:3]) or all(u in p.links for u in LEGAL_URLS[3:])):
+        err(f"{url_for(rel)}: links to the legal pages missing")
 missing = [k for k in ("owner", "nif", "address", "email") if not S.LEGAL.get(k)]
 if missing:
     err(f"RELEASE BLOCKER: legal owner data missing in content/site.py LEGAL: {missing} (required by LSSI-CE art. 10 and RGPD art. 13)")
@@ -246,6 +247,21 @@ if pending:
     warn(f"Legal data still pending ({', '.join(pending)}): replace in content/site.py LEGAL as soon as the company has them")
 for u in ("/simulator/", "/roi/"):
     if u in by_url and "Not contractual." not in " ".join(by_url[u].text): err(f"{u}: non-contractual note missing next to results")
+# executive brief: 4 slides per language, PDFs present with 4 pages of 960 x 540 pt (13.333 x 7.5 in)
+import shutil
+for u, pdf in (("/resources/executive-brief/", "GroundTruthAI_Executive_Brief_EN.pdf"), ("/resources/executive-brief/es.html", "GroundTruthAI_Resumen_Comercial_ES.pdf")):
+    src = open(os.path.join(ROOT, u.lstrip("/") + ("index.html" if u.endswith("/") else "")), encoding="utf-8").read() if u in by_url else ""
+    if src.count('aria-roledescription="slide"') != 4: err(f"{u}: expected exactly 4 slides")
+    path = os.path.join(ROOT, "resources/executive-brief", pdf)
+    if not os.path.exists(path): err(f"missing PDF {pdf} (run tools/build_pdf.py)"); continue
+    if shutil.which("pdfinfo"):
+        info = subprocess.run(["pdfinfo", path], capture_output=True, text=True).stdout
+        if not re.search(r"Pages:\s+4\b", info): err(f"{pdf}: expected 4 pages")
+        if not re.search(r"Page size:\s+960 x 540 pts", info): err(f"{pdf}: pages are not 16:9 (13.333 x 7.5 in)")
+    else:
+        warn("pdfinfo not available: PDF page count and size not checked")
+    if os.path.getmtime(path) < os.path.getmtime(os.path.join(ROOT, "tools/sitegen/pages_brief.py")):
+        warn(f"{pdf} is older than the presentation source: rerun tools/build_pdf.py")
 sim = by_url.get("/simulator/")
 if not sim: err("missing page /simulator/")
 else:
