@@ -20,7 +20,7 @@ import threading
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
-from sitegen.pages_brief import DIR, PDF, URL, T  # noqa: E402
+from sitegen.pages_brief import DIR, OLD_DIR, PDF, URL, T  # noqa: E402
 
 CHROME_CANDIDATES = [
     os.environ.get("CHROME", ""),
@@ -94,6 +94,9 @@ def main():
                             f"--print-to-pdf={out}", url], check=True, capture_output=True)
             add_metadata(out, T[lang]["title"], META[lang]["subject"], META[lang]["keywords"], META[lang]["lang"])
             print(f"Wrote {os.path.relpath(out, ROOT)} ({os.path.getsize(out) // 1024} KB)")
+            old = os.path.join(ROOT, OLD_DIR.strip("/"), PDF[lang])
+            os.makedirs(os.path.dirname(old), exist_ok=True)
+            shutil.copyfile(out, old)   # keep previously shared links working
     finally:
         srv.shutdown()
 

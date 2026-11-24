@@ -248,12 +248,14 @@ if pending:
 for u in ("/simulator/", "/roi/"):
     if u in by_url and "Not contractual." not in " ".join(by_url[u].text): err(f"{u}: non-contractual note missing next to results")
 # executive brief: N slides per language, PDFs present with N pages of 960 x 540 pt (13.333 x 7.5 in)
-from sitegen.pages_brief import N_SLIDES
+from sitegen.pages_brief import N_SLIDES, URL as BRIEF_URL, PDF as BRIEF_PDF, DIR as BRIEF_DIR, OLD_DIR as BRIEF_OLD
 import shutil
-for u, pdf in (("/resources/executive-brief/", "GroundTruthAI_Executive_Brief_EN.pdf"), ("/resources/executive-brief/es.html", "GroundTruthAI_Resumen_Comercial_ES.pdf")):
+for u, pdf in ((BRIEF_URL["en"], BRIEF_PDF["en"]), (BRIEF_URL["es"], BRIEF_PDF["es"])):
     src = open(os.path.join(ROOT, u.lstrip("/") + ("index.html" if u.endswith("/") else "")), encoding="utf-8").read() if u in by_url else ""
     if src.count('aria-roledescription="slide"') != N_SLIDES: err(f"{u}: expected exactly {N_SLIDES} slides")
-    path = os.path.join(ROOT, "resources/executive-brief", pdf)
+    old_copy = os.path.join(ROOT, BRIEF_OLD.strip("/"), pdf)
+    if not os.path.exists(old_copy): err(f"missing PDF copy at the previous location {BRIEF_OLD}{pdf}")
+    path = os.path.join(ROOT, BRIEF_DIR.strip("/"), pdf)
     if not os.path.exists(path): err(f"missing PDF {pdf} (run tools/build_pdf.py)"); continue
     if shutil.which("pdfinfo"):
         info = subprocess.run(["pdfinfo", path], capture_output=True, text=True).stdout

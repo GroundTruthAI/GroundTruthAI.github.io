@@ -1,4 +1,4 @@
-"""Executive commercial presentation (6 slides, EN + ES) at /resources/executive-brief/.
+"""Executive commercial presentation (EN + ES) at /executive/ and /executive/es/.
 
 Single source of truth for the HTML viewer and the PDFs: tools/build_pdf.py prints these same pages with
 headless Chrome (print styles in assets/css/brief.css give one 16:9 page per slide).
@@ -11,9 +11,10 @@ from content import site as S
 from . import core
 from .core import esc, asset, BRAND, CSP
 
-DIR = "/resources/executive-brief/"
+DIR = "/executive/"
+OLD_DIR = "/resources/executive-brief/"   # previous location: page redirects + PDF copies kept for shared links
 PDF = {"en": "GroundTruthAI_Executive_Brief_EN.pdf", "es": "GroundTruthAI_Resumen_Comercial_ES.pdf"}
-URL = {"en": DIR, "es": DIR + "es.html"}
+URL = {"en": DIR, "es": DIR + "es/"}
 
 
 def pdf_version():

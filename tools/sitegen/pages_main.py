@@ -110,8 +110,8 @@ def render_home(cases, industries):
         '<p class="lead">Enable enterprise-wide analytics, reduce unnecessary data movement and optimize AI infrastructure efficiency.</p>'
         '<div class="cta-row"><a class="btn btn-primary btn-lg" href="/pilot/">Contact</a>'
         '<a class="btn btn-ghost btn-lg" href="/business-cases/">Explore business cases</a></div>'
-        '<p class="hero-brief"><a href="/resources/executive-brief/">Executive overview — GroundTruth AI in 7 slides</a>'
-        ' <span aria-hidden="true">·</span> <a href="/resources/executive-brief/es.html" hreflang="es" lang="es">Resumen ejecutivo en español</a></p>'
+        '<p class="hero-brief"><a href="/executive/">Executive overview — GroundTruth AI in 7 slides</a>'
+        ' <span aria-hidden="true">·</span> <a href="/executive/es/" hreflang="es" lang="es">Resumen ejecutivo en español</a></p>'
         f'</div><div class="hero-art">{hero_visual()}</div></div></div></section>'
 
         '<section class="sec sec-pillars" id="solutions" aria-labelledby="sol-h"><div class="wrap">'
@@ -175,7 +175,7 @@ def render_home(cases, industries):
         + engagement_block(compact=True) +
         '<div class="cta-band eng-final"><div><h3 class="h-m">Have a distributed-data problem in mind?</h3>'
         '<p>Tell us where your data lives and what you want to train. <a href="/technology/#faq">Read the FAQ</a> first if you prefer.</p>'
-        f'<p class="small">Sharing this internally? <a href="/resources/executive-brief/">Executive overview in 7 slides</a> · '
+        f'<p class="small">Sharing this internally? <a href="/executive/">Executive overview in 7 slides</a> · '
         f'<a href="{brief_pdf("en")}">PDF</a> · <a href="{brief_pdf("es")}" hreflang="es">PDF en español</a></p></div>'
         '<div class="cta-stack"><a class="btn btn-primary btn-lg" href="/pilot/">Contact</a></div></div>'
         '</div></section>')
@@ -735,7 +735,7 @@ def render_company(cases):
               "GroundTruth AI enables enterprise intelligence across distributed and segregated data environments while reducing unnecessary data movement "
               "and optimizing AI infrastructure efficiency.",
               [("Home", "/"), ("Company", None)], "Company",
-              button("Contact", "/pilot/") + button("Executive overview (7 slides)", "/resources/executive-brief/", "ghost"))
+              button("Contact", "/pilot/") + button("Executive overview (7 slides)", "/executive/", "ghost"))
         + section("why", "Why we exist",
                   '<p class="lead-s">Enterprise data is distributed for good reasons: safety, ownership, regulation, cost. The default AI workflow ignores those reasons and asks for everything in one place. '
                   'We think the better answer is to move less, and to move only what a model actually needs.</p>'
@@ -782,7 +782,7 @@ def render_pilot(cases, industries):
         + '<section class="sec sec-alt" id="request" aria-labelledby="form-h"><div class="wrap two-col two-col-form">'
         '<div><h2 id="form-h">Tell us about your situation</h2>'
         '<p>We reply with a proposal for a short call. If distillation is not a good fit, we will say so.</p>'
-        '<p class="small">Sharing this internally first? <a href="/resources/executive-brief/">Executive overview in 7 slides</a> '
+        '<p class="small">Sharing this internally first? <a href="/executive/">Executive overview in 7 slides</a> '
         f'(<a href="{brief_pdf("en")}">PDF</a> · '
         f'<a href="{brief_pdf("es")}" hreflang="es">PDF en español</a>)</p>'
         + ul(["Which data, where it lives, and why it cannot simply be centralized", "The model or analytics you want to build", "The baseline you would compare against"])
@@ -845,6 +845,9 @@ LEGACY = {
     "starter-page.html": "/",
     # Retired Smart Data Savings briefing deck (claims superseded; original kept in internal/legacy/)
     "resources/smart-data-savings/index.html": "/evidence/",
+    # Executive brief moved to /executive/ (old PDFs are kept as copies by tools/build_pdf.py)
+    "resources/executive-brief/index.html": "/executive/",
+    "resources/executive-brief/es.html": "/executive/es/",
 }
 
 
