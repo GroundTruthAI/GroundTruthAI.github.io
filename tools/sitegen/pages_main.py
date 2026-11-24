@@ -147,6 +147,10 @@ def render_home(cases, industries):
         '</div></section>'
 
         + section("how", "How it works",
+                  '<div class="callout notc"><p class="callout-h">Dataset distillation, not data compression</p>'
+                  '<p>Compression shrinks the same data, which has to be decompressed before it is used, so AI training still processes all of it. '
+                  'Dataset distillation builds a much smaller training dataset for a specific task, which models use directly. '
+                  '<a href="/technology/#compare">How the two differ</a></p></div>'
                   f'<ol class="flow-steps flow-5">{flow_html}</ol>'
                   '<p class="note"><strong>Experimental</strong>: implemented in the prototype used in internal experiments. '
                   '<strong>Reference architecture</strong>: the deployment pattern a pilot implements with your teams. '

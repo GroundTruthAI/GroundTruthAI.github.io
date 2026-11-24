@@ -981,3 +981,6 @@ h2{font-size:clamp(1.8rem,3.4vw,2.8rem);line-height:1.06}
 .hero-brief{margin:1em 0 0;font-size:.92rem;color:var(--muted)}
 .hero-brief a{color:var(--muted);text-underline-offset:3px}
 .hero-brief a:first-child{color:var(--text);font-weight:600}
+.notc{border-left:1px solid var(--stroke);box-shadow:inset 3px 0 0 var(--cyan);margin-top:0}
+.notc p{margin:0;color:var(--muted)}
+.notc .callout-h{color:var(--cyan)}

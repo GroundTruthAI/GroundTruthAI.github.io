@@ -65,6 +65,9 @@ T = {
                 "version of the data that contains what an AI model needs for a specific purpose. Only that smaller dataset is "
                 "shared; the original data stays where it is.",
         "benefits": ["Enable new AI and analytics projects", "Reduce unnecessary data movement", "Optimize AI infrastructure costs"],
+        "notc_k": "Dataset distillation, not compression",
+        "notc": "Compression shrinks the same data, which must be unpacked before use, so the AI still processes all of it. "
+                "Distillation builds a much smaller dataset that the AI uses directly to learn.",
         "proof_k": "Proof point",
         "proof": "In internal tests on four public datasets, models trained on 5–14% of the data came within 1.4–2.8 accuracy "
                  "points of models trained on all of it.",
@@ -136,6 +139,9 @@ T = {
                 "mucho más pequeña de los datos con lo que un modelo de IA necesita para un objetivo concreto. Solo se comparte "
                 "ese conjunto reducido; los datos originales se quedan donde están.",
         "benefits": ["Habilitar nuevos proyectos de IA y analítica", "Reducir el movimiento innecesario de datos", "Optimizar los costes de infraestructura de IA"],
+        "notc_k": "Destilación de datos, no compresión",
+        "notc": "La compresión reduce el tamaño de los mismos datos, que hay que descomprimir para usarlos: la IA sigue procesándolos "
+                "todos. La destilación crea un conjunto de datos mucho más pequeño que la IA usa directamente para aprender.",
         "proof_k": "Prueba técnica",
         "proof": "En ensayos internos con cuatro conjuntos de datos públicos, los modelos entrenados con el 5–14 % de los datos "
                  "quedaron a 1,4–2,8 puntos de precisión de los entrenados con todos.",
@@ -285,6 +291,7 @@ def slides(t, lang):
         f'<h1 class="sl-h1">{esc(t["h1a"])} <span class="g">{esc(t["h1b"])}</span></h1>'
         f'<p class="sl-lead">{esc(t["lead"])}</p>'
         '<ul class="sl-ben">' + "".join(f'<li><span class="ben-n">{i}</span>{esc(b)}</li>' for i, b in enumerate(t["benefits"], 1)) + "</ul>"
+        f'<p class="sl-proof sl-notc"><strong>{esc(t["notc_k"])}.</strong> {esc(t["notc"])}</p>'
         f'<p class="sl-proof"><strong>{esc(t["proof_k"])}.</strong> {esc(t["proof"])}</p></div>'
         f'<div class="s-art">{diagram_value(t, u(1))}</div></div>')
 
