@@ -107,7 +107,7 @@ def render_home(cases, industries):
         '<p class="hero-sub">Train AI models across industrial plants, business units and segregated data environments '
         'without centralizing entire raw datasets.</p>'
         '<p class="lead">Enable enterprise-wide analytics, reduce unnecessary data movement and optimize AI infrastructure efficiency.</p>'
-        '<div class="cta-row"><a class="btn btn-primary btn-lg" href="/pilot/">Discuss your use case</a>'
+        '<div class="cta-row"><a class="btn btn-primary btn-lg" href="/pilot/">Contact</a>'
         '<a class="btn btn-ghost btn-lg" href="/business-cases/">Explore business cases</a></div>'
         '<p class="hero-brief"><a href="/resources/executive-brief/">Executive overview — GroundTruth AI in 6 slides</a>'
         ' <span aria-hidden="true">·</span> <a href="/resources/executive-brief/es.html" hreflang="es" lang="es">Resumen ejecutivo en español</a></p>'
@@ -170,7 +170,7 @@ def render_home(cases, industries):
         + engagement_block(compact=True) +
         '<div class="cta-band eng-final"><div><h3 class="h-m">Have a distributed-data problem in mind?</h3>'
         '<p>Tell us where your data lives and what you want to train. <a href="/technology/#faq">Read the FAQ</a> first if you prefer.</p></div>'
-        '<div class="cta-stack"><a class="btn btn-primary btn-lg" href="/pilot/">Discuss your use case</a></div></div>'
+        '<div class="cta-stack"><a class="btn btn-primary btn-lg" href="/pilot/">Contact</a></div></div>'
         '</div></section>')
 
     page("/", "GroundTruth AI — Keep data distributed. Centralize intelligence.",
@@ -390,7 +390,7 @@ def render_technology(cases):
                   '<p><a class="link-arrow" href="/evidence/#roadmap">Technical validation roadmap</a></p>')
         + section("faq", "Frequently asked questions",
                   f'<div class="faq"><div class="faq-i"><h3>Does GroundTruth AI replace our data lake?</h3><p>No. Original data stays in its repositories under your retention policies. GroundTruth AI produces task-specific training datasets from it; it does not replace data lakes, historians or warehouses.</p></div><div class="faq-i"><h3>Can original industrial data remain within OT?</h3><p>In the source-side reference architecture, yes. Distillation runs in an approved OT-side computing environment, and only approved optimized datasets cross the boundary through existing exchange mechanisms such as the industrial DMZ. The OT and data owners decide what may cross.</p></div><div class="faq-i"><h3>Is GroundTruth AI equivalent to conventional data compression?</h3><p>No. Compression encodes every byte more compactly and is decompressed before use, so the training volume is unchanged. Distillation builds a smaller training dataset for a defined task; it is not designed to reproduce the original data.</p></div><div class="faq-i"><h3>Is GroundTruth AI equivalent to federated learning?</h3><p>No. Federated learning trains models inside every domain and exchanges model updates repeatedly. Source-side distillation sends approved optimized datasets to a central environment, where training can stay centralized. It does not provide the privacy guarantees of privacy-preserving federated learning, and the two approaches can be combined.</p></div><div class="faq-i"><h3>Does dataset distillation guarantee privacy or anonymization?</h3><p>No. Distillation is not anonymization, differential privacy or encryption. Optimized datasets are derived from the source data, may still contain sensitive information and remain subject to the same classification, protection and transfer rules.</p></div><div class="faq-i"><h3>Can the same optimized dataset support multiple analytical tasks?</h3><p>Not by default. An optimized dataset is built and evaluated for a defined target, model family and metric. Using it for another task requires evaluating it for that task, and often generating a new dataset.</p></div><div class="faq-i"><h3>What happens when analytical requirements change?</h3><p>A new or changed objective generally needs a new optimized dataset, generated from the original data that remains in its source environment, and evaluated for the new workload.</p></div><div class="faq-i"><h3>How can an enterprise evaluate the technology?</h3><p>In three stages: an architecture discovery conversation, a technical feasibility assessment on one representative workload, and an enterprise pilot with success criteria agreed in advance.</p></div></div>'
-                  '<p><a class="link-arrow" href="/pilot/">Discuss your use case</a></p>')
+                  '<p><a class="link-arrow" href="/pilot/">Contact</a></p>')
         + section("adjacent", "The wider engine and adjacent capabilities",
                   '<p>Distillation is part of a multimodal intelligence engine designed to fuse tabular, image, behavioral and time-series signals. '
                   'The same engine supports capabilities that are <strong>prototypes</strong>, not validated on customer data and outside the scope of the business cases on this site:</p>'
@@ -467,7 +467,7 @@ def render_evidence(cases):
               "Results from internal experiments on public benchmarks, how to read them, how each claim on this site is classified, "
               "and the validation work that pilots are designed to complete.",
               [("Home", "/"), ("Evidence", None)], "Evidence",
-              button("Discuss your use case", "/pilot/") + button("Validation roadmap", "#roadmap", "ghost"))
+              button("Contact", "/pilot/") + button("Validation roadmap", "#roadmap", "ghost"))
         + section("benchmarks", "Results on public benchmarks",
                   '<p>The same model architecture was trained on the full training data and on the distilled training data, and both were evaluated on the same test data.</p>'
                   '<div class="table-wrap"><table class="tbl tbl-bm"><caption class="sr-only">Benchmark results</caption><thead><tr><th scope="col">Dataset</th><th scope="col">Public dataset</th>'
@@ -728,7 +728,7 @@ def render_company(cases):
               "GroundTruth AI enables enterprise intelligence across distributed and segregated data environments while reducing unnecessary data movement "
               "and optimizing AI infrastructure efficiency.",
               [("Home", "/"), ("Company", None)], "Company",
-              button("Discuss your use case", "/pilot/"))
+              button("Contact", "/pilot/"))
         + section("why", "Why we exist",
                   '<p class="lead-s">Enterprise data is distributed for good reasons: safety, ownership, regulation, cost. The default AI workflow ignores those reasons and asks for everything in one place. '
                   'We think the better answer is to move less, and to move only what a model actually needs.</p>'
@@ -748,7 +748,7 @@ def render_company(cases):
                   '<div class="tension"><h3>Your thresholds</h3><p>You define acceptable model performance and economic targets before a pilot starts.</p></div></div>')
         + section("contact", "Contact",
                   '<p>For use-case discussions, feasibility assessments, pilots, technology integrations and technical due diligence, use the request form. We reply with a proposal for a short call.</p>'
-                  '<div class="cta-row">' + button("Discuss your use case", "/pilot/") + button("Discuss a technology integration", "/pilot/?type=partnership", "ghost") + '</div>', cls="sec-alt"))
+                  '<div class="cta-row">' + button("Contact", "/pilot/") + button("Discuss a technology integration", "/pilot/?type=partnership", "ghost") + '</div>', cls="sec-alt"))
     page("/company/", "Company", "About GroundTruth AI: mission, solution families, current stage, principles and how to get in touch.", body, active="company", cases=cases, priority="0.5")
 
 
@@ -766,9 +766,9 @@ def render_pilot(cases, industries):
                      f'<a class="link-arrow" href="/pilot/?type={key}#request">{esc(cta)}</a></li>'
                      for i, (key, name, cta, desc, _p) in enumerate(S.ENGAGEMENT, 1))
     body = (
-        _hero("Discuss your use case",
+        _hero("Contact",
               "Start with a short conversation about your architecture. Move to a feasibility assessment and an enterprise pilot only when the case is clear.",
-              [("Home", "/"), ("Discuss your use case", None)], "Commercial engagement")
+              [("Home", "/"), ("Contact", None)], "Commercial engagement")
         + section("stages", "Three steps, each with a clear decision",
                   f'<ol class="eng-list">{stages}</ol>'
                   '<p class="note">Pilots run in your environment, against your baseline, with success criteria you set before they start. Pricing is scoped per engagement and not published.</p>')
@@ -803,12 +803,12 @@ def render_pilot(cases, industries):
         '<p class="small consent-link"><a href="/privacy/">Read the privacy policy</a> · <a href="/privacidad/" lang="es">Política de privacidad (español)</a></p>'
         '<p class="form-err" id="p-err" role="alert" hidden></p>'
         '<p class="form-status" id="p-status" role="status" aria-live="polite"></p>'
-        '<button class="btn btn-primary" type="submit" id="p-submit">Discuss your use case</button>'
+        '<button class="btn btn-primary" type="submit" id="p-submit">Contact</button>'
         '<div class="form-out" id="p-out" hidden><p class="callout-h" id="p-out-h" tabindex="-1">Your request</p>'
         '<p id="p-out-msg"></p><label for="p-text" class="sr-only">Prepared request</label><textarea id="p-text" rows="10" readonly></textarea>'
         '<button class="btn btn-ghost btn-sm" type="button" id="p-copy">Copy request</button></div>'
         '</form></div></section>')
-    page("/pilot/", "Discuss your use case", "Start a conversation with GroundTruth AI: architecture discovery, a technical feasibility assessment or an enterprise pilot on one workload in your environment.",
+    page("/pilot/", "Contact", "Contact GroundTruth AI to start a conversation with GroundTruth AI: architecture discovery, a technical feasibility assessment or an enterprise pilot on one workload in your environment.",
          body, active="", cases=cases, priority="0.9", extra_js=("/assets/js/pilot.js",), connect=S.FORM_ORIGIN)
 
 

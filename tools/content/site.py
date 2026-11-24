@@ -173,7 +173,7 @@ PILLAR_OF = {cid: p for p in PILLARS for cid in p["cases"]}
 
 # Three-stage commercial engagement. (type key used by the request form, label, call to action, description)
 ENGAGEMENT = [
-    ("discovery", "Architecture discovery", "Discuss your use case",
+    ("discovery", "Architecture discovery", "Contact",
      "A short conversation about your business problem, data architecture, segregation requirements, current AI workloads "
      "and constraints, and whether GroundTruth AI is a plausible fit. No data is shared.",
      ["Business problem and current AI workloads", "Existing data architecture and segregation requirements",

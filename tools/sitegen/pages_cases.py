@@ -327,7 +327,7 @@ def render_explorer(cases, industries):
         '<h2 id="idx-h">Business case index</h2><p>Grouped by solution family. Every case is an enterprise application for pilot evaluation.</p>'
         '<div class="table-wrap"><table class="tbl"><thead><tr><th scope="col">Business case</th><th scope="col">Solution family</th>'
         f'<th scope="col">Primary outcome</th></tr></thead><tbody>{table_rows}</tbody></table></div>'
-        '<div class="cta-row">' + button("Discuss your use case", "/pilot/") + button("Try the architecture simulator", "/simulator/", "ghost")
+        '<div class="cta-row">' + button("Contact", "/pilot/") + button("Try the architecture simulator", "/simulator/", "ghost")
         + button("Open the ROI calculator", "/roi/", "ghost") + '</div>'
         '</div></section>')
     page("/business-cases/", "Business cases by solution family",

@@ -24,7 +24,7 @@ def render_industry(i, cases, industries):
         + breadcrumb([("Home", "/"), ("Industries", "/industries/"), (i["name"], None)])
         + '<p class="eyebrow">Industry</p>'
         f'<h1>{esc(i["name"])}</h1><p class="lead">{md(i["short"])}</p>'
-        f'<div class="cta-row">{button("Discuss your use case", "/pilot/?industry=" + i["slug"])}'
+        f'<div class="cta-row">{button("Contact", "/pilot/?industry=" + i["slug"])}'
         f'{button("Most relevant business case", case_url(by_id[first]), "ghost")}</div></div></div>'
         '<section class="sec" aria-labelledby="ib-h"><div class="wrap">'
         '<h2 id="ib-h">Business cases that matter most in this sector</h2>'

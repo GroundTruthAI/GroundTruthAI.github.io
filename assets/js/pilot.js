@@ -31,7 +31,7 @@
       var opt = caseSel.options[caseSel.selectedIndex];
       var t = typeSel.value;
       if (LABELS[t]) submit.textContent = LABELS[t];
-      else submit.textContent = (opt && opt.dataset.cta) ? opt.dataset.cta : "Discuss your use case";
+      else submit.textContent = (opt && opt.dataset.cta) ? opt.dataset.cta : "Contact";
     }
     caseSel.addEventListener("change", syncLabel);
     typeSel.addEventListener("change", syncLabel);

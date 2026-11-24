@@ -79,7 +79,7 @@ def _flagship_menu(cases):
         '<li><a href="/simulator/">Architecture simulator</a></li>'
         '<li><a href="/roi/">ROI calculator</a></li>'
         '<li><a href="/industries/">Business cases by industry</a></li>'
-        '<li><a href="/pilot/">Discuss your use case</a></li>'
+        '<li><a href="/pilot/">Contact</a></li>'
         '</ul></div></div>')
 
 
@@ -104,7 +104,7 @@ def header(active, cases):
         '<span class="nav-toggle-bars" aria-hidden="true"></span><span class="sr-only">Menu</span></button>'
         '<nav id="site-nav" class="site-nav" aria-label="Primary">'
         f'<ul class="nav-list">{"".join(links)}</ul>'
-        '<a class="btn btn-primary btn-sm nav-cta" href="/pilot/">Discuss your use case</a>'
+        '<a class="btn btn-primary btn-sm nav-cta" href="/pilot/">Contact</a>'
         '</nav></div></header>')
 
 
@@ -119,7 +119,7 @@ def footer(cases):
         '<div class="ft-top">'
         f'<div class="ft-brand"><a class="brand" href="/">{BRAND}</a>'
         '<p>Keep data distributed. Centralize intelligence.</p>'
-        '<a class="btn btn-primary btn-sm" href="/pilot/">Discuss your use case</a></div>'
+        '<a class="btn btn-primary btn-sm" href="/pilot/">Contact</a></div>'
         '<nav class="ft-nav" aria-label="Footer">'
         f'<div>{col(p1)}</div>'
         f'<div>{col(p2)}{col(p3)}</div>'

@@ -222,7 +222,7 @@ for pl in S.PILLARS:
     if "Illustrative enterprise scenario" not in " ".join(p.text): err(f"solution {pl['slug']}: scenario label missing")
 if home:
     t = " ".join(home.text)
-    for k in ("Discuss your use case", "Explore business cases", "Illustrative enterprise scenario"):
+    for k in ("Contact", "Explore business cases", "Illustrative enterprise scenario"):
         if k not in t: err(f"home: '{k}' missing")
     for pl in S.PILLARS:
         if pl["name"] not in t: err(f"home: pillar {pl['name']} missing")
