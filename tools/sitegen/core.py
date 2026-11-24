@@ -11,7 +11,11 @@ CSP = ("default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'
        "img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; "
        "form-action 'none'; upgrade-insecure-requests")
 
-ASSET_VERSION = "20261124"
+def asset(path):
+    """Cache-busting URL: version = hash of the file contents, so browsers refetch whenever it changes."""
+    import hashlib
+    with open(os.path.join(ROOT, path.lstrip("/")), "rb") as f:
+        return f"{path}?v={hashlib.sha256(f.read()).hexdigest()[:10]}"
 
 PAGES = []  # (path, priority) for sitemap
 
@@ -138,7 +142,7 @@ def page(path, title, description, body, active="", cases=(), priority="0.6", ex
     """Render and write a full page. `path` is the URL path, e.g. '/business-cases/'."""
     canonical = S.BASE_URL + path
     full_title = title if title.startswith(S.SITE_NAME) else f"{title} · {S.SITE_NAME}"
-    js = "".join(f'<script src="{j}?v={ASSET_VERSION}" defer></script>' for j in ("/assets/js/site.js",) + tuple(extra_js))
+    js = "".join(f'<script src="{asset(j)}" defer></script>' for j in ("/assets/js/site.js",) + tuple(extra_js))
     bc = f' class="{body_class}"' if body_class else ""
     doc = (
         '<!doctype html>\n<html lang="en">\n<head>\n'
@@ -158,7 +162,7 @@ def page(path, title, description, body, active="", cases=(), priority="0.6", ex
         '<link rel="icon" href="/assets/img/favicon.png">\n'
         '<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">\n'
         '<link rel="preload" href="/assets/fonts/Inter-latin.woff2" as="font" type="font/woff2" crossorigin>\n'
-        f'<link rel="stylesheet" href="/assets/css/site.css?v={ASSET_VERSION}">\n'
+        f'<link rel="stylesheet" href="{asset("/assets/css/site.css")}">\n'
         f'{js}\n'
         f'</head>\n<body{bc}>\n'
         f'{header(active, cases)}\n'
