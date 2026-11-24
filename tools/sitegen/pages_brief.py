@@ -41,7 +41,8 @@ def economics():
 
 def _calc_text(key, spend, red, lang):
     if key == "storage":
-        return ("500 TB × $40/TB·month · −{r}%" if lang == "en" else "500 TB × 40 €/TB·mes · −{r} %").format(r=red)
+        return ("500 TB (200 TB + backups and replicas) × $40/TB·month · −{r}%" if lang == "en"
+                else "500 TB (200 TB + backups y réplicas) × 40 €/TB·mes · −{r} %").format(r=red)
     amount = _k(spend, lang)
     return (f"{amount} a year · −{red}%" if lang == "en" else f"{amount} al año · −{red}\u00a0%")
 
@@ -163,12 +164,12 @@ T = {
         "h3m": "One AI system. ≈{net} saved every year.",
         "money_k": "Estimated net saving per year · ONE AI system (predictive maintenance) across 20 plants",
         "scale_k": "Each additional AI system adds its own savings",
-        "scale": [("1 system", "{s1}"), ("3 systems", "{s3}"), ("5 systems", "{s5}")],
+        "scale": [("2 systems", "{s2}"), ("5 systems", "{s5}"), ("10 systems", "{s10}")],
         "scale_n": "Other AI systems on the same plants (quality, energy, anomaly detection…), assuming similar data and compute spend per system. More plants also increase the saving.",
         "money_s": "≈{net3} over three years · before license costs",
         "break_d": ("Distillation and validation", "compute at the plants + dataset checks"),
         "break_t": "Net saving per year",
-        "s6_qual": "Illustrative estimate for a 20-plant AI program, not a customer deployment and not contractual. Spend levels and "
+        "s6_qual": "Illustrative estimate for one AI system across 20 plants, not a customer deployment and not contractual. Spend levels and "
                    "reduction rates are GroundTruth AI planning assumptions to be validated in a pilot; they are the defaults of the ROI calculator. "
                    "Calculate yours at groundtruthai.github.io/roi",
         "s3_lead": "Imagine a global manufacturer that wants to anticipate equipment failures across all its facilities while keeping "
@@ -261,12 +262,12 @@ T = {
         "h3m": "Un solo sistema de IA. ≈{net} de ahorro al año.",
         "money_k": "Ahorro neto estimado al año · UN solo sistema de IA (mantenimiento predictivo) en 20 plantas",
         "scale_k": "Cada sistema de IA adicional suma sus propios ahorros",
-        "scale": [("1 sistema", "{s1}"), ("3 sistemas", "{s3}"), ("5 sistemas", "{s5}")],
+        "scale": [("2 sistemas", "{s2}"), ("5 sistemas", "{s5}"), ("10 sistemas", "{s10}")],
         "scale_n": "Otros sistemas de IA en las mismas plantas (calidad, energía, detección de anomalías…), suponiendo un gasto en datos y cómputo similar por sistema. Con más plantas, el ahorro también crece.",
         "money_s": "≈{net3} en tres años · antes del coste de licencia",
         "break_d": ("Destilación y validación", "cómputo en planta + revisión de los datos"),
         "break_t": "Ahorro neto al año",
-        "s6_qual": "Estimación ilustrativa para un programa de IA en 20 plantas, no un despliegue en cliente ni con valor contractual. "
+        "s6_qual": "Estimación ilustrativa para un solo sistema de IA en 20 plantas, no un despliegue en cliente ni con valor contractual. "
                    "Los niveles de gasto y los porcentajes de reducción son supuestos de planificación de GroundTruth AI que deben "
                    "validarse en un piloto; son los valores por defecto de la calculadora ROI. Calcula el tuyo en groundtruthai.github.io/roi",
         "s3_lead": "Una empresa industrial quiere anticipar fallos de equipos en todas sus instalaciones, manteniendo los datos operativos "
@@ -439,7 +440,7 @@ def slides(t, lang):
     # 6 — scenario, focused on money
     ec = economics()
     net = _k(ec["net"], lang)
-    sc = {"net": net, "s1": _k(ec["net"], lang), "s3": _k(ec["net"] * 3, lang), "s5": _k(ec["net"] * 5, lang)}
+    sc = {"net": net, "s2": _k(ec["net"] * 2, lang), "s5": _k(ec["net"] * 5, lang), "s10": _k(ec["net"] * 10, lang)}
     rows = "".join(f'<tr><th scope="row">{esc(en if lang == "en" else es)}<span>{esc(_calc_text(key, spend, red, lang))}</span></th>'
                    f'<td>{esc(_k(ec["lines"][key], lang))}</td></tr>'
                    for key, en, es, spend, red, _h1, _h2 in S.SAVINGS_LINES)

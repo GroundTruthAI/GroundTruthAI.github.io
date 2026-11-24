@@ -195,7 +195,7 @@
 .sl-scale dt{font-size:calc(var(--u)*.85);color:var(--muted)}
 .sl-scale dd{margin:0;font:800 calc(var(--u)*1.9)/1.1 var(--display)}
 .sl-scale-n{margin:calc(var(--u)*.5) 0 0;font-size:calc(var(--u)*.78);line-height:1.4;color:var(--dim)}
-.s-money .bd-scen{max-height:calc(var(--u)*21)}
+.s-money .bd-scen{max-height:calc(var(--u)*24)}
 .s-money .sl-h2{font-size:calc(var(--u)*2.6);margin-top:0;margin-bottom:calc(var(--u)*.8)}
 .s-money .s-grid{align-items:start;padding-top:calc(var(--u)*1.6)}
 .s-money .sl-lead{font-size:calc(var(--u)*1.02);margin-bottom:calc(var(--u)*.9)}
