@@ -4,7 +4,7 @@ BASE_URL = "https://groundtruthai.github.io"
 SITE_NAME = "GroundTruth AI"
 
 # Pilot / partnership intake address (also the mailto: fallback).
-CONTACT_EMAIL = "joseluis.salmeron@gmail.com"
+CONTACT_EMAIL = "ingenieros.informatica@gmail.com"
 
 # Form delivery service (GitHub Pages is static). FormSubmit AJAX endpoint.
 # After activation, FormSubmit issues a random alias: replace the address in the URL with it
