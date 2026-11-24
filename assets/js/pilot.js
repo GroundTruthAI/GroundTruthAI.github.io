@@ -41,17 +41,24 @@
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
-      var required = ["p-name", "p-email", "p-org", "p-consent"];
-      var bad = [];
-      required.forEach(function (id) {
-        var el = document.getElementById(id);
-        var ok = el.type === "checkbox" ? el.checked : el.value.trim() !== "" && el.checkValidity();
+      var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      var checks = [
+        ["p-name", function (el) { return el.value.trim() !== ""; }, "enter your name"],
+        ["p-email", function (el) { return emailRe.test(el.value.trim()); }, "enter a valid email address (for example name@company.com, without spaces)"],
+        ["p-org", function (el) { return el.value.trim() !== ""; }, "enter your organization"],
+        ["p-consent", function (el) { return el.checked; }, "tick the privacy consent box"]
+      ];
+      var bad = [], msgs = [];
+      checks.forEach(function (c) {
+        var el = document.getElementById(c[0]);
+        if (el.type === "email") el.value = el.value.trim();
+        var ok = c[1](el);
         el.setAttribute("aria-invalid", ok ? "false" : "true");
-        if (!ok) bad.push(el);
+        if (!ok) { bad.push(el); msgs.push(c[2]); }
       });
       if (bad.length) {
         err.hidden = false;
-        err.textContent = "Please complete the required fields: name, a valid work email, organization and consent.";
+        err.textContent = "Please " + msgs.join("; ") + ".";
         bad[0].focus();
         return;
       }

@@ -22,6 +22,13 @@ LEGAL = {
     "email": CONTACT_EMAIL,
     "registry": "Pendiente de inscripción en el Registro Mercantil",
 }
+# English rendering of the same values for the English legal pages (empty = use LEGAL as is).
+LEGAL_EN = {
+    "owner": "GroundTruth AI (company in formation)",
+    "nif": "Pending assignment",
+    "address": "Pending assignment; in the meantime, contact us by email",
+    "registry": "Pending registration in the Spanish Commercial Registry",
+}
 
 NAV = [
     # (label, href, key)

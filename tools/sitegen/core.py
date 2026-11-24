@@ -133,7 +133,7 @@ def footer(cases):
         '<li><a href="/evidence/">Evidence</a></li>'
         '<li><a href="/partners/">Partners and OEM</a></li>'
         '<li><a href="/company/">Company</a></li>'
-        '<li><a href="/aviso-legal/">Aviso legal</a></li>'
+        '<li><a href="/legal-notice/">Legal notice</a></li>'
         '</ul></div></nav></div>'
         '<div class="ft-legal" id="site-disclaimer"><p>Business cases describe enterprise applications for pilot evaluation; they have not yet been validated in production. '
         'Technical results come from internal experiments on public benchmark datasets. '
@@ -141,12 +141,13 @@ def footer(cases):
         '<a href="/evidence/">How we classify evidence</a>.</p>'
         '<p>Distilled datasets remain subject to applicable data protection, residency, transfer and security requirements.</p>'
         '<p class="ft-disc"><strong>Disclaimer.</strong> All figures, scenarios, simulations and calculations on this website, including the architecture simulator and the ROI calculator, are illustrative estimates derived from internal experiments on public benchmark datasets and from assumptions stated on the page or entered by the user. They are provided for information only, are not an offer or a commitment, carry no warranty or guarantee of results and have no contractual value. Actual results depend on each workload and environment and can only be determined in a specific evaluation. Any commercial commitment requires a separate written agreement.</p>'
-        '<p class="ft-links"><a href="/aviso-legal/">Aviso legal</a> · <a href="/privacidad/">Política de privacidad</a> · <a href="/cookies/">Política de cookies</a></p>'
+        '<p class="ft-links"><a href="/legal-notice/">Legal notice</a> · <a href="/privacy/">Privacy policy</a> · <a href="/cookie-policy/">Cookie policy</a>'
+        '<span class="ft-sep" aria-hidden="true"> | </span><span lang="es"><a href="/aviso-legal/">Aviso legal</a> · <a href="/privacidad/">Política de privacidad</a> · <a href="/cookies/">Política de cookies</a></span></p>'
         '<p>© 2026 GroundTruth AI</p></div>'
         '</div></footer>')
 
 
-def page(path, title, description, body, active="", cases=(), priority="0.6", extra_js=(), body_class="", connect="'none'", lang="en"):
+def page(path, title, description, body, active="", cases=(), priority="0.6", extra_js=(), body_class="", connect="'none'", lang="en", alternates=None):
     """Render and write a full page. `path` is the URL path, e.g. '/business-cases/'."""
     canonical = S.BASE_URL + path
     full_title = title if title.startswith(S.SITE_NAME) else f"{title} · {S.SITE_NAME}"
@@ -161,6 +162,7 @@ def page(path, title, description, body, active="", cases=(), priority="0.6", ex
         f'<title>{esc(full_title)}</title>\n'
         f'<meta name="description" content="{esc(description)}">\n'
         f'<link rel="canonical" href="{esc(canonical)}">\n'
+        + "".join(f'<link rel="alternate" hreflang="{k}" href="{esc(v)}">\n' for k, v in (alternates or {}).items()) +
         f'<meta property="og:title" content="{esc(full_title)}">\n'
         f'<meta property="og:description" content="{esc(description)}">\n'
         f'<meta property="og:url" content="{esc(canonical)}">\n'

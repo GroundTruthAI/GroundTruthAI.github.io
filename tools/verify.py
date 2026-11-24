@@ -232,10 +232,11 @@ if home:
 for rel, p in pages.items():
     if rel != "404.html" and "have no contractual value" not in " ".join(p.text):
         err(f"{url_for(rel)}: legal disclaimer missing from footer")
-for u in ("/aviso-legal/", "/privacidad/", "/cookies/"):
+LEGAL_URLS = ("/aviso-legal/", "/privacidad/", "/cookies/", "/legal-notice/", "/privacy/", "/cookie-policy/")
+for u in LEGAL_URLS:
     if u not in by_url: err(f"missing legal page {u}")
 for rel, p in pages.items():
-    for u in ("/aviso-legal/", "/privacidad/", "/cookies/"):
+    for u in LEGAL_URLS:
         if u not in p.links: err(f"{url_for(rel)}: footer link to {u} missing"); break
 missing = [k for k in ("owner", "nif", "address", "email") if not S.LEGAL.get(k)]
 if missing:
