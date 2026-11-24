@@ -3,10 +3,14 @@
 BASE_URL = "https://groundtruthai.github.io"
 SITE_NAME = "GroundTruth AI"
 
-# Pilot intake address. Leave empty until an official company mailbox is approved:
-# the pilot form then prepares a copyable request instead of opening an email client,
-# and tools/verify.py reports a release blocker.
-CONTACT_EMAIL = ""
+# Pilot / partnership intake address (also the mailto: fallback).
+CONTACT_EMAIL = "joseluis.salmeron@gmail.com"
+
+# Form delivery service (GitHub Pages is static). FormSubmit AJAX endpoint.
+# After activation, FormSubmit issues a random alias: replace the address in the URL with it
+# to keep the mailbox out of the page source.
+FORM_ORIGIN = "https://formsubmit.co"
+FORM_ENDPOINT = FORM_ORIGIN + "/ajax/" + CONTACT_EMAIL
 
 NAV = [
     # (label, href, key)

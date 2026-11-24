@@ -8,7 +8,7 @@ from content import site as S
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
 CSP = ("default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; "
-       "img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; "
+       "img-src 'self' data:; connect-src {connect}; object-src 'none'; base-uri 'self'; "
        "form-action 'none'; upgrade-insecure-requests")
 
 def asset(path):
@@ -138,7 +138,7 @@ def footer(cases):
         '</div></footer>')
 
 
-def page(path, title, description, body, active="", cases=(), priority="0.6", extra_js=(), body_class=""):
+def page(path, title, description, body, active="", cases=(), priority="0.6", extra_js=(), body_class="", connect="'none'"):
     """Render and write a full page. `path` is the URL path, e.g. '/business-cases/'."""
     canonical = S.BASE_URL + path
     full_title = title if title.startswith(S.SITE_NAME) else f"{title} · {S.SITE_NAME}"
@@ -148,7 +148,7 @@ def page(path, title, description, body, active="", cases=(), priority="0.6", ex
         '<!doctype html>\n<html lang="en">\n<head>\n'
         '<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
-        f'<meta http-equiv="Content-Security-Policy" content="{CSP}">\n'
+        f'<meta http-equiv="Content-Security-Policy" content="{CSP.format(connect=connect)}">\n'
         '<meta name="referrer" content="strict-origin-when-cross-origin">\n'
         f'<title>{esc(full_title)}</title>\n'
         f'<meta name="description" content="{esc(description)}">\n'

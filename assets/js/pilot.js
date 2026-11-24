@@ -69,16 +69,58 @@
         v("p-env")
       ].join("\n");
       var subject = submit.textContent + " — " + v("p-org");
-      text.value = "Subject: " + subject + "\n\n" + body;
-      out.hidden = false;
       var to = form.dataset.to;
-      if (to) {
-        outMsg.textContent = "Your email client should open with this request. If it does not, copy the text and send it to " + to + ".";
-        window.location.href = "mailto:" + encodeURIComponent(to) + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
-      } else {
-        outMsg.textContent = "Copy this request and send it to your GroundTruth AI contact. Nothing has been sent from this page.";
+      var endpoint = form.dataset.endpoint;
+      var status = document.getElementById("p-status");
+      var label0 = submit.textContent;
+
+      function fallback(reason) {
+        text.value = "Subject: " + subject + "\n\n" + body;
+        out.hidden = false;
+        out.classList.remove("ok");
+        outH.textContent = "We could not send your request automatically";
+        outMsg.textContent = reason + (to ? " Your email client will open with the request pre-filled; if it does not, copy the text below and send it to " + to + "." :
+          " Please copy the text below and send it to your GroundTruth AI contact.");
+        copy.hidden = false; text.hidden = false;
+        outH.focus();
+        if (to) window.location.href = "mailto:" + encodeURIComponent(to) + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
       }
-      outH.focus();
+
+      if (document.getElementById("p-hp").value) return; // bot trap
+      if (!endpoint || !window.fetch) { fallback("Online delivery is not available in this browser."); return; }
+
+      submit.disabled = true;
+      submit.textContent = "Sending…";
+      status.textContent = "Sending your request…";
+      var payload = {
+        _subject: subject, _template: "table", _captcha: "false",
+        request_type: label(typeSel), business_case: label(caseSel), industry: label(indSel),
+        name: v("p-name"), email: v("p-email"), organization: v("p-org"), role: v("p-role"),
+        timeline: label(document.getElementById("p-time")), data_environment: v("p-env"),
+        page: location.href
+      };
+      fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify(payload)
+      }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })
+        .then(function (res) {
+          submit.disabled = false; submit.textContent = label0; status.textContent = "";
+          if (res.ok && String(res.j.success) === "true") {
+            form.reset(); syncLabel();
+            out.hidden = false; out.classList.add("ok");
+            outH.textContent = "Request sent";
+            outMsg.textContent = "Thank you. Your request has reached the GroundTruth AI team; we will reply to " + payload.email + " with a scoping call proposal.";
+            copy.hidden = true; text.hidden = true;
+            outH.focus();
+          } else {
+            fallback("The delivery service did not accept the request" + (res.j && res.j.message ? " (" + res.j.message + ")." : "."));
+          }
+        })
+        .catch(function () {
+          submit.disabled = false; submit.textContent = label0; status.textContent = "";
+          fallback("The network request failed.");
+        });
     });
 
     copy.addEventListener("click", function () {

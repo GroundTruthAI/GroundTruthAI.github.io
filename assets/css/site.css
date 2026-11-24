@@ -513,6 +513,12 @@ span.lg-raw{color:var(--raw)} span.lg-distilled{color:var(--save)} span.lg-model
 .fld-check input{width:20px;height:20px;min-height:0;margin-top:2px;flex-shrink:0;accent-color:var(--save)}
 [aria-invalid="true"]{border-color:var(--danger)!important}
 .form-err{color:var(--danger);font-weight:600;margin:0}
+.form-status{margin:0;font-weight:600;color:var(--save)}
+.form-status:empty{display:none}
+.hp{position:absolute!important;left:-10000px;width:1px;height:1px;overflow:hidden}
+.pilot-form{position:relative}
+.form-out.ok{border-color:rgba(46,230,166,.5)}
+.btn[disabled]{opacity:.6;cursor:progress;transform:none}
 .form-out{padding:16px;border:1px solid color-mix(in srgb,var(--save) 40%,var(--line));border-radius:var(--r);background:var(--save-soft)}
 .form-out textarea{font:500 .82rem/1.5 var(--mono);margin:10px 0}
 
@@ -648,23 +654,18 @@ h2{font-size:clamp(1.8rem,3.4vw,2.8rem);line-height:1.06}
 .tr-hl>*{background:rgba(46,230,166,.10)!important;border-color:rgba(46,230,166,.35)!important}
 .matrix{border-spacing:0 6px}
 
-/* hero particle visual */
+/* hero visual (domains -> distill -> central model) */
 .hero-art{position:relative}
-.hero-art::before{content:"";position:absolute;inset:10% 0 10% 20%;background:radial-gradient(circle at 70% 50%,rgba(46,230,166,.22),transparent 60%);filter:blur(40px);z-index:-1}
-.pviz .ring{fill:none;stroke:rgba(255,255,255,.08);stroke-dasharray:3 7}
-.pviz .viz-lbl{font:700 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;fill:var(--dim)}
-.pviz .viz-cap{font-size:10.5px}
-.pviz .core-t{font:800 17px var(--display);fill:var(--text)}
-.pviz .trail{fill:none;stroke:var(--save);stroke-width:1.4;stroke-dasharray:4 6;opacity:0}
-.pviz .core{opacity:0;transform-origin:468px 268px;transform:scale(.3)}
-html:not(.js) .pviz .core,html:not(.js) .pviz .trail{opacity:1;transform:none}
-.pviz .pd{transition:transform 2.2s var(--ease),opacity 2s var(--ease),fill 1.2s;transition-delay:var(--d,0s)}
-.pviz.play .pd.raw{transform:translate(var(--tx),var(--ty));opacity:.4}
-.pviz.play .pd.keep{transform:translate(var(--tx),var(--ty));fill:var(--save)}
-.pviz .core{transition:opacity 1.2s var(--ease) 1.5s,transform 1.4s var(--ease) 1.5s}
-.pviz.play .core{opacity:1;transform:none}
-.pviz .trail{transition:opacity 1s var(--ease) 2s}
-.pviz.play .trail{opacity:.45;animation:dash 2.4s linear infinite}
+.hero-viz .hv-dom rect{fill:rgba(255,255,255,.05);stroke:rgba(255,255,255,.16)}
+.hero-viz .hv-t{font:700 15px var(--sans);fill:var(--text)}
+.hero-viz .hv-s{font:500 11.5px var(--sans);fill:var(--muted)}
+.hero-viz .hv-bars rect{fill:#FF9466;opacity:.85}
+.hero-viz .hv-gt rect{fill:rgba(46,230,166,.14);stroke:var(--save);stroke-width:1.8}
+.hero-viz .hv-core circle{fill:rgba(5,8,15,.85)}
+.hero-viz .hv-core .hv-core2{fill:none;stroke-width:2.5}
+.hero-viz .hv-ct{font:800 18px var(--display);fill:var(--text)}
+.hero-viz .hv-cap{font:700 10.5px var(--mono);letter-spacing:.1em;fill:var(--muted)}
+.hero-viz .f-distilled{stroke-width:2.4}
 .bv-full{fill:rgba(255,107,129,.35);opacity:1}
 
 /* reveal on scroll */

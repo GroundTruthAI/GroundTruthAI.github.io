@@ -511,7 +511,6 @@ def render_company(cases):
 def render_pilot(cases, industries):
     case_opts = "".join(f'<option value="{c["id"]}" data-cta="{esc(c["cta"])}">{c["id"]} · {esc(c["title"])}</option>' for c in cases)
     ind_opts = "".join(f'<option value="{i["slug"]}">{esc(i["name"])}</option>' for i in industries)
-    configured = bool(S.CONTACT_EMAIL)
     body = (
         _hero("Request a Pilot",
               "A bounded evaluation on one workload, in your environment, against your baseline, with success criteria you set before we start.",
@@ -527,12 +526,12 @@ def render_pilot(cases, industries):
         '<div><h2 id="form-h">Tell us about your situation</h2>'
         '<p>We reply with a scoping call proposal and the pilot design for your business case. If distillation is not a good fit, we will say so.</p>'
         + ul(["Which data, where it lives, and why it cannot simply be centralized", "The model or analytics you want to build", "The baseline you would compare against"])
-        + '<p class="small">This form does not send data to any server. '
-        + ("Submitting opens your email client with the request pre-filled." if configured else
-           "Submitting prepares a structured request you can copy and send to your GroundTruth AI contact.")
-        + '</p></div>'
+        + '<p class="small">Your request is delivered by email to the GroundTruth AI team through '
+          '<a href="https://formsubmit.co/" rel="noopener">FormSubmit</a>, a third-party form delivery service. '
+          'We use it only to reply to you. If delivery fails, the page offers to open your own email client instead.</p></div>'
         '<noscript><p class="callout">The request form needs JavaScript. Please contact your GroundTruth AI representative directly.</p></noscript>'
-        f'<form class="pilot-form" id="pilot-form" novalidate data-to="{esc(S.CONTACT_EMAIL)}">'
+        f'<form class="pilot-form" id="pilot-form" novalidate data-to="{esc(S.CONTACT_EMAIL)}" data-endpoint="{esc(S.FORM_ENDPOINT)}">'
+        '<div class="hp" aria-hidden="true"><label for="p-hp">Leave this field empty</label><input id="p-hp" name="_honey" tabindex="-1" autocomplete="off"></div>'
         '<div class="fld"><label for="p-type">Request type</label><select id="p-type" name="type">'
         '<option value="pilot">Pilot</option><option value="assessment">Architecture assessment</option>'
         '<option value="partnership">Partnership</option><option value="diligence">Technical due diligence</option></select></div>'
@@ -546,15 +545,16 @@ def render_pilot(cases, industries):
         'placeholder="For example: historian data in 6 plants behind an industrial DMZ; central ML team on Azure; transfer policy limits raw replication."></textarea></div>'
         '<div class="fld"><label for="p-time">Timeline</label><select id="p-time" name="timeline"><option value="">Select</option>'
         '<option>Exploring</option><option>Within 3 months</option><option>3–6 months</option><option>Budgeted this year</option></select></div>'
-        '<div class="fld fld-check"><label><input type="checkbox" id="p-consent" name="consent" required> I agree that GroundTruth AI may use these details to respond to this request. <span class="req">(required)</span></label></div>'
+        '<div class="fld fld-check"><label><input type="checkbox" id="p-consent" name="consent" required> I agree that GroundTruth AI may use these details to respond to this request, and that they are transmitted by email through FormSubmit. <span class="req">(required)</span></label></div>'
         '<p class="form-err" id="p-err" role="alert" hidden></p>'
+        '<p class="form-status" id="p-status" role="status" aria-live="polite"></p>'
         '<button class="btn btn-primary" type="submit" id="p-submit">Request a Pilot</button>'
-        '<div class="form-out" id="p-out" hidden><p class="callout-h" id="p-out-h" tabindex="-1">Your request is ready</p>'
+        '<div class="form-out" id="p-out" hidden><p class="callout-h" id="p-out-h" tabindex="-1">Your request</p>'
         '<p id="p-out-msg"></p><label for="p-text" class="sr-only">Prepared request</label><textarea id="p-text" rows="10" readonly></textarea>'
         '<button class="btn btn-ghost btn-sm" type="button" id="p-copy">Copy request</button></div>'
         '</form></div></section>')
     page("/pilot/", "Request a Pilot", "Request a scoped GroundTruth AI pilot: one workload, your environment, your baseline and your acceptance thresholds.",
-         body, active="", cases=cases, priority="0.9", extra_js=("/assets/js/pilot.js",))
+         body, active="", cases=cases, priority="0.9", extra_js=("/assets/js/pilot.js",), connect=S.FORM_ORIGIN)
 
 
 def render_404(cases):
