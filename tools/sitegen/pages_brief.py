@@ -41,8 +41,8 @@ def economics():
 
 def _calc_text(key, spend, red, lang):
     if key == "storage":
-        return ("500 TB (200 TB + backups and replicas) × $40/TB·month · −{r}%" if lang == "en"
-                else "500 TB (200 TB + backups y réplicas) × 40 €/TB·mes · −{r} %").format(r=red)
+        return ("500 TB incl. backups × $40/TB·mo · −{r}%" if lang == "en"
+                else "500 TB con backups × 40 €/TB·mes · −{r} %").format(r=red)
     amount = _k(spend, lang)
     return (f"{amount} a year · −{red}%" if lang == "en" else f"{amount} al año · −{red}\u00a0%")
 
@@ -169,6 +169,7 @@ T = {
         "money_s": "≈{net3} over three years · before license costs",
         "break_d": ("Distillation and validation", "compute at the plants + dataset checks"),
         "break_t": "Net saving per year",
+        "vol_k": "Data volumes in this example (500 TB stored = 200 TB + backups and replicas)",
         "s6_qual": "Illustrative estimate for one AI system across 20 plants, not a customer deployment and not contractual. Spend levels and "
                    "reduction rates are GroundTruth AI planning assumptions to be validated in a pilot; they are the defaults of the ROI calculator. "
                    "Calculate yours at groundtruthai.github.io/roi",
@@ -267,6 +268,7 @@ T = {
         "money_s": "≈{net3} en tres años · antes del coste de licencia",
         "break_d": ("Destilación y validación", "cómputo en planta + revisión de los datos"),
         "break_t": "Ahorro neto al año",
+        "vol_k": "Volúmenes de datos del ejemplo (500 TB almacenados = 200 TB + backups y réplicas)",
         "s6_qual": "Estimación ilustrativa para un solo sistema de IA en 20 plantas, no un despliegue en cliente ni con valor contractual. "
                    "Los niveles de gasto y los porcentajes de reducción son supuestos de planificación de GroundTruth AI que deben "
                    "validarse en un piloto; son los valores por defecto de la calculadora ROI. Calcula el tuyo en groundtruthai.github.io/roi",
@@ -450,13 +452,12 @@ def slides(t, lang):
     figs = "".join(f'<div><dt>{esc(lbl)}</dt><dd{" class=\"g\"" if k >= 2 else ""}>{esc(v)}</dd></div>' for k, (v, lbl) in enumerate(t["figs"]))
     sec(6, "s3 s-money",
         f'<div class="s-grid s-grid-3"><div class="s-text"><h2 class="sl-h2">{esc(t["h3m"].format(**sc))}</h2>'
-        f'<p class="sl-lead">{esc(t["s3_lead"])}</p>'
         f'<div class="sl-money"><p class="mk">{esc(t["money_k"])}</p><p class="mv g">≈{esc(net)}</p><p class="ms">{esc(t["money_s"].format(net3=_k(ec["net3"], lang)))}</p></div>'
         f'<table class="sl-break"><tbody>{rows}</tbody></table></div>'
         f'<div class="s-art"><div class="sl-scale"><p class="mk">{esc(t["scale_k"])}</p><dl>'
         + "".join(f'<div><dt>{esc(k)}</dt><dd class="g">≈{esc(v.format(**sc))}</dd></div>' for k, v in t["scale"])
         + f'</dl><p class="sl-scale-n">{esc(t["scale_n"])}</p></div>'
-        f'{diagram_scenario(t, u(6))}<dl class="sl-figs">{figs}</dl>'
+        f'<p class="sl-mini sl-vol-h">{esc(t["vol_k"])}</p><dl class="sl-figs sl-figs-2">{figs}</dl>'
         f'<p class="sl-qual">{esc(t["s6_qual"])}</p></div></div>')
 
     # 7 — call to action
