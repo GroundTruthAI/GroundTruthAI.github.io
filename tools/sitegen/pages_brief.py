@@ -1,4 +1,4 @@
-"""Executive commercial presentation (4 slides, EN + ES) at /resources/executive-brief/.
+"""Executive commercial presentation (6 slides, EN + ES) at /resources/executive-brief/.
 
 Single source of truth for the HTML viewer and the PDFs: tools/build_pdf.py prints these same pages with
 headless Chrome (print styles in assets/css/brief.css give one 16:9 page per slide).
@@ -14,61 +14,117 @@ PDF = {"en": "GroundTruthAI_Executive_Brief_EN.pdf", "es": "GroundTruthAI_Resume
 URL = {"en": DIR, "es": DIR + "es.html"}
 CONTACT = S.BASE_URL + "/pilot/"
 
+N_SLIDES = 6
+
+# Business cases shown on slide 4, by solution family: (site slug, EN title, EN one-liner, ES title, ES one-liner)
+CASES = [
+    ("Unlock new AI projects", "Habilitar nuevos proyectos de IA", [
+        ("ot-it-data-segregation", "OT/IT data segregation", "Train AI on plant data without copying the plant's full history to corporate IT.",
+         "Segregación de datos OT/IT", "Entrenar IA con datos de planta sin copiar todo su histórico a la informática corporativa."),
+        ("distributed-industrial-intelligence", "Distributed industrial intelligence", "One maintenance model that learns from failures in every facility.",
+         "Inteligencia industrial distribuida", "Un modelo de mantenimiento que aprende de las averías de todas las plantas."),
+        ("cross-enterprise-analytics", "Cross-enterprise analytics", "Group-wide models without first merging every subsidiary's data.",
+         "Analítica a nivel de grupo", "Modelos para todo el grupo sin fusionar antes los datos de cada filial."),
+        ("data-residency-and-sovereignty", "Data residency", "Shared analytics while original data stays in its country.",
+         "Residencia de datos", "Analítica compartida mientras los datos originales se quedan en su país."),
+        ("post-merger-analytical-integration", "Post-merger analytics", "Joint analytics before the merged companies' systems are integrated.",
+         "Analítica tras una fusión", "Analítica conjunta antes de integrar los sistemas de las empresas fusionadas."),
+    ]),
+    ("Reduce the cost of AI", "Reducir el coste de la IA", [
+        ("ai-training-cost-optimization", "AI training cost optimization", "Train on the data that matters and stop paying to process the rest.",
+         "Coste de entrenamiento de IA", "Entrenar con los datos que importan y dejar de pagar por procesar el resto."),
+        ("continuous-model-retraining", "Continuous model retraining", "Update models regularly without reprocessing the full history each time.",
+         "Reentrenamiento continuo", "Actualizar modelos con frecuencia sin reprocesar todo el histórico cada vez."),
+        ("ai-infrastructure-efficiency", "AI infrastructure efficiency", "More AI work from the same servers and storage.",
+         "Eficiencia de la infraestructura", "Más trabajo de IA con los mismos servidores y almacenamiento."),
+        ("sustainable-ai-infrastructure", "Sustainable AI", "Lower, measured energy use for AI training.",
+         "IA sostenible", "Menor consumo energético del entrenamiento de IA, medido."),
+    ]),
+    ("Move less data", "Mover menos datos", [
+        ("edge-to-cloud-data-optimization", "Edge-to-cloud optimization", "Send what models need, not everything devices and remote sites produce.",
+         "Del edge a la nube", "Enviar lo que necesitan los modelos, no todo lo que generan sensores y sitios remotos."),
+        ("multicloud-data-optimization", "Multicloud optimization", "Stop copying large training datasets between cloud providers.",
+         "Multicloud", "Dejar de copiar grandes conjuntos de datos entre proveedores de nube."),
+    ]),
+]
+
 T = {
     "en": {
         "title": "GroundTruth AI | Executive Business Overview",
-        "desc": "GroundTruth AI in four slides: enterprise intelligence across distributed data, industrial AI without centralizing raw data, "
-                "AI training efficiency and three business opportunities.",
+        "desc": "GroundTruth AI in six slides: AI that learns from data spread across plants, subsidiaries and countries without "
+                "centralizing it, three business opportunities, eleven business cases and a 20-plant example.",
         "deck": "GroundTruth AI executive overview", "skip": "Skip to the presentation",
         "prev": "Previous slide", "next": "Next slide", "of": "of", "slide": "Slide",
         "pdf": "Download PDF", "full": "Full screen", "back": "Website", "contact": "Discuss your use case",
         "other": "ES", "other_label": "Ver en español", "kicker": "Executive overview",
         "note": "Illustrative information for discussion. Figures and scenarios are estimates and have no contractual value.",
         "legal": [("Legal notice", "/legal-notice/"), ("Privacy policy", "/privacy/"), ("Cookie policy", "/cookie-policy/")],
-        # slide 1
+        # 1 value proposition
         "h1a": "Keep data distributed.", "h1b": "Centralize intelligence.",
-        "lead": "Use information from industrial facilities, business units and distributed data environments to train AI models and "
-                "perform analytics without centralizing entire raw datasets.",
+        "lead": "GroundTruth AI is software that works inside each plant, business unit or region. It builds a much smaller "
+                "version of the data that contains what an AI model needs for a specific purpose. Only that smaller dataset is "
+                "shared; the original data stays where it is.",
         "benefits": ["Enable new AI and analytics projects", "Reduce unnecessary data movement", "Optimize AI infrastructure costs"],
+        "proof_k": "Proof point",
+        "proof": "In internal tests on four public datasets, models trained on 5–14% of the data came within 1.4–2.8 accuracy "
+                 "points of models trained on all of it.",
         "d1_src": ["Industrial plants", "Business units", "Regions"], "d1_sub": "original data stays here",
-        "d1_core": ["Enterprise", "intelligence"], "d1_cap": "ONLY OPTIMIZED, APPROVED DATASETS TRAVEL",
-        "d1_title": "Original data stays in industrial plants, business units and regions; only optimized, approved datasets reach a common enterprise intelligence environment.",
-        # slide 2
+        "d1_core": ["Enterprise", "intelligence"], "d1_cap": "ONLY SMALL, APPROVED DATASETS TRAVEL",
+        "d1_title": "Original data stays in industrial plants, business units and regions; only small, approved datasets reach a common enterprise intelligence environment.",
+        # 2 why it matters
+        "hw": "Your data is spread out. Your AI needs all of it.",
+        "w_lead": "Large companies want AI that learns from every plant, subsidiary and country. But their data lives in separate "
+                  "systems, and copying all of it to one place is often slow, expensive or not allowed.",
+        "obstacles": [
+            ("Security boundaries", "Industrial control systems are kept apart from corporate IT, so plant data cannot simply be copied out."),
+            ("Data protection and residency", "Customer and personal data often has to stay in its country or company."),
+            ("Cost and volume", "Moving and storing terabytes again and again costs money, network capacity and time."),
+            ("Constant retraining", "AI models need regular updates, and each update reprocesses an ever-larger history."),
+        ],
+        "w_key": "The result: valuable AI projects are delayed, scaled down or never started.",
+        # 3 opportunities
         "h2": "Three business opportunities. One technology.",
         "opps": [
-            ("Unlock new AI projects", "Enable enterprise-wide analytics and AI training across industrial facilities, subsidiaries and segregated data environments.",
-             ["Shared predictive maintenance models", "Cross-business analytics", "Intelligence across multiple industrial facilities"]),
-            ("Reduce the cost of AI", "Optimize the datasets used to train and update AI models.",
-             ["Lower computational requirements", "More efficient model retraining", "Reduced infrastructure expenditure"]),
-            ("Move less data", "Optimize relevant information before transferring it between infrastructures.",
-             ["Industrial data exchange between OT and IT", "Edge-to-cloud data transfer", "Multicloud data replication"]),
+            ("Unlock new AI projects", "Train AI and run analytics with data from all your plants, subsidiaries and countries, even when that data cannot be centralized.",
+             ["One predictive maintenance model for all plants", "Analytics across business units and countries", "AI on industrial data that cannot leave the plant network"]),
+            ("Reduce the cost of AI", "Train and update AI models with much less data, so each training run needs less computing power.",
+             ["Lower computing costs", "Cheaper, faster model updates", "Less storage and server capacity"]),
+            ("Move less data", "Send only the information a model needs, instead of copying everything between systems.",
+             ["From industrial systems (OT) to corporate IT", "From sensors and remote sites to the cloud", "Between different cloud providers"]),
         ],
         "opp_tag": "Strategic priority",
-        # slide 3
+        # 4 business cases
+        "hc": "Eleven business cases you can evaluate.",
+        "c_lead": "Each one describes a concrete problem, the proposed solution and how to measure the result.",
+        "c_more": "Full details at groundtruthai.github.io/business-cases",
+        "inds": "Industries: manufacturing · energy and utilities · oil, gas and mining · transport and logistics · financial services · healthcare · telecom · retail · multinational groups · AI infrastructure",
+        # 5 scenario
         "h3": "20 industrial plants. One AI model.",
         "s3_lead": "Imagine a global manufacturer that wants to anticipate equipment failures across all its facilities while keeping "
                    "original operational data within its existing industrial environments.",
         "s3_key": "Enterprise-wide predictive maintenance without complete raw data consolidation.",
-        "s3_steps": ["Optimize the relevant information locally", "Keep original data in each plant",
-                     "Transfer approved, task-specific datasets", "Train a common AI model centrally"],
-        "s3_approach": "The GroundTruth AI approach",
+        "s3_steps": ["Each plant keeps its historical data where it is", "GroundTruth AI, installed in each plant, prepares a much smaller dataset for the maintenance model",
+                     "After review and approval, only that dataset travels through the existing connection", "The central team trains one model with data from all 20 plants"],
+        "s3_approach": "How it works, step by step",
         "figs": [("200 TB", "eligible data"), ("90%", "assumed reduction"), ("20 TB", "transferred"), ("180 TB", "potentially avoided")],
         "s3_qual": "Illustrative scenario, not a customer deployment. The reduction is an assumption that requires workload-specific validation.",
         "d3": {"trad": "Traditional approach", "gt": "With GroundTruth AI", "plant": "Plant", "central": ["Central data", "platform"],
                "model": ["AI", "model"], "stays": "data stays", "big": "200 TB copied", "small": "20 TB"},
-        "d3_title": "Before: all historical data from the plants is copied to a central platform to train the AI model. After: each plant keeps its data, optimizes it locally and sends a much smaller approved dataset.",
-        # slide 4
+        "d3_title": "Before: all historical data from the plants is copied to a central platform to train the AI model. After: each plant keeps its data, prepares a much smaller dataset locally and sends only that.",
+        # 6 call to action
         "h4": "Tell us about your business challenge.",
         "s4_lead": "Identify an AI or analytics opportunity that is currently constrained by distributed data, data segregation, "
                    "infrastructure costs or excessive data movement.",
         "qs": ["What would you like to predict, analyze or improve?", "Where is the relevant information currently located?",
                "What prevents you from using it efficiently today?"],
         "cta": "Let's assess your use case", "nodata": "No data sharing is required for the initial discussion.",
+        "next_k": "What happens next",
+        "next": "A short conversation about your case. If there is a fit, a scoped feasibility assessment on one use case.",
     },
     "es": {
         "title": "GroundTruth AI | Resumen ejecutivo",
-        "desc": "GroundTruth AI en cuatro diapositivas: inteligencia empresarial sobre datos distribuidos, IA industrial sin centralizar los datos "
-                "originales, eficiencia en el entrenamiento de IA y tres oportunidades de negocio.",
+        "desc": "GroundTruth AI en seis diapositivas: IA que aprende de datos repartidos entre plantas, filiales y países sin "
+                "centralizarlos, tres oportunidades de negocio, once casos de negocio y un ejemplo con 20 plantas.",
         "deck": "Resumen ejecutivo de GroundTruth AI", "skip": "Ir a la presentación",
         "prev": "Diapositiva anterior", "next": "Diapositiva siguiente", "of": "de", "slide": "Diapositiva",
         "pdf": "Descargar PDF", "full": "Pantalla completa", "back": "Web", "contact": "Analicemos tu caso",
@@ -76,40 +132,60 @@ T = {
         "note": "Información orientativa para conversar. Las cifras y los escenarios son estimaciones y no tienen valor contractual.",
         "legal": [("Aviso legal", "/aviso-legal/"), ("Política de privacidad", "/privacidad/"), ("Política de cookies", "/cookies/")],
         "h1a": "Datos distribuidos.", "h1b": "Inteligencia centralizada.",
-        "lead": "Aprovecha la información de plantas industriales, unidades de negocio y entornos de datos distribuidos para entrenar "
-                "modelos de IA y realizar analítica sin centralizar todos los datos originales.",
+        "lead": "GroundTruth AI es un software que trabaja dentro de cada planta, unidad de negocio o región. Genera una versión "
+                "mucho más pequeña de los datos con lo que un modelo de IA necesita para un objetivo concreto. Solo se comparte "
+                "ese conjunto reducido; los datos originales se quedan donde están.",
         "benefits": ["Habilitar nuevos proyectos de IA y analítica", "Reducir el movimiento innecesario de datos", "Optimizar los costes de infraestructura de IA"],
+        "proof_k": "Prueba técnica",
+        "proof": "En ensayos internos con cuatro conjuntos de datos públicos, los modelos entrenados con el 5–14 % de los datos "
+                 "quedaron a 1,4–2,8 puntos de precisión de los entrenados con todos.",
         "d1_src": ["Plantas industriales", "Unidades de negocio", "Regiones"], "d1_sub": "datos originales en origen",
-        "d1_core": ["Inteligencia", "empresarial"], "d1_cap": "SOLO VIAJAN DATOS OPTIMIZADOS Y APROBADOS",
-        "d1_title": "Los datos originales se quedan en plantas, unidades de negocio y regiones; solo llegan a un entorno común de inteligencia empresarial conjuntos de datos optimizados y aprobados.",
+        "d1_core": ["Inteligencia", "empresarial"], "d1_cap": "SOLO VIAJAN DATOS REDUCIDOS Y APROBADOS",
+        "d1_title": "Los datos originales se quedan en plantas, unidades de negocio y regiones; solo llegan a un entorno común de inteligencia empresarial conjuntos de datos reducidos y aprobados.",
+        "hw": "Tus datos están repartidos. Tu IA los necesita todos.",
+        "w_lead": "Las grandes empresas quieren una IA que aprenda de todas sus plantas, filiales y países. Pero sus datos están en "
+                  "sistemas separados, y copiarlos todos a un único lugar suele ser lento, caro o no estar permitido.",
+        "obstacles": [
+            ("Barreras de seguridad", "Los sistemas de control industrial están separados de la informática corporativa: los datos de planta no se pueden copiar sin más."),
+            ("Protección y residencia de datos", "Los datos de clientes y personales a menudo deben quedarse en su país o en su empresa."),
+            ("Coste y volumen", "Mover y almacenar terabytes una y otra vez cuesta dinero, capacidad de red y tiempo."),
+            ("Reentrenamiento constante", "Los modelos de IA deben actualizarse con frecuencia, y cada actualización reprocesa un histórico cada vez mayor."),
+        ],
+        "w_key": "Resultado: proyectos de IA valiosos se retrasan, se recortan o nunca empiezan.",
         "h2": "Tres oportunidades de negocio. Una tecnología.",
         "opps": [
-            ("Habilitar nuevos proyectos de IA", "Analítica y entrenamiento de IA a escala de empresa, con datos de plantas industriales, filiales y entornos segregados.",
-             ["Modelos compartidos de mantenimiento predictivo", "Analítica entre unidades de negocio", "Inteligencia común a varias plantas"]),
-            ("Reducir el coste de la IA", "Optimiza los datos con los que se entrenan y actualizan los modelos de IA.",
-             ["Menos necesidades de computación", "Reentrenamientos más eficientes", "Menor gasto en infraestructura"]),
-            ("Mover menos datos", "Optimiza la información relevante antes de transferirla entre infraestructuras.",
-             ["Intercambio de datos entre sistemas industriales (OT) y corporativos (IT)", "Transferencia del edge a la nube", "Replicación entre nubes"]),
+            ("Habilitar nuevos proyectos de IA", "Entrena IA y haz analítica con datos de todas tus plantas, filiales y países, aunque esos datos no se puedan centralizar.",
+             ["Un modelo de mantenimiento predictivo para todas las plantas", "Analítica entre unidades de negocio y países", "IA con datos industriales que no pueden salir de la red de planta"]),
+            ("Reducir el coste de la IA", "Entrena y actualiza modelos de IA con muchos menos datos, de modo que cada entrenamiento necesita menos capacidad de cálculo.",
+             ["Menores costes de computación", "Actualizaciones de modelos más rápidas y baratas", "Menos almacenamiento y servidores"]),
+            ("Mover menos datos", "Envía solo la información que necesita el modelo, en lugar de copiarlo todo entre sistemas.",
+             ["De los sistemas industriales (OT) a la informática corporativa (IT)", "De sensores y sitios remotos a la nube", "Entre distintos proveedores de nube"]),
         ],
         "opp_tag": "Prioridad estratégica",
+        "hc": "Once casos de negocio para evaluar.",
+        "c_lead": "Cada uno describe un problema concreto, la solución propuesta y cómo medir el resultado.",
+        "c_more": "Detalle completo en groundtruthai.github.io/business-cases (en inglés)",
+        "inds": "Sectores: industria · energía y utilities · petróleo, gas y minería · transporte y logística · servicios financieros · salud · telecomunicaciones · retail · grupos multinacionales · infraestructura de IA",
         "h3": "20 plantas industriales. Un modelo de IA común.",
         "s3_lead": "Una empresa industrial quiere anticipar fallos de equipos en todas sus instalaciones, manteniendo los datos operativos "
                    "originales dentro de sus entornos industriales.",
         "s3_key": "Mantenimiento predictivo global sin centralizar todos los datos industriales originales.",
-        "s3_steps": ["Optimizar localmente la información relevante", "Mantener los datos originales en cada planta",
-                     "Transferir solo datos aprobados y específicos para la tarea", "Entrenar un modelo de IA común de forma centralizada"],
-        "s3_approach": "El enfoque de GroundTruth AI",
+        "s3_steps": ["Cada planta conserva su histórico de datos donde está", "GroundTruth AI, instalado en cada planta, prepara un conjunto de datos mucho menor para el modelo de mantenimiento",
+                     "Tras revisarlo y aprobarlo, solo ese conjunto viaja por la conexión ya existente", "El equipo central entrena un único modelo con datos de las 20 plantas"],
+        "s3_approach": "Cómo funciona, paso a paso",
         "figs": [("200 TB", "datos elegibles"), ("90 %", "reducción supuesta"), ("20 TB", "transferidos"), ("180 TB", "que podrían no moverse")],
         "s3_qual": "Escenario ilustrativo, no un despliegue en cliente. La reducción es una hipótesis que debe validarse en cada caso.",
         "d3": {"trad": "Enfoque tradicional", "gt": "Con GroundTruth AI", "plant": "Planta", "central": ["Plataforma", "central"],
                "model": ["Modelo", "de IA"], "stays": "datos en planta", "big": "200 TB copiados", "small": "20 TB"},
-        "d3_title": "Antes: todo el histórico de las plantas se copia a una plataforma central para entrenar el modelo. Después: cada planta conserva sus datos, los optimiza localmente y envía un conjunto aprobado mucho menor.",
+        "d3_title": "Antes: todo el histórico de las plantas se copia a una plataforma central para entrenar el modelo. Después: cada planta conserva sus datos, prepara localmente un conjunto mucho menor y solo envía ese.",
         "h4": "Cuéntanos un reto de negocio.",
         "s4_lead": "Identifica una oportunidad de IA o analítica que actualmente esté limitada por la segregación de datos, "
                    "los costes de infraestructura o la dificultad de mover información.",
         "qs": ["¿Qué te gustaría predecir, analizar o mejorar?", "¿Dónde se encuentra actualmente la información relevante?",
                "¿Qué dificulta su aprovechamiento?"],
         "cta": "Analicemos tu caso", "nodata": "No es necesario compartir datos en la primera conversación.",
+        "next_k": "Qué pasa después",
+        "next": "Una conversación breve sobre tu caso. Si encaja, una evaluación de viabilidad acotada sobre un caso de uso.",
     },
 }
 
@@ -186,45 +262,80 @@ ICONS = [
 ]
 
 
+WHY_ICONS = [
+    '<path d="M24 5 40 11 V23 C40 33 33 40 24 43 15 40 8 33 8 23 V11 Z"/><path d="M17 24 22 29 31 19"/>',
+    '<circle cx="24" cy="24" r="17"/><path d="M7 24 H41 M24 7 C17 14 17 34 24 41 M24 7 C31 14 31 34 24 41"/>',
+    '<path d="M6 34 H42 M10 34 V24 M20 34 V16 M30 34 V20 M40 34 V10"/>',
+    '<path d="M38 18 A15 15 0 1 0 39 30"/><path d="M38 8 V18 H28"/>',
+]
+
+
 def slides(t, lang):
     u = lambda n: f"b{lang}{n}"
     brand = f'<p class="sl-brand">{BRAND}</p>'
-    def foot(n):
-        return f'<p class="sl-foot"><span>groundtruthai.github.io</span><span>{n} / 4</span></p>'
+    out = []
 
-    s1 = (f'<section class="slide s1" id="slide-1" aria-roledescription="slide" aria-label="{t["slide"]} 1 {t["of"]} 4">{brand}'
-          f'<div class="s-grid"><div class="s-text"><p class="sl-kick">{esc(t["kicker"])}</p>'
-          f'<h1 class="sl-h1">{esc(t["h1a"])} <span class="g">{esc(t["h1b"])}</span></h1>'
-          f'<p class="sl-lead">{esc(t["lead"])}</p>'
-          '<ul class="sl-ben">' + "".join(f'<li><span class="ben-n">{i}</span>{esc(b)}</li>' for i, b in enumerate(t["benefits"], 1)) + "</ul></div>"
-          f'<div class="s-art">{diagram_value(t, u(1))}</div></div>{foot(1)}</section>')
+    def sec(n, cls, inner):
+        out.append(f'<section class="slide {cls}" id="slide-{n}" aria-roledescription="slide" aria-label="{t["slide"]} {n} {t["of"]} {N_SLIDES}">'
+                   f'{brand}{inner}<p class="sl-foot"><span>groundtruthai.github.io</span><span>{n} / {N_SLIDES}</span></p></section>')
 
+    # 1 — value proposition
+    sec(1, "s1",
+        f'<div class="s-grid"><div class="s-text"><p class="sl-kick">{esc(t["kicker"])}</p>'
+        f'<h1 class="sl-h1">{esc(t["h1a"])} <span class="g">{esc(t["h1b"])}</span></h1>'
+        f'<p class="sl-lead">{esc(t["lead"])}</p>'
+        '<ul class="sl-ben">' + "".join(f'<li><span class="ben-n">{i}</span>{esc(b)}</li>' for i, b in enumerate(t["benefits"], 1)) + "</ul>"
+        f'<p class="sl-proof"><strong>{esc(t["proof_k"])}.</strong> {esc(t["proof"])}</p></div>'
+        f'<div class="s-art">{diagram_value(t, u(1))}</div></div>')
+
+    # 2 — why it matters
+    obs = "".join(f'<li class="ob"><svg class="op-ic" viewBox="0 0 48 48" aria-hidden="true" focusable="false">{WHY_ICONS[i]}</svg>'
+                  f'<h3>{esc(h)}</h3><p>{esc(d)}</p></li>' for i, (h, d) in enumerate(t["obstacles"]))
+    sec(2, "s-why",
+        f'<h2 class="sl-h2">{esc(t["hw"])}</h2><p class="sl-lead sl-lead-w">{esc(t["w_lead"])}</p>'
+        f'<ul class="obs">{obs}</ul><p class="sl-key sl-key-w">{esc(t["w_key"])}</p>')
+
+    # 3 — three opportunities
     opps = "".join(
         f'<li class="op{" op-main" if i == 0 else ""}">{ICONS[i]}'
         + (f'<p class="op-tag">{esc(t["opp_tag"])}</p>' if i == 0 else "")
         + f'<h3>{esc(h)}</h3><p class="op-d">{esc(dsc)}</p><ul>' + "".join(f"<li>{esc(x)}</li>" for x in ex) + "</ul></li>"
         for i, (h, dsc, ex) in enumerate(t["opps"]))
-    s2 = (f'<section class="slide s2" id="slide-2" aria-roledescription="slide" aria-label="{t["slide"]} 2 {t["of"]} 4">{brand}'
-          f'<h2 class="sl-h2">{esc(t["h2"])}</h2><ol class="ops">{opps}</ol>{foot(2)}</section>')
+    sec(3, "s2", f'<h2 class="sl-h2">{esc(t["h2"])}</h2><ol class="ops">{opps}</ol>')
 
+    # 4 — business cases
+    cols = []
+    for i, (gen, ges, items) in enumerate(CASES):
+        lis = "".join(
+            f'<li><a href="{S.BASE_URL}/business-cases/{slug}/">{esc(ten if lang == "en" else tes)}</a>'
+            f'<span>{esc(den if lang == "en" else des)}</span></li>' for slug, ten, den, tes, des in items)
+        cols.append(f'<div class="cs-col{" cs-main" if i == 0 else ""}"><h3>{ICONS[i]}{esc(gen if lang == "en" else ges)}</h3><ul>{lis}</ul></div>')
+    sec(4, "s-cases",
+        f'<h2 class="sl-h2">{esc(t["hc"])}</h2><p class="sl-lead sl-lead-c">{esc(t["c_lead"])} '
+        f'<a href="{S.BASE_URL}/business-cases/">{esc(t["c_more"])}</a></p>'
+        f'<div class="cs-grid">{"".join(cols)}</div><p class="sl-inds">{esc(t["inds"])}</p>')
+
+    # 5 — scenario
     figs = "".join(f'<div><dt>{esc(lbl)}</dt><dd{" class=\"g\"" if k >= 2 else ""}>{esc(v)}</dd></div>' for k, (v, lbl) in enumerate(t["figs"]))
-    s3 = (f'<section class="slide s3" id="slide-3" aria-roledescription="slide" aria-label="{t["slide"]} 3 {t["of"]} 4">{brand}'
-          f'<div class="s-grid s-grid-3"><div class="s-text"><h2 class="sl-h2">{esc(t["h3"])}</h2>'
-          f'<p class="sl-lead">{esc(t["s3_lead"])}</p><p class="sl-key">{esc(t["s3_key"])}</p>'
-          f'<h3 class="sl-mini">{esc(t["s3_approach"])}</h3><ol class="sl-steps">' + "".join(f"<li>{esc(x)}</li>" for x in t["s3_steps"]) + "</ol></div>"
-          f'<div class="s-art">{diagram_scenario(t, u(3))}<dl class="sl-figs">{figs}</dl>'
-          f'<p class="sl-qual">{esc(t["s3_qual"])}</p></div></div>{foot(3)}</section>')
+    sec(5, "s3",
+        f'<div class="s-grid s-grid-3"><div class="s-text"><h2 class="sl-h2">{esc(t["h3"])}</h2>'
+        f'<p class="sl-lead">{esc(t["s3_lead"])}</p><p class="sl-key">{esc(t["s3_key"])}</p>'
+        f'<h3 class="sl-mini">{esc(t["s3_approach"])}</h3><ol class="sl-steps">' + "".join(f"<li>{esc(x)}</li>" for x in t["s3_steps"]) + "</ol></div>"
+        f'<div class="s-art">{diagram_scenario(t, u(5))}<dl class="sl-figs">{figs}</dl>'
+        f'<p class="sl-qual">{esc(t["s3_qual"])}</p></div></div>')
 
+    # 6 — call to action
     mail = S.CONTACT_EMAIL
-    s4 = (f'<section class="slide s4" id="slide-4" aria-roledescription="slide" aria-label="{t["slide"]} 4 {t["of"]} 4">{brand}'
-          f'<div class="s-grid s-grid-4"><div class="s-text"><h2 class="sl-h2">{esc(t["h4"])}</h2><p class="sl-lead">{esc(t["s4_lead"])}</p>'
-          '<ol class="sl-qs">' + "".join(f"<li>{esc(q)}</li>" for q in t["qs"]) + "</ol></div>"
-          f'<div class="s-cta"><a class="sl-btn" href="{esc(CONTACT)}">{esc(t["cta"])}</a>'
-          f'<p class="sl-nodata">{esc(t["nodata"])}</p>'
-          f'<p class="sl-contact"><a href="{esc(CONTACT)}">groundtruthai.github.io/pilot</a>'
-          + (f'<br><a href="mailto:{esc(mail)}">{esc(mail)}</a>' if mail else "") + '</p>'
-          f'<p class="sl-legal">{esc(t["note"])}</p></div></div>{foot(4)}</section>')
-    return s1 + s2 + s3 + s4
+    sec(6, "s4",
+        f'<div class="s-grid s-grid-4"><div class="s-text"><h2 class="sl-h2">{esc(t["h4"])}</h2><p class="sl-lead">{esc(t["s4_lead"])}</p>'
+        '<ol class="sl-qs">' + "".join(f"<li>{esc(q)}</li>" for q in t["qs"]) + "</ol></div>"
+        f'<div class="s-cta"><a class="sl-btn" href="{esc(CONTACT)}">{esc(t["cta"])}</a>'
+        f'<p class="sl-nodata">{esc(t["nodata"])}</p>'
+        f'<p class="sl-next"><strong>{esc(t["next_k"])}:</strong> {esc(t["next"])}</p>'
+        f'<p class="sl-contact"><a href="{esc(CONTACT)}">groundtruthai.github.io/pilot</a>'
+        + (f'<br><a href="mailto:{esc(mail)}">{esc(mail)}</a>' if mail else "") + '</p>'
+        f'<p class="sl-legal">{esc(t["note"])}</p></div></div>')
+    return "".join(out)
 
 
 def render_brief():
@@ -269,7 +380,7 @@ def render_brief():
             f'<div class="deck-stage">{slides(t, lang)}</div>'
             '<div class="deck-ui" hidden>'
             f'<button class="deck-btn deck-prev" type="button" aria-label="{esc(t["prev"])}"><span aria-hidden="true">←</span></button>'
-            f'<p class="deck-count" aria-live="polite"><span class="sr-only">{esc(t["slide"])} </span><span class="deck-i">1</span> / 4</p>'
+            f'<p class="deck-count" aria-live="polite"><span class="sr-only">{esc(t["slide"])} </span><span class="deck-i">1</span> / {N_SLIDES}</p>'
             f'<button class="deck-btn deck-next" type="button" aria-label="{esc(t["next"])}"><span aria-hidden="true">→</span></button></div>'
             '</main>\n'
             f'<footer class="deck-note"><p>{esc(t["note"])} {legal}</p></footer>\n'

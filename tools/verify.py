@@ -247,16 +247,17 @@ if pending:
     warn(f"Legal data still pending ({', '.join(pending)}): replace in content/site.py LEGAL as soon as the company has them")
 for u in ("/simulator/", "/roi/"):
     if u in by_url and "Not contractual." not in " ".join(by_url[u].text): err(f"{u}: non-contractual note missing next to results")
-# executive brief: 4 slides per language, PDFs present with 4 pages of 960 x 540 pt (13.333 x 7.5 in)
+# executive brief: N slides per language, PDFs present with N pages of 960 x 540 pt (13.333 x 7.5 in)
+from sitegen.pages_brief import N_SLIDES
 import shutil
 for u, pdf in (("/resources/executive-brief/", "GroundTruthAI_Executive_Brief_EN.pdf"), ("/resources/executive-brief/es.html", "GroundTruthAI_Resumen_Comercial_ES.pdf")):
     src = open(os.path.join(ROOT, u.lstrip("/") + ("index.html" if u.endswith("/") else "")), encoding="utf-8").read() if u in by_url else ""
-    if src.count('aria-roledescription="slide"') != 4: err(f"{u}: expected exactly 4 slides")
+    if src.count('aria-roledescription="slide"') != N_SLIDES: err(f"{u}: expected exactly {N_SLIDES} slides")
     path = os.path.join(ROOT, "resources/executive-brief", pdf)
     if not os.path.exists(path): err(f"missing PDF {pdf} (run tools/build_pdf.py)"); continue
     if shutil.which("pdfinfo"):
         info = subprocess.run(["pdfinfo", path], capture_output=True, text=True).stdout
-        if not re.search(r"Pages:\s+4\b", info): err(f"{pdf}: expected 4 pages")
+        if not re.search(rf"Pages:\s+{N_SLIDES}\b", info): err(f"{pdf}: expected {N_SLIDES} pages")
         if not re.search(r"Page size:\s+960 x 540 pts", info): err(f"{pdf}: pages are not 16:9 (13.333 x 7.5 in)")
     else:
         warn("pdfinfo not available: PDF page count and size not checked")
