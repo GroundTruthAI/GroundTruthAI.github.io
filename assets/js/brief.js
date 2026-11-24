@@ -2,6 +2,14 @@
    full screen and language switch that keeps the current slide. Without JavaScript all slides are shown. */
 (function () {
   "use strict";
+  // PDF generation (tools/build_pdf.py adds ?pdf=1): load the static print fonts up front so no text is
+  // printed while its font is still loading.
+  if (/[?&]pdf=1\b/.test(location.search) && document.fonts && document.fonts.load) {
+    [[400, 500, 600, 700, 800, "GT Print Sans"], [600, 700, 800, "GT Print Display"]].forEach(function (f) {
+      var fam = f.pop();
+      f.forEach(function (w) { document.fonts.load(w + ' 16px "' + fam + '"', "Aa0≈€%"); });
+    });
+  }
   document.addEventListener("DOMContentLoaded", function () {
     var deck = document.getElementById("deck");
     if (!deck) return;

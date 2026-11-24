@@ -126,11 +126,20 @@
 .sl-proof strong{color:var(--save)}
 .sl-proof+.sl-proof{margin-top:calc(var(--u)*.8)}
 .sl-notc strong{color:var(--cyan)}
+.sl-notc-how{margin:calc(var(--u)*1.8) 0 calc(var(--u)*1.4)!important;font-size:calc(var(--u)*1.15)}
+.sl-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(var(--u)*1);margin:calc(var(--u)*1.8) 0 0}
+.sl-stats div{padding:calc(var(--u)*1.1) calc(var(--u)*1.2);border-radius:calc(var(--u)*1.1);border:1px solid rgba(46,230,166,.35);
+  background:linear-gradient(180deg,rgba(46,230,166,.10),rgba(46,230,166,.02));display:flex;flex-direction:column;justify-content:flex-start}
+.sl-stats dd{margin:0;font:800 calc(var(--u)*2.8)/1 var(--display);white-space:nowrap;letter-spacing:-.03em}
+.sl-stats dt{margin:calc(var(--u)*.5) 0 0;font:600 calc(var(--u)*1.02)/1.3 var(--sans);color:var(--text)}
+.sl-stats-note{margin:calc(var(--u)*.8) 0 0;font-size:calc(var(--u)*.78);line-height:1.4;color:var(--dim)}
 .sl-what{color:var(--text)}
 .sl-how{margin:0 0 calc(var(--u)*1.2);padding:calc(var(--u)*.7) calc(var(--u)*1.2);border-left:3px solid var(--cyan);background:rgba(60,200,245,.08);border-radius:0 calc(var(--u)*.8) calc(var(--u)*.8) 0;font:800 calc(var(--u)*1.75)/1.25 var(--display);color:var(--cyan)}
 .sl-sub{margin:calc(var(--u)*-.6) 0 calc(var(--u)*1.6);font:700 calc(var(--u)*1.4)/1.35 var(--display);color:var(--cyan)}
 .s1 .sl-lead{font-size:calc(var(--u)*1.15);margin-bottom:calc(var(--u)*1)}
 .s1 .sl-h1{font-size:calc(var(--u)*3.6)}
+.sl-roi{margin:0;font:700 calc(var(--u)*1.15)/1.4 var(--display)}
+.sl-roi a{color:var(--save);text-decoration:none}
 .sl-next{margin:0;font-size:calc(var(--u)*1.02);line-height:1.45;color:var(--muted)}
 .sl-next strong{color:var(--text)}
 
@@ -167,7 +176,7 @@
 .sl-def{max-width:82%;margin:0 0 calc(var(--u)*2);padding:calc(var(--u)*1.1) calc(var(--u)*1.4);border-left:3px solid var(--cyan);
   background:rgba(60,200,245,.08);border-radius:0 calc(var(--u)*.8) calc(var(--u)*.8) 0;font-size:calc(var(--u)*1.35);line-height:1.45;color:var(--text)}
 .sl-def strong{color:var(--cyan)}
-.hws{list-style:none;padding:0;margin:auto 0;display:grid;grid-template-columns:repeat(4,1fr);gap:calc(var(--u)*2.2)}
+.hws{list-style:none;padding:0;margin:auto 0 0;display:grid;grid-template-columns:repeat(4,1fr);gap:calc(var(--u)*2.2)}
 .hw{position:relative;margin:0;padding:calc(var(--u)*2.2);border-radius:calc(var(--u)*1.4);border:1px solid var(--stroke);
   background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.02))}
 .hw:nth-child(2){border-color:rgba(46,230,166,.5);background:linear-gradient(180deg,rgba(46,230,166,.13),rgba(46,230,166,.02))}
@@ -255,6 +264,12 @@
   .hw h3{font-size:1.1rem}
   .hw p,.sl-where{font-size:.92rem}
   .sl-where{margin:16px 0 0}
+  .sl-stats{grid-template-columns:1fr 1fr 1fr;gap:8px}
+  .sl-stats div{padding:10px}
+  .sl-stats dd{font-size:1.5rem}
+  .sl-stats dt{font-size:.78rem}
+  .sl-stats-note{font-size:.75rem}
+  .sl-notc-how{font-size:.9rem}
 }
 
 /* ---------- print / PDF: one 16:9 page per slide, no viewer controls ---------- */

@@ -88,9 +88,9 @@ def main():
     try:
         for lang in ("en", "es"):
             out = os.path.join(ROOT, DIR.strip("/"), PDF[lang])
-            url = f"http://127.0.0.1:{port}{URL[lang]}"
+            url = f"http://127.0.0.1:{port}{URL[lang]}?pdf=1"
             subprocess.run([chrome, "--headless=new", "--disable-gpu", "--no-pdf-header-footer", "--hide-scrollbars",
-                            "--run-all-compositor-stages-before-draw", "--virtual-time-budget=8000",
+                            "--run-all-compositor-stages-before-draw", "--virtual-time-budget=15000",
                             f"--print-to-pdf={out}", url], check=True, capture_output=True)
             add_metadata(out, T[lang]["title"], META[lang]["subject"], META[lang]["keywords"], META[lang]["lang"])
             print(f"Wrote {os.path.relpath(out, ROOT)} ({os.path.getsize(out) // 1024} KB)")

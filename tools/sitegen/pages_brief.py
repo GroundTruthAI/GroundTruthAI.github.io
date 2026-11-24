@@ -88,9 +88,11 @@ T = {
         "notc_k": "Dataset distillation, not compression",
         "notc": "Compression shrinks the same data, which must be unpacked before use, so the AI still processes all of it. "
                 "Distillation builds a much smaller dataset that the AI uses directly to learn.",
-        "proof_k": "Proof point",
-        "proof": "In internal tests on four public datasets, models trained on 5–14% of the data came within 1.4–2.8 accuracy "
-                 "points of models trained on all of it.",
+        "stats": [("86–95%", "less training data"), ("86%", "less energy per training run"), ("≈$168k", "a year in training spend · illustrative*")],
+        "stats_note": "Internal tests on four public datasets: models trained on 5–14% of the data came within 1.4–2.8 accuracy points of "
+                      "models trained on all of it. Energy: internal measurement, excluding the distillation step. *Illustrative example from "
+                      "our AI training cost business case: $400k a year of training compute, 60% of it driven by data volume, 70% assumed "
+                      "data reduction; before distillation and license costs. Results vary by use case; not contractual.",
         "d1_src": ["Industrial plants", "Business units", "Regions"], "d1_sub": "original data stays here",
         "d1_core": ["Enterprise", "intelligence"], "d1_cap": "ONLY DISTILLED, APPROVED DATASETS TRAVEL",
         "d1_title": "Original data stays in industrial plants, business units and regions; only small, approved datasets reach a common enterprise intelligence environment.",
@@ -154,6 +156,7 @@ T = {
         "qs": ["What would you like to predict, analyze or improve?", "Where is the relevant information currently located?",
                "What prevents you from using it efficiently today?"],
         "cta": "Let's assess your use case", "nodata": "No data sharing is required for the initial discussion.",
+        "roi": "Estimate your own savings with the ROI calculator",
         "next_k": "What happens next",
         "next": "A short conversation about your case. If there is a fit, a scoped feasibility assessment on one use case.",
     },
@@ -177,9 +180,12 @@ T = {
         "notc_k": "Destilación de datos, no compresión",
         "notc": "La compresión reduce el tamaño de los mismos datos, que hay que descomprimir para usarlos: la IA sigue procesándolos "
                 "todos. La destilación crea un conjunto de datos mucho más pequeño que la IA usa directamente para aprender.",
-        "proof_k": "Prueba técnica",
-        "proof": "En ensayos internos con cuatro conjuntos de datos públicos, los modelos entrenados con el 5–14 % de los datos "
-                 "quedaron a 1,4–2,8 puntos de precisión de los entrenados con todos.",
+        "stats": [("86–95\u00a0%", "menos datos de entrenamiento"), ("86\u00a0%", "menos energía por entrenamiento"), ("≈168\u00a0k€", "al año en gasto de entrenamiento · ilustrativo*")],
+        "stats_note": "Ensayos internos con cuatro conjuntos de datos públicos: con el 5–14 % de los datos, los modelos quedaron a 1,4–2,8 "
+                      "puntos de precisión de los entrenados con todos. Energía: medición interna, sin incluir el paso de destilación. "
+                      "*Ejemplo ilustrativo del caso de negocio de coste de entrenamiento: 400 k€ al año de computación, el 60 % ligado al "
+                      "volumen de datos y una reducción supuesta del 70 %; antes de los costes de destilación y licencia. Los resultados "
+                      "varían según el caso; sin valor contractual.",
         "d1_src": ["Plantas industriales", "Unidades de negocio", "Regiones"], "d1_sub": "datos originales en origen",
         "d1_core": ["Inteligencia", "empresarial"], "d1_cap": "SOLO VIAJAN DATOS DESTILADOS Y APROBADOS",
         "d1_title": "Los datos originales se quedan en plantas, unidades de negocio y regiones; solo llegan a un entorno común de inteligencia empresarial conjuntos de datos reducidos y aprobados.",
@@ -237,6 +243,7 @@ T = {
         "qs": ["¿Qué te gustaría predecir, analizar o mejorar?", "¿Dónde se encuentra actualmente la información relevante?",
                "¿Qué dificulta su aprovechamiento?"],
         "cta": "Analicemos tu caso", "nodata": "No es necesario compartir datos en la primera conversación.",
+        "roi": "Calcula tu ahorro con la calculadora ROI",
         "next_k": "Qué pasa después",
         "next": "Una conversación breve sobre tu caso. Si encaja, una evaluación de viabilidad acotada sobre un caso de uso.",
     },
@@ -346,8 +353,8 @@ def slides(t, lang):
         f'<p class="sl-how">{esc(t["how"])}</p>'
         f'<p class="sl-lead"><strong class="sl-what">{esc(t["what_k"])}</strong> {esc(t["lead"])}</p>'
         '<ul class="sl-ben">' + "".join(f'<li><span class="ben-n">{i}</span>{esc(b)}</li>' for i, b in enumerate(t["benefits"], 1)) + "</ul>"
-        f'<p class="sl-proof sl-notc"><strong>{esc(t["notc_k"])}.</strong> {esc(t["notc"])}</p>'
-        f'<p class="sl-proof"><strong>{esc(t["proof_k"])}.</strong> {esc(t["proof"])}</p></div>'
+        '<dl class="sl-stats">' + "".join(f'<div><dd class="g">{esc(v)}</dd><dt>{esc(k)}</dt></div>' for v, k in t["stats"]) + '</dl>'
+        f'<p class="sl-stats-note">{esc(t["stats_note"])}</p></div>'
         f'<div class="s-art">{diagram_value(t, u(1))}</div></div>')
 
     # 2 — why it matters
@@ -363,7 +370,8 @@ def slides(t, lang):
     sec(3, "s-how",
         f'<h2 class="sl-h2">{esc(t["hh"])}</h2>'
         f'<p class="sl-def"><strong>{esc(t["h_def_k"])}</strong> {esc(t["h_def"])}</p>'
-        f'<ol class="hws">{steps}</ol><p class="sl-where">{esc(t["h_where"])}</p>')
+        f'<ol class="hws">{steps}</ol><p class="sl-proof sl-notc sl-notc-how"><strong>{esc(t["notc_k"])}.</strong> {esc(t["notc"])}</p>'
+        f'<p class="sl-where">{esc(t["h_where"])}</p>')
 
     # 4 — three opportunities
     opps = "".join(
@@ -402,6 +410,7 @@ def slides(t, lang):
         f'<div class="s-cta"><a class="sl-btn" href="{esc(CONTACT)}">{esc(t["cta"])}</a>'
         f'<p class="sl-nodata">{esc(t["nodata"])}</p>'
         f'<p class="sl-next"><strong>{esc(t["next_k"])}:</strong> {esc(t["next"])}</p>'
+        f'<p class="sl-roi"><a href="{S.BASE_URL}/roi/">{esc(t["roi"])} →</a></p>'
         f'<p class="sl-contact"><a href="{esc(CONTACT)}">groundtruthai.github.io/pilot</a>'
         + (f'<br><a href="mailto:{esc(mail)}">{esc(mail)}</a>' if mail else "") + '</p>'
         f'<p class="sl-legal">{esc(t["note"])}</p></div></div>')
