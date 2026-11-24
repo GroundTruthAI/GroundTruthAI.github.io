@@ -108,10 +108,10 @@ p{margin:0;line-height:1.5}
 .note{font-size:15px;color:var(--dim);margin-top:26px;line-height:1.5}
 .src{font-family:var(--mono);font-size:12.5px;color:var(--dim);margin-top:14px;line-height:1.5;letter-spacing:.01em}
 .src b{color:var(--muted);font-weight:700}
-.refs{display:grid;grid-template-columns:1fr 1fr;gap:9px 28px;margin-top:34px}
-.refs .r{padding:10px 16px;border-radius:14px;background:var(--panel);border:1px solid var(--stroke);font-size:14px;color:var(--muted);line-height:1.45}
+.refs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 20px;margin-top:34px}
+.refs .r{min-width:0;padding:10px 16px;border-radius:14px;background:var(--panel);border:1px solid var(--stroke);font-size:14px;color:var(--muted);line-height:1.45}
 .refs .r b{color:var(--text);font-weight:600;display:block;font-size:16px;margin-bottom:2px}
-.refs .r a{color:var(--cyan);text-decoration:none;font-family:var(--mono);font-size:12px;word-break:break-all}
+.refs .r a{color:var(--cyan);text-decoration:none;font-family:var(--mono);font-size:12px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .refs .r .fig{color:var(--save);font-family:var(--mono);font-weight:700;font-size:13px}
 
 /* bars */
@@ -208,7 +208,12 @@ p{margin:0;line-height:1.5}
 .legend > span:not(.nolegend)::before{content:"";display:inline-block;width:22px;height:8px;border-radius:9px;margin-right:8px;vertical-align:middle;background:rgba(255,255,255,.18)}
 .legend > span.a::before{background:linear-gradient(90deg,var(--save),var(--cyan))}
 .money{display:flex;flex-direction:column;justify-content:center;text-align:left}
-.money .num{font-size:96px}
+.money .num{font-size:80px}
+.money{padding:26px 28px!important}
+.ex{display:flex;flex-direction:column;gap:9px;margin-top:18px;padding-top:16px;border-top:1px dashed var(--stroke-2)}
+.ex .r{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:15px;color:var(--text)}
+.ex .r small{display:block;font-family:var(--mono);font-size:11.5px;color:var(--dim);margin-top:2px}
+.ex .r b{font-family:var(--mono);font-size:15px;color:var(--save);white-space:nowrap}
 
 /* ---------- Energy ---------- */
 .gauges{display:grid;grid-template-columns:1fr 1fr;gap:22px}
@@ -291,6 +296,160 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .static *{transition:none!important;animation:none!important}
 .nav button{all:unset;cursor:pointer;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.06);border:1px solid var(--stroke);color:var(--text);font-size:15px}
 .nav .cnt{font-family:var(--mono);font-size:13px;color:var(--muted);min-width:64px;text-align:center}
+
+/* ==========================================================
+   Responsive "flow" mode (html.flow, set by JS on narrow or
+   portrait viewports): slides stack into a scrolling page,
+   layouts reflow, reveals play as each slide scrolls in.
+   ========================================================== */
+@media screen{
+  html.flow{--px:clamp(20px,5vw,48px)}
+  html.flow, html.flow body{overflow-x:hidden;overflow-y:auto;height:auto}
+  html.flow .stage{position:relative;left:auto;top:auto;width:auto;height:auto;transform:none!important;border-radius:0;overflow:hidden}
+  html.flow .stage::before{background-size:48px 48px}
+  html.flow .slide{position:relative;inset:auto;opacity:1;visibility:visible;transform:none;transition:none;
+    padding:72px var(--px) 64px!important;justify-content:flex-start!important;border-bottom:1px solid var(--stroke)}
+  html.flow .slide:last-child{border-bottom:0}
+  html.flow .foot{display:none}
+  html.flow .top{top:22px;left:var(--px);right:var(--px)}
+  html.flow .card{padding:clamp(18px,4vw,26px);backdrop-filter:none}
+  html.flow .card p{font-size:16px}
+
+  /* type */
+  html.flow h1, html.flow .cover h1{font-size:clamp(36px,9.5vw,76px)}
+  html.flow h2{font-size:clamp(28px,6.6vw,52px)!important}
+  html.flow h3{font-size:19px}
+  html.flow .lead, html.flow .cover .sub{font-size:clamp(16px,2.7vw,21px);margin-top:18px}
+  html.flow .kicker{font-size:12px;letter-spacing:.12em;margin-bottom:16px}
+  html.flow .stat .num{font-size:clamp(36px,9vw,56px)!important}
+  html.flow .stat .lbl{font-size:15px}
+
+  /* cover: particles visual first, so the 5% effect is on screen at load */
+  html.flow .cover{padding-top:76px!important}
+  html.flow .distill-viz{position:relative!important;right:auto;top:auto;order:-1;width:min(76vw,400px);height:auto;margin:0 auto 12px}
+  html.flow .distill-viz svg{height:auto}
+  html.flow .viz-lbl{font-size:24px}
+  html.flow .cover .glow{left:50%!important;right:auto!important;top:20px!important;width:min(100vw,520px)!important;height:min(100vw,520px)!important;transform:translateX(-50%)}
+  html.flow .hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:34px}
+  html.flow .hero-stats .stat .lbl{font-size:14px}
+
+  /* grids */
+  html.flow .grid{grid-template-columns:1fr 1fr!important;gap:16px}
+  html.flow .grid > .note{grid-column:1/-1}
+  html.flow .agenda{gap:12px 16px;margin-top:30px}
+  html.flow .agenda .it{padding:16px 18px;gap:14px}
+  html.flow .agenda .n{font-size:15px;width:24px}
+  html.flow .agenda .t{font-size:18px}
+  html.flow .agenda .d{font-size:14px}
+  html.flow .prob{grid-template-columns:1fr 1fr;gap:16px;margin-top:26px}
+  html.flow .prob .card.big{grid-column:1/-1;grid-row:auto}
+  html.flow .prob .card.big .num{font-size:clamp(72px,18vw,110px)!important}
+  html.flow .chain{grid-template-columns:1fr 1fr;gap:14px;margin-top:30px}
+  html.flow .chain .card:last-child{grid-column:1/-1}
+  html.flow .chain .save .v{font-size:32px}
+  html.flow .root{flex-direction:column;align-items:flex-start;gap:8px;padding:20px 22px}
+  html.flow .root .big{font-size:24px}
+  html.flow .root p{font-size:16px}
+  html.flow .split{grid-template-columns:1fr!important;gap:36px}
+  html.flow .mods{gap:14px}
+
+  /* distillation bars: label on its own line */
+  html.flow .dbar{margin-top:30px}
+  html.flow .dbar .row{grid-template-columns:1fr auto;gap:8px 16px;margin-bottom:20px}
+  html.flow .dbar .row .l{grid-column:1/-1;font-size:15px}
+  html.flow .dbar .row .l b{font-size:18px}
+  html.flow .dbar .bar{height:34px;border-radius:10px}
+  html.flow .dbar .row .v{font-size:30px;min-width:3.2em}
+
+  /* results table becomes one card per dataset */
+  html.flow .rt, html.flow .rt tbody{display:block}
+  html.flow .rt thead{display:none}
+  html.flow .rt tr{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 14px;padding:16px 18px;margin-bottom:12px;
+    background:var(--panel);border:1px solid var(--stroke);border-radius:16px}
+  html.flow .rt td{display:block;padding:0;background:none;border:0!important;border-radius:0!important;font-size:17px}
+  html.flow .rt td:nth-child(-n+2){grid-column:1/-1}
+  html.flow .rt td:nth-child(n+3)::before{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:4px;font-weight:700}
+  html.flow[data-lang="en"] .rt td:nth-child(3)::before{content:"Original"}
+  html.flow[data-lang="en"] .rt td:nth-child(4)::before{content:"Distilled"}
+  html.flow[data-lang="en"] .rt td:nth-child(5)::before{content:"Change"}
+  html.flow[data-lang="es"] .rt td:nth-child(3)::before{content:"Original"}
+  html.flow[data-lang="es"] .rt td:nth-child(4)::before{content:"Destilado"}
+  html.flow[data-lang="es"] .rt td:nth-child(5)::before{content:"Variación"}
+  html.flow .rt .redc b{font-size:22px}
+
+  /* savings section + dashboard */
+  html.flow .section .huge{font-size:clamp(96px,30vw,220px)}
+  html.flow .sv{grid-template-columns:1fr;gap:22px}
+  html.flow .svr{grid-template-columns:1fr auto;gap:8px 16px;padding:14px 18px}
+  html.flow .svr .l{font-size:17px}
+  html.flow .svr .bars{grid-column:1/-1;grid-row:2}
+  html.flow .svr .v{font-size:26px;grid-column:2;grid-row:1}
+  html.flow .legend{flex-wrap:wrap;gap:8px 18px;font-size:13px}
+  html.flow .legend .nolegend{margin-left:0!important;flex-basis:100%}
+  html.flow .money .num{font-size:clamp(56px,15vw,80px)!important}
+
+  /* energy gauges */
+  html.flow .gauges{--gz:clamp(120px,30vw,200px);gap:14px}
+  html.flow .gauge{padding:22px 12px}
+  html.flow .gauge svg{width:var(--gz);height:var(--gz)}
+  html.flow .gauge .inner{margin-top:calc(-1 * var(--gz));height:var(--gz)}
+  html.flow .gauge .inner .num{font-size:clamp(34px,8vw,56px)}
+  html.flow .gauge h3{font-size:17px;margin-top:16px}
+  html.flow .gauge p{font-size:14px}
+
+  /* market funnel */
+  html.flow .funnel{margin-top:30px;gap:12px}
+  html.flow .fstep{padding:18px 22px}
+  html.flow .fstep .l{font-size:17px}
+  html.flow .fstep .l small{font-size:14px}
+  html.flow .fstep .v{font-size:32px;margin-left:18px}
+
+  /* calculator */
+  html.flow .calc{grid-template-columns:1fr;gap:18px;margin-top:24px}
+  html.flow .field .row{gap:12px}
+  html.flow .field label{font-size:15px}
+  html.flow .field output{font-size:15px;white-space:nowrap}
+  html.flow .res .total{font-size:clamp(48px,13vw,88px)}
+  html.flow .res .sub3{flex-wrap:wrap;gap:14px 28px}
+  html.flow .res .sub3 b{font-size:24px}
+  html.flow .brk .r{grid-template-columns:1fr auto;gap:6px 14px;font-size:15px}
+  html.flow .brk .r .bar{grid-column:1/-1;grid-row:2}
+  html.flow .brk .r b{grid-column:2;grid-row:1}
+
+  /* steps + collaboration */
+  html.flow .steps{grid-template-columns:1fr 1fr;gap:28px 18px;margin-top:30px}
+  html.flow .steps::before{display:none}
+  html.flow .step .dot{width:52px;height:52px;font-size:18px}
+  html.flow .step h3{margin-top:16px;font-size:19px}
+  html.flow .step p{font-size:15px}
+  html.flow .collab{grid-template-columns:1fr 1fr;gap:12px;margin-top:30px}
+  html.flow .collab .card h3{font-size:17px}
+
+  /* sources */
+  html.flow .refs{grid-template-columns:1fr 1fr;gap:10px 14px}
+
+  /* controls: floating language switch, scroll progress */
+  html.flow .nav{opacity:1;top:auto;bottom:14px;right:14px}
+  html.flow .nav #prev, html.flow .nav #next, html.flow .nav .cnt, html.flow .nav #fs{display:none}
+}
+
+/* phones: single column */
+@media screen and (max-width:640px){
+  html.flow .grid, html.flow .chain, html.flow .prob, html.flow .mods, html.flow .agenda,
+  html.flow .steps, html.flow .refs{grid-template-columns:1fr!important}
+  html.flow .chain .card:last-child{grid-column:auto}
+  html.flow .cover .grid{grid-template-columns:1fr 1fr!important}
+  /* agenda is authored in two columns, row by row: restore 01→08 order */
+  html.flow .agenda .it:nth-child(1){order:1} html.flow .agenda .it:nth-child(3){order:2}
+  html.flow .agenda .it:nth-child(5){order:3} html.flow .agenda .it:nth-child(7){order:4}
+  html.flow .agenda .it:nth-child(2){order:5} html.flow .agenda .it:nth-child(4){order:6}
+  html.flow .agenda .it:nth-child(6){order:7} html.flow .agenda .it:nth-child(8){order:8}
+  html.flow .hero-stats{gap:12px}
+  html.flow .hero-stats .stat .lbl{font-size:13px}
+  html.flow .fstep{width:100%!important;grid-template-columns:1fr}
+  html.flow .fstep .v{margin:8px 0 0}
+  html.flow .rt td{font-size:15px}
+}
 
 /* ---------- Print / PDF export: one slide per page ---------- */
 @media print{
@@ -380,19 +539,19 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
   <div class="prob">
     <div class="card big rv">
       <div>
-        <div class="stat"><div class="num gc"><span class="count" data-to="85">85</span><span class="u">%</span></div></div>
-        <p style="font-size:21px;color:var(--text);margin-top:14px"><span lang="en">of stored data is dark or ROT — redundant, obsolete or trivial.</span><span lang="es">de los datos almacenados es oscuro o ROT — redundante, obsoleto o trivial.</span></p>
-        <p><span lang="en">Only 15% is business-critical. Yet you store, back up, move and process all of it.</span><span lang="es">Solo el 15% es crítico para el negocio. Y aun así lo almacenas, replicas, mueves y procesas todo.</span></p>
+        <div class="stat"><div class="num gc"><span class="count" data-to="95.6" data-dec="1">95.6</span><span class="u">%</span></div></div>
+        <p style="font-size:21px;color:var(--text);margin-top:14px"><span lang="en">of enterprise file data is inactive or ROT — redundant, obsolete or trivial.</span><span lang="es">de los datos de ficheros empresariales es inactivo o ROT — redundante, obsoleto o trivial.</span></p>
+        <p><span lang="en">Only 4.4% is actively used (16&nbsp;PB analysed, 2026). Yet you store, back up, move and process all of it.</span><span lang="es">Solo el 4,4% se usa de forma activa (16&nbsp;PB analizados, 2026). Y aun así lo almacenas, replicas, mueves y procesas todo.</span></p>
       </div>
       <div class="waste" id="waste"></div>
     </div>
-    <div class="card rv"><div class="stat"><div class="num gc">$<span class="count" data-to="650">650</span><span class="u">k</span></div><div class="lbl"><span lang="en">per year to store non-critical data — average mid-size company with 1&nbsp;PB</span><span lang="es">al año en almacenar datos no críticos — empresa mediana con 1&nbsp;PB</span></div></div></div>
+    <div class="card rv"><div class="stat"><div class="num gc">&gt;<span class="count" data-to="30">30</span><span class="u">%</span></div><div class="lbl"><span lang="en">of the IT budget goes to storing, backing up and protecting data — in 55% of large enterprises</span><span lang="es">del presupuesto de TI se va en almacenar, copiar y proteger datos — en el 55% de las grandes empresas</span></div></div></div>
     <div class="card rv"><div class="stat"><div class="num gc"><span class="count" data-to="38">38</span><span class="u">%</span></div><div class="lbl"><span lang="en">of data scientists' time goes to preparing and cleaning data</span><span lang="es">del tiempo de los data scientists se va en preparar y limpiar datos</span></div></div></div>
     <div class="card rv"><div class="stat"><div class="num gc"><span class="count" data-to="91">91</span><span class="u">%</span></div><div class="lbl"><span lang="en">of ML models degrade as time passes since their last training</span><span lang="es">de los modelos ML se degradan con el tiempo tras su último entrenamiento</span></div></div></div>
     <div class="card rv"><div class="stat"><div class="num gc"><span class="count" data-to="410">410</span><span class="u">×</span></div><div class="lbl"><span lang="en">Transformer model growth every 2 years — GPU memory only 2×</span><span lang="es">crecen los modelos Transformer cada 2 años — la memoria GPU solo 2×</span></div></div></div>
   </div>
   <p class="note rv" style="margin-top:20px"><span lang="en">U.S. data centers used <b style="color:var(--text)">4.4%</b> of the country's electricity in 2023 — and could reach 6.7–12% by 2028. More data creates the illusion of insight, and a bill that grows faster than the value.</span><span lang="es">Los data centers de EE.&nbsp;UU. consumieron el <b style="color:var(--text)">4,4%</b> de la electricidad del país en 2023 — y podrían llegar al 6,7–12% en 2028. Más datos crean la ilusión de conocimiento, y una factura que crece más rápido que el valor.</span></p>
-  <p class="src rv"><span lang="en">Sources</span><span lang="es">Fuentes</span>: Veritas Global Databerg Report (2016) · Anaconda State of Data Science (2022) · Vela et al., Scientific Reports (2022) · Gholami et al., "AI and Memory Wall", IEEE Micro (2024) · LBNL / U.S. DOE (2024)</p>
+  <p class="src rv"><span lang="en">Sources</span><span lang="es">Fuentes</span>: CTERA Cold Data Report (2026) · Komprise (2026) · Anaconda (2022) · Vela et al., Sci. Reports (2022) · Gholami et al., IEEE Micro (2024) · LBNL / U.S. DOE (2024)</p>
   <div class="foot"><span class="brand"><svg><use href="#logo"/></svg><span>Ground<b>Truth</b> AI</span></span><span class="pg"></span></div>
 </section>
 
@@ -507,19 +666,24 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
         <div class="svr rv"><span class="l"><span lang="en">Storage</span><span lang="es">Almacenamiento</span><small><span lang="en">capacity, tiers, licenses</span><span lang="es">capacidad, niveles, licencias</span></small></span><div class="bars"><div class="bar"><i class="dimfill" style="--w:100%"></i></div><div class="bar"><i style="--w:10%"></i></div></div><span class="v g">−90%</span></div>
         <div class="svr rv"><span class="l"><span lang="en">Backup &amp; replication</span><span lang="es">Backup y réplica</span><small><span lang="en">copies, DR, retention</span><span lang="es">copias, DR, retención</span></small></span><div class="bars"><div class="bar"><i class="dimfill" style="--w:100%"></i></div><div class="bar"><i style="--w:5%"></i></div></div><span class="v g">−95%</span></div>
         <div class="svr rv"><span class="l"><span lang="en">Cloud processing</span><span lang="es">Procesamiento cloud</span><small><span lang="en">compute &amp; infrastructure usage</span><span lang="es">cómputo y uso de infraestructura</span></small></span><div class="bars"><div class="bar"><i class="dimfill" style="--w:100%"></i></div><div class="bar"><i style="--w:20%"></i></div></div><span class="v g">−80%</span></div>
-        <div class="svr rv"><span class="l"><span lang="en">Model training time</span><span lang="es">Tiempo de entrenamiento</span><small><span lang="en">GPU hours per training cycle</span><span lang="es">horas GPU por ciclo</span></small></span><div class="bars"><div class="bar"><i class="dimfill" style="--w:100%"></i></div><div class="bar"><i style="--w:5%"></i></div></div><span class="v g">−95%</span></div>
+        <div class="svr rv"><span class="l"><span lang="en">Model training</span><span lang="es">Entrenamiento de modelos</span><small><span lang="en">GPU hours &amp; compute per training cycle</span><span lang="es">horas GPU y cómputo por ciclo</span></small></span><div class="bars"><div class="bar"><i class="dimfill" style="--w:100%"></i></div><div class="bar"><i style="--w:20%"></i></div></div><span class="v g">−80%</span></div>
         <div class="svr rv"><span class="l"><span lang="en">Data admin &amp; prep</span><span lang="es">Admin. y preparación</span><small><span lang="en">team hours on data wrangling</span><span lang="es">horas del equipo con los datos</span></small></span><div class="bars"><div class="bar"><i class="dimfill" style="--w:100%"></i></div><div class="bar"><i style="--w:30%"></i></div></div><span class="v g">−70%</span></div>
         <div class="svr rv"><span class="l"><span lang="en">Time to insight</span><span lang="es">Tiempo hasta el insight</span><small><span lang="en">reports in minutes, not days</span><span lang="es">informes en minutos, no días</span></small></span><div class="bars"><div class="bar"><i class="dimfill" style="--w:100%"></i></div><div class="bar"><i style="--w:5%"></i></div></div><span class="v g">−95%</span></div>
       </div>
       <div class="legend rv"><span><span lang="en">Today</span><span lang="es">Hoy</span></span><span class="a"><span lang="en">With distillation</span><span lang="es">Con destilación</span></span><span style="margin-left:auto;color:var(--dim)" class="nolegend"><span lang="en">Ground Truth AI internal figures</span><span lang="es">Cifras internas de Ground Truth AI</span></span></div>
     </div>
     <div class="card hl money rv">
-      <div class="kicker" style="margin-bottom:10px"><span lang="en">Average saving</span><span lang="es">Ahorro medio</span></div>
-      <div class="stat"><div class="num g">$<span class="count" data-to="120">120</span><span class="u">k</span></div></div>
-      <p style="font-size:20px;color:var(--text)"><span lang="en">per year, on storage alone.</span><span lang="es">al año, solo en almacenamiento.</span></p>
-      <div class="divider" style="margin:26px 0"></div>
-      <p><span lang="en">Add cloud processing, training, backups and team time — the total saving multiplies.</span><span lang="es">Suma proceso cloud, entrenamiento, copias y tiempo del equipo — y el ahorro total se multiplica.</span></p>
-      <p style="margin-top:18px;color:var(--save);font-weight:600"><span lang="en">→ Calculate yours with the live simulator</span><span lang="es">→ Calcula el tuyo con el simulador en vivo</span></p>
+      <div class="kicker" style="margin-bottom:10px"><span lang="en">Worked example</span><span lang="es">Ejemplo calculado</span></div>
+      <div class="stat"><div class="num g">$<span class="count" data-to="1.23" data-dec="2">1.23</span><span class="u">M</span></div></div>
+      <p style="font-size:18px;color:var(--text);margin-top:6px"><span lang="en">saved per year by a company with 500&nbsp;TB of data</span><span lang="es">de ahorro al año en una empresa con 500&nbsp;TB de datos</span></p>
+      <div class="ex">
+        <div class="r"><span><span lang="en">Storage &amp; backup</span><span lang="es">Almac. y backup</span><small><span lang="en">500 TB × $40/TB·mo · −90%</span><span lang="es">500 TB × 40 $/TB·mes · −90%</span></small></span><b>$216k</b></div>
+        <div class="r"><span><span lang="en">Cloud processing</span><span lang="es">Proceso cloud</span><small><span lang="en">$600k/yr · −80%</span><span lang="es">600k $/año · −80%</span></small></span><b>$480k</b></div>
+        <div class="r"><span><span lang="en">AI training</span><span lang="es">Entrenamiento IA</span><small><span lang="en">$400k/yr · −80%</span><span lang="es">400k $/año · −80%</span></small></span><b>$320k</b></div>
+        <div class="r"><span><span lang="en">Data prep team</span><span lang="es">Equipo de preparación</span><small><span lang="en">$300k/yr · −70%</span><span lang="es">300k $/año · −70%</span></small></span><b>$210k</b></div>
+      </div>
+      <p style="font-size:13px;margin-top:14px;color:var(--dim)"><span lang="en">Scales with volume: at 1&nbsp;PB, storage alone saves $432k/yr. $40/TB·mo is conservative: S3 Standard alone is $23, before backups and replicas.</span><span lang="es">Escala con el volumen: con 1&nbsp;PB, solo el almacenamiento ahorra 432k $/año. 40 $/TB·mes es conservador: solo S3 Standard ya cuesta 23 $, sin contar copias ni réplicas.</span></p>
+      <p style="margin-top:12px;color:var(--save);font-weight:600;font-size:16px"><span lang="en">→ Plug in your numbers in the live simulator</span><span lang="es">→ Pon tus cifras en el simulador en vivo</span></p>
     </div>
   </div>
   <div class="foot"><span class="brand"><svg><use href="#logo"/></svg><span>Ground<b>Truth</b> AI</span></span><span class="pg"></span></div>
@@ -670,8 +834,8 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 <section class="slide" data-title="Sources" style="padding-top:40px;padding-bottom:86px;justify-content:flex-start">
   <div class="kicker rv" style="margin-bottom:14px"><span lang="en">Sources</span><span lang="es">Fuentes</span></div>
   <h2 class="rv" style="font-size:42px"><span lang="en">Where the numbers come from</span><span lang="es">De dónde salen las cifras</span></h2>
-  <p class="src rv" style="font-size:14px;margin-top:12px"><span lang="en">Savings rates (−95% data, −90% storage, −95% backup, −80% cloud, −95% training time, −70% data prep, −86% / −39% energy, $120k/yr) and benchmark results are <b>Ground Truth AI internal figures</b>, to be validated in each pilot.</span><span lang="es">Las tasas de ahorro (−95% datos, −90% almacenamiento, −95% backup, −80% cloud, −95% tiempo de entrenamiento, −70% preparación, −86% / −39% energía, 120k$/año) y los resultados de benchmark son <b>cifras internas de Ground Truth AI</b>, a validar en cada piloto.</span></p>
-  <div class="refs" style="margin-top:16px"><div class="r rv"><span class="fig">85% · 15% · $650k</span><b>Veritas — Global Databerg Report (2016)</b><span lang="en">2,500+ IT pros, 22 countries: 52% dark + 33% ROT; 15% business-critical; &gt;$650k/yr for a 1&nbsp;PB mid-size company.</span><span lang="es">2.500+ profesionales IT, 22 países: 52% oscuro + 33% ROT; 15% crítico; &gt;650k$/año en una empresa mediana con 1&nbsp;PB.</span><br><a href="https://web.archive.org/web/2017/https://www.veritas.com/news-releases/2016-03-15-veritas-global-databerg-report-finds-85-percent-of-stored-data" target="_blank" rel="noopener">web.archive.org/web/2017/www.veritas.com/news-releases/2016-03-15-veritas-glob…</a></div><div class="r rv"><span class="fig">38%</span><b>Anaconda — State of Data Science (2022)</b><span lang="en">Share of working time spent on data preparation and cleansing (45% in 2020).</span><span lang="es">Parte del tiempo de trabajo dedicada a preparar y limpiar datos (45% en 2020).</span><br><a href="https://venturebeat.com/ai/what-are-data-scientists-biggest-concerns-the-2022-state-of-data-science-report-has-the-answers" target="_blank" rel="noopener">venturebeat.com/ai/what-are-data-scientists-biggest-concerns-the-2022-state…</a></div><div class="r rv"><span class="fig">91%</span><b>Vela et al. — Scientific Reports 12, 11654 (2022)</b><span lang="en">Temporal degradation observed in 91% of 128 model–dataset pairs.</span><span lang="es">Degradación temporal observada en el 91% de 128 pares modelo–dataset.</span><br><a href="https://doi.org/10.1038/s41598-022-15245-z" target="_blank" rel="noopener">doi.org/10.1038/s41598-022-15245-z</a></div><div class="r rv"><span class="fig">410× · 2×</span><b>Gholami et al. — "AI and Memory Wall", IEEE Micro (2024)</b><span lang="en">Transformer parameters ×410 every 2 years vs. single-GPU memory ×2.</span><span lang="es">Parámetros de Transformers ×410 cada 2 años frente a ×2 de memoria por GPU.</span><br><a href="https://arxiv.org/abs/2403.14123" target="_blank" rel="noopener">arxiv.org/abs/2403.14123</a></div><div class="r rv"><span class="fig">4.4% · 6.7–12%</span><b>LBNL / U.S. DOE — 2024 Data Center Energy Usage Report</b><span lang="en">176 TWh, 4.4% of U.S. electricity in 2023; 6.7–12% by 2028.</span><span lang="es">176 TWh, 4,4% de la electricidad de EE.&nbsp;UU. en 2023; 6,7–12% en 2028.</span><br><a href="https://www.energy.gov/articles/doe-releases-new-report-evaluating-increase-electricity-demand-data-centers" target="_blank" rel="noopener">www.energy.gov/articles/doe-releases-new-report-evaluating-increase-electricit…</a></div><div class="r rv"><span class="fig">415 → 945 TWh</span><b>IEA — Energy and AI (2025)</b><span lang="en">Global data-center electricity in 2024 and 2030 (Base Case).</span><span lang="es">Electricidad de data centers en el mundo en 2024 y 2030 (escenario base).</span><br><a href="https://www.iea.org/reports/energy-and-ai/energy-demand-from-ai" target="_blank" rel="noopener">www.iea.org/reports/energy-and-ai/energy-demand-from-ai</a></div><div class="r rv"><span class="fig">$0.13/kWh</span><b>U.S. EIA — Electric Power Annual</b><span lang="en">2024 average commercial price: 12.75 ¢/kWh (EU non-household ≈ €0.19, Eurostat).</span><span lang="es">Precio medio comercial 2024: 12,75 ¢/kWh (UE no doméstico ≈ 0,19 €, Eurostat).</span><br><a href="https://www.eia.gov/electricity/annual/html/epa_02_10.html" target="_blank" rel="noopener">www.eia.gov/electricity/annual/html/epa_02_10.html</a></div><div class="r rv"><span class="fig">~28%</span><b>McKinsey — "The future of AI workloads" (2025)</b><span lang="en">AI training: 23.1 of 82.3 GW of global data-center demand in 2025.</span><span lang="es">Entrenamiento IA: 23,1 de 82,3 GW de la demanda global de data centers en 2025.</span><br><a href="https://www.mckinsey.com/featured-insights/week-in-charts/the-future-of-ai-workloads" target="_blank" rel="noopener">www.mckinsey.com/featured-insights/week-in-charts/the-future-of-ai-workloads</a></div><div class="r rv"><span class="fig">−50% · +5–15%</span><b>McKinsey — "What is personalization?"</b><span lang="en">Personalization can cut acquisition cost by up to 50% and lift revenue 5–15%.</span><span lang="es">La personalización puede reducir hasta un 50% el coste de adquisición y subir ingresos un 5–15%.</span><br><a href="https://www.mckinsey.com/featured-insights/mckinsey-explainers/what-is-personalization" target="_blank" rel="noopener">www.mckinsey.com/featured-insights/mckinsey-explainers/what-is-personalization</a></div><div class="r rv"><span class="fig">$23/TB·mo</span><b>AWS — Amazon S3 pricing</b><span lang="en">S3 Standard, first 50 TB, us-east-1: $0.023/GB-month.</span><span lang="es">S3 Standard, primeros 50 TB, us-east-1: 0,023 $/GB-mes.</span><br><a href="https://aws.amazon.com/s3/pricing/" target="_blank" rel="noopener">aws.amazon.com/s3/pricing/</a></div></div>
+  <p class="src rv" style="font-size:14px;margin-top:12px"><span lang="en">Savings rates (−95% data, −90% storage, −95% backup, −80% cloud, −80% training, −70% data prep, −86% / −39% energy) and benchmark results are <b>Ground Truth AI internal figures</b>, to be validated in each pilot. The worked example (slide 9) applies these rates to the simulator's default inputs: 500&nbsp;TB at $40/TB·month, $600k cloud, $400k training, $300k data prep.</span><span lang="es">Las tasas de ahorro (−95% datos, −90% almacenamiento, −95% backup, −80% cloud, −80% entrenamiento, −70% preparación, −86% / −39% energía) y los resultados de benchmark son <b>cifras internas de Ground Truth AI</b>, a validar en cada piloto. El ejemplo calculado (slide 9) aplica estas tasas a los valores por defecto del simulador: 500&nbsp;TB a 40 $/TB·mes, 600k $ cloud, 400k $ entrenamiento, 300k $ preparación.</span></p>
+  <div class="refs" style="margin-top:16px"><div class="r rv"><span class="fig">95.6% · 4.4%</span><b>CTERA — Cold Data Report (Sept 2026)</b><span lang="en">16 PB, 856 enterprise NAS file-share scans: 95.6% inactive / ROT; 83% of capacity unmodified &gt;1 year. Vendor-commissioned.</span><span lang="es">16 PB, 856 análisis de NAS empresariales: 95,6% inactivo / ROT; el 83% de la capacidad, &gt;1 año sin cambios. Estudio del fabricante.</span><br><a href="https://www.blocksandfiles.com/file/2026/09/15/ctera-finds-95-of-enterprise-file-data-rarely-used/5296552" target="_blank" rel="noopener">www.blocksandfiles.com/file/2026/09/15/ctera-finds-95-of-enterprise-file-data…</a></div><div class="r rv"><span class="fig">&gt;30% · 55%</span><b>Komprise — State of Unstructured Data Management (2026)</b><span lang="en">300 U.S. IT leaders (1,000+ staff firms), Oct 2025: storage, backup &amp; DR &gt;30% of IT budget for 55%; 74% store &gt;5 PB.</span><span lang="es">300 responsables de TI de EE.&nbsp;UU. (empresas +1.000 empleados), oct. 2025: almacenamiento, backup y DR &gt;30% del presupuesto de TI en el 55%; el 74% guarda &gt;5 PB.</span><br><a href="https://www.komprise.com/report" target="_blank" rel="noopener">www.komprise.com/report</a></div><div class="r rv"><span class="fig">38%</span><b>Anaconda — State of Data Science (2022)</b><span lang="en">Share of working time spent on data preparation and cleansing (45% in 2020).</span><span lang="es">Parte del tiempo de trabajo dedicada a preparar y limpiar datos (45% en 2020).</span><br><a href="https://venturebeat.com/ai/what-are-data-scientists-biggest-concerns-the-2022-state-of-data-science-report-has-the-answers" target="_blank" rel="noopener">venturebeat.com/ai/what-are-data-scientists-biggest-concerns-the-2022-state…</a></div><div class="r rv"><span class="fig">91%</span><b>Vela et al. — Scientific Reports 12, 11654 (2022)</b><span lang="en">Temporal degradation observed in 91% of 128 model–dataset pairs.</span><span lang="es">Degradación temporal observada en el 91% de 128 pares modelo–dataset.</span><br><a href="https://doi.org/10.1038/s41598-022-15245-z" target="_blank" rel="noopener">doi.org/10.1038/s41598-022-15245-z</a></div><div class="r rv"><span class="fig">410× · 2×</span><b>Gholami et al. — "AI and Memory Wall", IEEE Micro (2024)</b><span lang="en">Transformer parameters ×410 every 2 years vs. single-GPU memory ×2.</span><span lang="es">Parámetros de Transformers ×410 cada 2 años frente a ×2 de memoria por GPU.</span><br><a href="https://arxiv.org/abs/2403.14123" target="_blank" rel="noopener">arxiv.org/abs/2403.14123</a></div><div class="r rv"><span class="fig">4.4% · 6.7–12%</span><b>LBNL / U.S. DOE — 2024 Data Center Energy Usage Report</b><span lang="en">176 TWh, 4.4% of U.S. electricity in 2023; 6.7–12% by 2028.</span><span lang="es">176 TWh, 4,4% de la electricidad de EE.&nbsp;UU. en 2023; 6,7–12% en 2028.</span><br><a href="https://www.energy.gov/articles/doe-releases-new-report-evaluating-increase-electricity-demand-data-centers" target="_blank" rel="noopener">www.energy.gov/articles/doe-releases-new-report-evaluating-increase-electricit…</a></div><div class="r rv"><span class="fig">415 → 945 TWh</span><b>IEA — Energy and AI (2025)</b><span lang="en">Global data-center electricity in 2024 and 2030 (Base Case).</span><span lang="es">Electricidad de data centers en el mundo en 2024 y 2030 (escenario base).</span><br><a href="https://www.iea.org/reports/energy-and-ai/energy-demand-from-ai" target="_blank" rel="noopener">www.iea.org/reports/energy-and-ai/energy-demand-from-ai</a></div><div class="r rv"><span class="fig">$0.13/kWh</span><b>U.S. EIA — Electric Power Annual</b><span lang="en">2024 average commercial price: 12.75 ¢/kWh (EU non-household ≈ €0.19, Eurostat).</span><span lang="es">Precio medio comercial 2024: 12,75 ¢/kWh (UE no doméstico ≈ 0,19 €, Eurostat).</span><br><a href="https://www.eia.gov/electricity/annual/html/epa_02_10.html" target="_blank" rel="noopener">www.eia.gov/electricity/annual/html/epa_02_10.html</a></div><div class="r rv"><span class="fig">~28%</span><b>McKinsey — "The future of AI workloads" (2025)</b><span lang="en">AI training: 23.1 of 82.3 GW of global data-center demand in 2025.</span><span lang="es">Entrenamiento IA: 23,1 de 82,3 GW de la demanda global de data centers en 2025.</span><br><a href="https://www.mckinsey.com/featured-insights/week-in-charts/the-future-of-ai-workloads" target="_blank" rel="noopener">www.mckinsey.com/featured-insights/week-in-charts/the-future-of-ai-workloads</a></div><div class="r rv"><span class="fig">−50% · +5–15%</span><b>McKinsey — "What is personalization?"</b><span lang="en">Personalization can cut acquisition cost by up to 50% and lift revenue 5–15%.</span><span lang="es">La personalización puede reducir hasta un 50% el coste de adquisición y subir ingresos un 5–15%.</span><br><a href="https://www.mckinsey.com/featured-insights/mckinsey-explainers/what-is-personalization" target="_blank" rel="noopener">www.mckinsey.com/featured-insights/mckinsey-explainers/what-is-personalization</a></div><div class="r rv"><span class="fig">$23/TB·mo</span><b>AWS — Amazon S3 pricing</b><span lang="en">S3 Standard, first 50 TB, us-east-1: $0.023/GB-month.</span><span lang="es">S3 Standard, primeros 50 TB, us-east-1: 0,023 $/GB-mes.</span><br><a href="https://aws.amazon.com/s3/pricing/" target="_blank" rel="noopener">aws.amazon.com/s3/pricing/</a></div></div>
   <div class="foot"><span class="brand"><svg><use href="#logo"/></svg><span>Ground<b>Truth</b> AI</span></span><span class="pg"></span></div>
 </section>
 
@@ -698,7 +862,9 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
     var s = Math.min(window.innerWidth/1600, window.innerHeight/900);
     stage.style.transform = 'translate(-50%,-50%) scale(' + s + ')';
   }
-  window.addEventListener('resize', fit); fit();
+  /* Responsive: narrow or portrait viewports get the scrolling "flow" layout */
+  var flow = false, modeSet = false, io = null;
+  function wantsFlow(){ return window.innerWidth < 1000 || window.innerWidth / window.innerHeight < 1.1; }
 
   /* ---------- stagger index for reveal + page numbers ---------- */
   slides.forEach(function(s, k){
@@ -766,6 +932,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
   document.getElementById('fs').onclick = toggleFS;
 
   document.addEventListener('keydown', function(e){
+    if (flow) { if ((e.key === 'l' || e.key === 'L') && !(e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName))) setLang(lang === 'en' ? 'es' : 'en'); return; }
     if (e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName) && e.target.type !== 'range') return;
     if (e.target && e.target.type === 'range' && /Arrow/.test(e.key)) return;
     switch (e.key) {
@@ -778,7 +945,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
     }
   });
   var tx = null;
-  document.addEventListener('touchstart', function(e){ if (e.target.type !== 'range') tx = e.touches[0].clientX; }, {passive:true});
+  document.addEventListener('touchstart', function(e){ if (!flow && e.target.type !== 'range') tx = e.touches[0].clientX; }, {passive:true});
   document.addEventListener('touchend', function(e){
     if (tx === null) return; var dx = e.changedTouches[0].clientX - tx; tx = null;
     if (Math.abs(dx) > 50) go(cur + (dx < 0 ? 1 : -1));
@@ -820,7 +987,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
   /* ---------- waste grid on problem slide ---------- */
   (function(){
     var w = document.getElementById('waste'), h = '';
-    for (var i = 0; i < 40; i++) h += '<span' + (i < 6 ? ' class="ok"' : '') + '></span>';
+    for (var i = 0; i < 40; i++) h += '<span' + (i < 2 ? ' class="ok"' : '') + '></span>';
     w.innerHTML = h;
   })();
 
@@ -863,8 +1030,8 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
     });
     var pc = function(x){ return fmt(x*100,0) + '%'; };
     $('r-note').innerHTML = lang === 'es'
-      ? 'Estimación ilustrativa. Tasas aplicadas — almacenamiento ' + pc(R.sto) + ', proceso cloud ' + pc(R.proc) + ', entrenamiento ' + pc(R.train) + ', preparación ' + pc(R.prep) + '. ' + (scen==='target' ? 'Escenario esperado basado en las cifras validadas (entrenamiento limitado al 80% por overheads).' : 'Escenario conservador ≈ 2/3 de las cifras validadas.') + ' El ahorro real se confirma en el piloto. Referencia: S3 Standard ≈ 23 $/TB·mes (AWS); el coste total con backup y réplica suele ser mayor.'
-      : 'Illustrative estimate. Rates applied — storage ' + pc(R.sto) + ', cloud processing ' + pc(R.proc) + ', training ' + pc(R.train) + ', data prep ' + pc(R.prep) + '. ' + (scen==='target' ? 'Expected scenario based on validated figures (training capped at 80% for overheads).' : 'Conservative scenario ≈ 2/3 of validated figures.') + ' Actual savings are confirmed in the pilot. Reference: S3 Standard ≈ $23/TB·month (AWS); fully loaded cost with backup and replication is usually higher.';
+      ? 'Estimación ilustrativa. Tasas aplicadas — almacenamiento ' + pc(R.sto) + ', proceso cloud ' + pc(R.proc) + ', entrenamiento ' + pc(R.train) + ', preparación ' + pc(R.prep) + '. ' + (scen==='target' ? 'Escenario esperado basado en las cifras validadas.' : 'Escenario conservador ≈ 2/3 de las cifras validadas.') + ' El ahorro real se confirma en el piloto. Referencia: S3 Standard ≈ 23 $/TB·mes (AWS); el coste total con backup y réplica suele ser mayor.'
+      : 'Illustrative estimate. Rates applied — storage ' + pc(R.sto) + ', cloud processing ' + pc(R.proc) + ', training ' + pc(R.train) + ', data prep ' + pc(R.prep) + '. ' + (scen==='target' ? 'Expected scenario based on validated figures.' : 'Conservative scenario ≈ 2/3 of validated figures.') + ' Actual savings are confirmed in the pilot. Reference: S3 Standard ≈ $23/TB·month (AWS); fully loaded cost with backup and replication is usually higher.';
     document.querySelectorAll('.calc input[type=range]').forEach(fillRange);
   }
   document.querySelectorAll('.calc input[type=range]').forEach(function(el){ el.addEventListener('input', calc); });
@@ -880,11 +1047,59 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
   var uiT; document.addEventListener('mousemove', function(){ document.body.classList.add('ui'); clearTimeout(uiT); uiT = setTimeout(function(){ document.body.classList.remove('ui'); }, 2500); });
   if (q.get('lang') === 'es') setLang('es'); else { localizeStatic(); calc(); }
   var h = parseInt((location.hash || '').replace('#',''), 10);
-  var start = isNaN(h) ? 0 : h-1;
-  /* Activate after the first paint so the entrance transitions (cover particles,
-     5% core, reveals) also play on the initial load, not only when navigating. */
-  if (STATIC) go(start, true);
-  else requestAnimationFrame(function(){ requestAnimationFrame(function(){ go(start, true); }); });
+  var start = isNaN(h) ? 0 : Math.max(0, Math.min(N-1, h-1));
+
+  /* ---------- responsive modes ---------- */
+  function flowIndex(){
+    var k = 0;
+    slides.forEach(function(s, i){ if (s.getBoundingClientRect().top < window.innerHeight * 0.4) k = i; });
+    return k;
+  }
+  function flowProgress(){
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('progress').style.width = (max > 0 ? Math.min(100, window.scrollY / max * 100) : 100) + '%';
+  }
+  function observe(){
+    if (io) io.disconnect();
+    if (!('IntersectionObserver' in window)) { slides.forEach(function(s){ s.classList.add('active'); countUp(s); }); return; }
+    io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (!en.isIntersecting) return;
+        en.target.classList.add('active'); countUp(en.target); io.unobserve(en.target);
+      });
+    }, {rootMargin: '0px 0px -12% 0px'});
+    slides.forEach(function(s){ io.observe(s); });
+  }
+  function enterFlow(at){
+    root.classList.add('flow');
+    stage.style.transform = '';
+    slides.forEach(function(s){ s.classList.remove('active', 'past'); });
+    if (at > 0) slides[at].scrollIntoView();
+    flowProgress();
+    if (STATIC) { slides.forEach(function(s){ s.classList.add('active'); }); finalCounts(); return; }
+    /* observe after the first paint so entrance transitions play */
+    requestAnimationFrame(function(){ requestAnimationFrame(observe); });
+  }
+  function enterDeck(at, initial){
+    if (io) { io.disconnect(); io = null; }
+    root.classList.remove('flow');
+    window.scrollTo(0, 0);
+    fit();
+    /* Activate after the first paint so the entrance transitions (cover particles,
+       5% core, reveals) also play on the initial load, not only when navigating. */
+    if (initial && !STATIC) requestAnimationFrame(function(){ requestAnimationFrame(function(){ go(at, true); }); });
+    else go(at, true);
+  }
+  function setMode(initial){
+    var f = wantsFlow();
+    if (!initial && f === flow) { if (!f) fit(); return; }
+    var at = initial ? start : (flow ? flowIndex() : cur);
+    flow = f;
+    if (f) enterFlow(at); else enterDeck(at, initial);
+  }
+  window.addEventListener('resize', function(){ setMode(false); });
+  window.addEventListener('scroll', function(){ if (flow) flowProgress(); }, {passive:true});
+  setMode(true);
 })();
 </script>
 </body>
