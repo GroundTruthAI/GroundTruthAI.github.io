@@ -49,8 +49,18 @@ def render_home(cases, industries):
 
     inds = "".join(f'<li><a class="chip chip-lg" href="/industries/{i["slug"]}/">{esc(i["name"])}</a></li>' for i in industries)
 
+    sub = [("challenges", "Business cases"), ("opportunity", "Why now"), ("how", "How it works"), ("value", "Value"),
+           ("evidence", "Evidence"), ("integration", "Integration"), ("industries", "Industries"), ("engage", "Pilot")]
+    subnav = ('<nav class="subnav" aria-label="Sections on this page"><div class="wrap subnav-in"><ul>'
+              + "".join(f'<li><a href="#{i}">{t}</a></li>' for i, t in sub)
+              + '</ul><a class="subnav-all" href="/business-cases/">All 11 business cases</a></div></nav>')
+    strip = "".join(
+        f'<li><a href="{case_url(by[k])}"><span class="code">{k}</span><strong>{esc(by[k]["title"])}</strong>'
+        f'<span>{md(by[k]["outcome_short"])}</span></a></li>' for k in ("BC01", "BC02", "BC03", "BC04"))
+
     body = (
-        '<section class="hero" aria-labelledby="hero-h"><div class="wrap hero-grid"><div class="hero-copy">'
+        subnav
+        + '<section class="hero" aria-labelledby="hero-h"><div class="wrap"><div class="hero-grid"><div class="hero-copy">'
         '<p class="eyebrow">Task-aware dataset distillation for distributed enterprises</p>'
         '<h1 id="hero-h">Keep data distributed. <span class="hl g">Centralize intelligence.</span></h1>'
         '<p class="lead">Enable enterprise analytics across segregated data environments, optimize AI training costs and reduce unnecessary '
@@ -62,7 +72,10 @@ def render_home(cases, industries):
         '<div class="stat"><p class="num g">≤2.8<span class="u">pp</span></p><p class="lbl">maximum accuracy change vs. full-data baseline</p></div>'
         '<div class="stat"><p class="num g">8–12<span class="u">wk</span></p><p class="lbl">indicative pilot to a measured decision</p></div></div>'
         '<p class="hero-note">Pilot-stage technology. Every claim on this site carries its <a href="/evidence/">evidence level</a>.</p>'
-        f'</div><div class="hero-art">{hero_visual()}</div></div></section>'
+        f'</div><div class="hero-art">{hero_visual()}</div></div>'
+        '<div class="hero-cases"><div class="hc-head"><p class="hc-h">Flagship business cases</p>'
+        '<a class="link-arrow" href="#challenges">See how each one works</a></div>'
+        f'<ul class="hc-list">{strip}</ul></div></div></section>'
 
         '<section class="sec sec-flag" id="challenges" aria-labelledby="ch-h"><div class="wrap">'
         '<p class="eyebrow">Flagship business cases</p>'
@@ -132,7 +145,7 @@ def render_home(cases, industries):
         + section("industries", "Built for complex, regulated, distributed enterprises",
                   f'<ul class="chips chips-lg">{inds}</ul>', eyebrow="Industries")
 
-        + '<section class="sec sec-cta" aria-labelledby="cta-h"><div class="wrap cta-band">'
+        + '<section class="sec sec-cta" id="engage" aria-labelledby="cta-h"><div class="wrap cta-band">'
         '<div><p class="eyebrow">Commercial engagement</p><h2 id="cta-h">Prove it on one workload, with your data and your thresholds</h2>'
         '<p>An 8–12 week pilot, in your environment, against your current baseline. You define success before we start; you keep the measurements.</p></div>'
         '<div class="cta-stack"><a class="btn btn-primary btn-lg" href="/pilot/">Request a Pilot</a>'
