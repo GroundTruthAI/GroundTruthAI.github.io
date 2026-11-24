@@ -13,7 +13,6 @@ from . import core
 from .core import esc, asset, BRAND, CSP
 
 DIR = "/executive/"
-OLD_DIR = "/resources/executive-brief/"   # previous location: page redirects + PDF copies kept for shared links
 PDF = {"en": "GroundTruthAI_Executive_Brief_EN.pdf", "es": "GroundTruthAI_Resumen_Comercial_ES.pdf"}
 URL = {"en": DIR, "es": DIR + "es/"}
 

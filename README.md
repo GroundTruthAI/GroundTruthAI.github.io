@@ -51,8 +51,6 @@ the simulator run entirely in the browser.
 folder are printed from those same pages by `tools/build_pdf.py` (headless Chrome, one 13.333 × 7.5 in page per slide,
 vector text and links, metadata added). `build.py` never deletes them; `verify.py` checks the slide count, matching PDF page count and 16:9 size,
 and warns when a PDF is older than the presentation source.
-The previous location `/resources/executive-brief/` redirects to `/executive/`; `build_pdf.py` keeps copies of the PDFs there
-so links already shared keep working.
 
 ## Release notes
 
@@ -67,8 +65,7 @@ commercial refinement, scenarios, claims registry, validation roadmap, company i
 review, website QA) and retired legacy material.
 It is **git-ignored on purpose**: this repository is public and published by GitHub Pages. Keep those files in a private location.
 
-## Legacy URLs
+## Old URLs
 
-Old template pages and earlier benchmark pages (`iris.html`, `mnist.html`, …) are `noindex` redirects defined in
-`LEGACY` in `tools/sitegen/pages_main.py`. The retired Smart Data Savings deck URL `/resources/smart-data-savings/`
-redirects to `/evidence/`; its claims are superseded.
+Old URLs are not redirected; GitHub Pages serves `404.html`, which links back to the main pages. `verify.py` fails if a
+redirect stub is left in the repository or if any internal link is broken.

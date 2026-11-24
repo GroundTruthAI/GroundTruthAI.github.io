@@ -781,30 +781,7 @@ def render_404(cases):
     page("/404.html", "Page not found", "Page not found.", body, cases=cases, priority=None)
 
 
-LEGACY = {
-    "distillation.html": "/technology/",
-    "data-drift.html": "/technology/#adjacent",
-    "data_drift.html": "/technology/#adjacent",
-    "anomaly_detection.html": "/technology/#adjacent",
-    "efficient_data_size_reduction.html": "/technology/",
-    "customer-segmentation.html": "/technology/#adjacent",
-    "recommender-systems.html": "/technology/#adjacent",
-    "fraud-detection.html": "/technology/#adjacent",
-    "iris.html": "/evidence/#benchmarks",
-    "wine.html": "/evidence/#benchmarks",
-    "breast.html": "/evidence/#benchmarks",
-    "mnist.html": "/evidence/#benchmarks",
-    "portfolio-details.html": "/",
-    "service-details.html": "/",
-    "starter-page.html": "/",
-    # Retired Smart Data Savings briefing deck (claims superseded; original kept in internal/legacy/)
-    "resources/smart-data-savings/index.html": "/evidence/",
-    # Platform merged into Technology
-    "platform/index.html": "/technology/#platform",
-    # Executive brief moved to /executive/ (old PDFs are kept as copies by tools/build_pdf.py)
-    "resources/executive-brief/index.html": "/executive/",
-    "resources/executive-brief/es.html": "/executive/es/",
-}
+LEGACY = {}   # old URLs are no longer redirected; GitHub Pages serves 404.html for them
 
 
 def render_legacy():

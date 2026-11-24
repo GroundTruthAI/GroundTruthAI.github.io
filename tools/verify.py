@@ -248,13 +248,11 @@ if pending:
 for u in ("/simulator/", "/roi/"):
     if u in by_url and "Not contractual." not in " ".join(by_url[u].text): err(f"{u}: non-contractual note missing next to results")
 # executive brief: N slides per language, PDFs present with N pages of 960 x 540 pt (13.333 x 7.5 in)
-from sitegen.pages_brief import N_SLIDES, URL as BRIEF_URL, PDF as BRIEF_PDF, DIR as BRIEF_DIR, OLD_DIR as BRIEF_OLD
+from sitegen.pages_brief import N_SLIDES, URL as BRIEF_URL, PDF as BRIEF_PDF, DIR as BRIEF_DIR
 import shutil
 for u, pdf in ((BRIEF_URL["en"], BRIEF_PDF["en"]), (BRIEF_URL["es"], BRIEF_PDF["es"])):
     src = open(os.path.join(ROOT, u.lstrip("/") + ("index.html" if u.endswith("/") else "")), encoding="utf-8").read() if u in by_url else ""
     if src.count('aria-roledescription="slide"') != N_SLIDES: err(f"{u}: expected exactly {N_SLIDES} slides")
-    old_copy = os.path.join(ROOT, BRIEF_OLD.strip("/"), pdf)
-    if not os.path.exists(old_copy): err(f"missing PDF copy at the previous location {BRIEF_OLD}{pdf}")
     path = os.path.join(ROOT, BRIEF_DIR.strip("/"), pdf)
     if not os.path.exists(path): err(f"missing PDF {pdf} (run tools/build_pdf.py)"); continue
     if shutil.which("pdfinfo"):
@@ -330,8 +328,10 @@ for theme, blk in blocks.items():
 # ----------------------------------------------------------------------------- release blockers
 if not S.CONTACT_EMAIL:
     warn("RELEASE BLOCKER: content/site.py CONTACT_EMAIL is empty — the pilot form prepares a copyable request only.")
-for f in LEGACY:
-    if not os.path.exists(os.path.join(ROOT, f)): err(f"legacy redirect missing: {f}")
+for f in glob.glob(os.path.join(ROOT, "**", "*.html"), recursive=True):
+    rel = os.path.relpath(f, ROOT)
+    if rel.split(os.sep)[0] in SKIP_DIRS: continue
+    if 'http-equiv="refresh"' in open(f, encoding="utf-8").read(): err(f"stale redirect page left in the repository: {rel}")
 import subprocess
 try:
     tracked = subprocess.run(["git", "ls-files", "internal"], cwd=ROOT, capture_output=True, text=True).stdout.strip()

@@ -105,7 +105,6 @@ def header(active, cases):
         '<span class="nav-toggle-bars" aria-hidden="true"></span><span class="sr-only">Menu</span></button>'
         '<nav id="site-nav" class="site-nav" aria-label="Primary">'
         f'<ul class="nav-list">{"".join(links)}</ul>'
-        '<a class="btn btn-ghost btn-sm nav-brief" href="/executive/">Executive overview</a>'
         '<a class="btn btn-primary btn-sm nav-cta" href="/pilot/">Contact</a>'
         '</nav></div></header>')
 

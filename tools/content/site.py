@@ -38,6 +38,7 @@ NAV = [
     ("Evidence", "/evidence/", "evidence"),
     ("Partners", "/partners/", "partners"),
     ("Company", "/company/", "company"),
+    ("Executive overview", "/executive/", "executive"),
 ]
 
 FILTERS = {
