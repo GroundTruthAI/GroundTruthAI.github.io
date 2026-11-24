@@ -236,7 +236,7 @@ def lum(h):
 def ratio(a, b):
     la, lb = sorted((lum(a), lum(b)), reverse=True); return (la + .05) / (lb + .05)
 css = open(os.path.join(ROOT, "assets/css/site.css"), encoding="utf-8").read()
-blocks = {"dark": css.split("@media (prefers-color-scheme:light)")[0], "light": css.split("@media (prefers-color-scheme:light)")[1].split("}}")[0]}
+blocks = {"dark": css.split("*,*::before")[0]}
 for theme, blk in blocks.items():
     tok = dict(re.findall(r"--([a-z0-9-]+):(#[0-9A-Fa-f]{6})", blk))
     for fg in ("text", "muted", "dim", "save", "cyan", "violet", "raw", "amber", "danger"):

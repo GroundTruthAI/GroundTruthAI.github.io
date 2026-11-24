@@ -52,11 +52,15 @@ def render_home(cases, industries):
     body = (
         '<section class="hero" aria-labelledby="hero-h"><div class="wrap hero-grid"><div class="hero-copy">'
         '<p class="eyebrow">Task-aware dataset distillation for distributed enterprises</p>'
-        '<h1 id="hero-h">Keep data distributed. <span class="hl">Centralize intelligence.</span></h1>'
+        '<h1 id="hero-h">Keep data distributed. <span class="hl g">Centralize intelligence.</span></h1>'
         '<p class="lead">Enable enterprise analytics across segregated data environments, optimize AI training costs and reduce unnecessary '
         'data movement through intelligent dataset distillation.</p>'
         '<div class="cta-row"><a class="btn btn-primary btn-lg" href="/pilot/">Request a Pilot</a>'
         '<a class="btn btn-ghost btn-lg" href="#challenges">See the business cases</a></div>'
+        '<div class="hero-stats">'
+        '<div class="stat"><p class="num g">86–95<span class="u">%</span></p><p class="lbl">less training data across four public benchmarks</p></div>'
+        '<div class="stat"><p class="num g">≤2.8<span class="u">pp</span></p><p class="lbl">maximum accuracy change vs. full-data baseline</p></div>'
+        '<div class="stat"><p class="num g">8–12<span class="u">wk</span></p><p class="lbl">indicative pilot to a measured decision</p></div></div>'
         '<p class="hero-note">Pilot-stage technology. Every claim on this site carries its <a href="/evidence/">evidence level</a>.</p>'
         f'</div><div class="hero-art">{hero_visual()}</div></div></section>'
 
@@ -109,8 +113,8 @@ def render_home(cases, industries):
 
         + section("evidence", "What we have shown, and what we have not",
                   '<div class="ev-home">'
-                  '<div class="ev-stat"><p class="big">86–95<span>%</span></p><p>less training data across four public benchmarks</p></div>'
-                  '<div class="ev-stat"><p class="big">≤2.8<span> pp</span></p><p>maximum accuracy change versus full-data baseline</p></div>'
+                  '<div class="ev-stat"><p class="big g">86–95<span>%</span></p><p>less training data across four public benchmarks</p></div>'
+                  '<div class="ev-stat"><p class="big g">≤2.8<span> pp</span></p><p>maximum accuracy change versus full-data baseline</p></div>'
                   '<div class="ev-stat ev-none"><p class="big">0</p><p>production deployments to date. Every business case is a proposed application, designed to be proven in a pilot.</p></div></div>'
                   '<p class="note">Internal experiments on Iris, Wine, Breast Cancer (tabular, MLP) and MNIST (image, CNN). Not yet independently replicated; '
                   'industrial time-series and multi-domain experiments are in the validation backlog.</p>'

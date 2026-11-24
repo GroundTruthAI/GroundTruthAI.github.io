@@ -50,6 +50,38 @@
       b.addEventListener("click", function () { window.print(); });
     });
 
+
+    // ---- hero particle visual (deck cover effect)
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    Array.prototype.forEach.call(document.querySelectorAll(".pviz"), function (svg) {
+      Array.prototype.forEach.call(svg.querySelectorAll(".pd"), function (c) {
+        c.style.setProperty("--tx", c.getAttribute("data-tx") + "px");
+        c.style.setProperty("--ty", c.getAttribute("data-ty") + "px");
+        c.style.setProperty("--d", c.getAttribute("data-d") + "s");
+      });
+      if (reduce) svg.classList.add("play");
+      else setTimeout(function () { svg.classList.add("play"); }, 350);
+    });
+
+    // ---- reveal on scroll
+    var sel = ".sec h2, .fc, .tension, .vg, .flow-steps li, .ev-stat, .bc-card, .more-list li, .approach, .oc, .ev, .comp, .lvl, .pm, " +
+              ".con, .ind-card, .ind-case, .arch-fig, .stake > div, .int-grid > div, .case-pso > div, .hero-stats .stat, .rel-list li";
+    if (!reduce && "IntersectionObserver" in window) {
+      var els = document.querySelectorAll(sel);
+      var rio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("in"); rio.unobserve(en.target); } });
+      }, { rootMargin: "0px 0px -8% 0px" });
+      Array.prototype.forEach.call(els, function (el) {
+        var sibs = el.parentNode ? Array.prototype.indexOf.call(el.parentNode.children, el) : 0;
+        el.style.transitionDelay = Math.min(sibs, 6) * 85 + "ms";
+        el.classList.add("rv");
+        rio.observe(el);
+      });
+      window.addEventListener("beforeprint", function () {
+        Array.prototype.forEach.call(els, function (el) { el.classList.add("in"); });
+      });
+    }
+
     // ---- on-page TOC highlighting
     var tocLinks = document.querySelectorAll(".case-toc a");
     if (tocLinks.length && "IntersectionObserver" in window) {

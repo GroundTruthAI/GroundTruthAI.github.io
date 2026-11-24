@@ -194,26 +194,47 @@ def _svg(viewbox, title, inner, cls="viz"):
 
 
 def hero_visual():
-    domains = [("Plant OT zone", 40), ("Subsidiary", 128), ("EU region", 216), ("Edge fleet", 304)]
-    g = []
-    for i, (name, y) in enumerate(domains):
-        g.append(f'<g class="hv-dom"><rect x="10" y="{y}" width="190" height="64" rx="12"/>'
-                 f'<text class="hv-t" x="24" y="{y + 26}">{name}</text>'
-                 f'<text class="hv-s" x="24" y="{y + 46}">raw data stays here</text>'
-                 f'<g class="hv-bars">' + "".join(
-                     f'<rect x="{138 + k * 7}" y="{y + 18 + (k % 3) * 4}" width="4" height="{28 - (k % 3) * 4}" rx="1"/>' for k in range(7)) + "</g></g>")
-        g.append(f'<g class="node node-gt"><rect x="236" y="{y + 14}" width="46" height="36" rx="9"/>'
-                 f'<circle class="glyph-gt" cx="259" cy="{y + 32}" r="7"/><circle class="glyph-gt2" cx="259" cy="{y + 32}" r="2.4"/></g>')
-        g.append(f'<path class="flow f-raw" d="M200 {y + 32} H232" marker-end="url(#UID-a-raw)"/>')
-        g.append(f'<path class="flow f-distilled hv-anim" d="M282 {y + 32} C350 {y + 32} 360 200 424 200" marker-end="url(#UID-a-distilled)"/>')
-    g.append('<g class="hv-core"><circle cx="486" cy="200" r="62"/><circle class="hv-core2" cx="486" cy="200" r="40"/>'
-             '<text class="hv-t" x="486" y="196" text-anchor="middle">Central</text>'
-             '<text class="hv-t" x="486" y="214" text-anchor="middle">intelligence</text></g>')
-    g.append('<text class="hv-cap" x="259" y="392" text-anchor="middle">distill at source</text>'
-             '<text class="hv-cap" x="486" y="300" text-anchor="middle">train &amp; analyze</text>'
-             '<text class="hv-cap" x="486" y="316" text-anchor="middle">on approved datasets</text>')
-    return _svg("0 0 560 400", "Raw data stays in four separate domains; each distills locally and only approved distilled datasets flow to central intelligence.",
-                "".join(g), "viz hero-viz")
+    """Deck-style particle visual: raw data stays in each domain, a distilled fraction travels to the core."""
+    import math
+    seed = [7]
+    def rnd():
+        seed[0] = (seed[0] * 9301 + 49297) % 233280
+        return seed[0] / 233280
+    cx, cy = 468, 268
+    doms = [("Plant OT zone", 92, 74), ("Subsidiary", 92, 202), ("EU region", 92, 330), ("Edge fleet", 92, 458)]
+    trails, dots, labels = [], [], []
+    for name, dx, dy in doms:
+        trails.append(f'<path class="trail" d="M{dx + 46} {dy} C{dx + 170} {dy} {cx - 150} {cy} {cx - 62} {cy}"/>')
+        labels.append(f'<text class="viz-lbl" x="{dx}" y="{dy + 66}" text-anchor="middle">{esc(name)}</text>')
+        for i in range(44):
+            ang = rnd() * math.pi * 2
+            r = 8 + math.sqrt(rnd()) * 42
+            x, y = dx + math.cos(ang) * r, dy + math.sin(ang) * r
+            keep = i % 20 == 0
+            if keep:
+                ka = rnd() * math.pi * 2
+                kr = 64 + rnd() * 18
+                tx, ty = cx + math.cos(ka) * kr - x, cy + math.sin(ka) * kr - y
+            else:
+                tx, ty = (dx - x) * .28, (dy - y) * .28
+            fill = "#5D6D85" if rnd() > .5 else "#3C4A60"
+            dots.append(f'<circle class="pd {"keep" if keep else "raw"}" cx="{x:.1f}" cy="{y:.1f}" r="{2 + rnd() * 2.6:.1f}" fill="{fill}" '
+                        f'data-tx="{tx:.1f}" data-ty="{ty:.1f}" data-d="{rnd() * .9:.2f}"/>')
+    core = (f'<g class="core"><circle cx="{cx}" cy="{cy}" r="120" fill="url(#UID-core)" opacity=".55"/>'
+            f'<circle class="ring" cx="{cx}" cy="{cy}" r="96"/>'
+            f'<circle cx="{cx}" cy="{cy}" r="50" fill="none" stroke="url(#UID-ring)" stroke-width="2.2"/>'
+            f'<text class="core-t" x="{cx}" y="{cy - 2}" text-anchor="middle">Central</text>'
+            f'<text class="core-t" x="{cx}" y="{cy + 18}" text-anchor="middle">model</text></g>'
+            f'<text class="viz-lbl" x="{cx}" y="{cy + 150}" text-anchor="middle">centralized intelligence</text>')
+    defs = ('<defs><radialGradient id="UID-core"><stop offset="0" stop-color="#2EE6A6" stop-opacity=".55"/>'
+            '<stop offset="1" stop-color="#2EE6A6" stop-opacity="0"/></radialGradient>'
+            '<linearGradient id="UID-ring" x1="0" x2="1"><stop offset="0" stop-color="#2EE6A6"/><stop offset="1" stop-color="#3CC8F5"/></linearGradient></defs>')
+    rings = "".join(f'<circle class="ring" cx="{d[1]}" cy="{d[2]}" r="52"/>' for d in doms)
+    inner = (defs + rings + "".join(trails) + core + "".join(labels)
+             + f'<text class="viz-lbl viz-cap" x="310" y="548" text-anchor="middle">raw data stays · distilled fraction travels</text>'
+             + "".join(dots))
+    return _svg("0 0 620 560", "Four separate data domains keep their raw data; a small distilled fraction from each travels to a central model.",
+                inner, "viz hero-viz pviz")
 
 
 def viz_bc01():
@@ -253,9 +274,10 @@ def viz_bc03(benchmarks):
         w_dist = round(w_full * (100 - red) / 100)
         rows.append(f'<text class="bv-n" x="8" y="{y + 12}">{esc(name)}</text>'
                     f'<rect class="bv-full" x="104" y="{y}" width="{w_full}" height="8" rx="3"/>'
-                    f'<rect class="bv-dist" x="104" y="{y + 11}" width="{max(w_dist, 3)}" height="8" rx="3"/>'
+                    f'<rect class="bv-dist" x="104" y="{y + 11}" width="{max(w_dist, 3)}" height="8" rx="3" fill="url(#UID-g)"/>'
                     f'<text class="bv-v" x="{104 + w_dist + 8}" y="{y + 19}">{100 - red}% of data · {delta:+.1f} pp</text>')
         y += 40
+    rows.insert(0, '<defs><linearGradient id="UID-g" x1="0" x2="1"><stop offset="0" stop-color="#2EE6A6"/><stop offset="1" stop-color="#3CC8F5"/></linearGradient></defs>')
     rows.append(f'<text class="hv-cap" x="104" y="{y + 6}">full set vs. distilled set · internal experiments</text>')
     return _svg(f"0 0 460 {y + 14}", "Benchmark training-set size after distillation: 5 to 14 percent of the original data, with accuracy changes between minus 1.4 and minus 2.8 points.",
                 "".join(rows))
