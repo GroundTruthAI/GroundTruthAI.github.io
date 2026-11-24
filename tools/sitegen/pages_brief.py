@@ -31,7 +31,7 @@ def pdf_url(lang):
     return f"{DIR}{PDF[lang]}?v={pdf_version()}"
 CONTACT = S.BASE_URL + "/pilot/"
 
-N_SLIDES = 6
+N_SLIDES = 7
 
 # Business cases shown on slide 4, by solution family: (site slug, EN title, EN one-liner, ES title, ES one-liner)
 CASES = [
@@ -104,7 +104,19 @@ T = {
             ("Constant retraining", "AI models need regular updates, and each update reprocesses an ever-larger history."),
         ],
         "w_key": "The result: valuable AI projects are delayed, scaled down or never started.",
-        # 3 opportunities
+        # how it works
+        "hh": "How it works, in four steps.",
+        "h_def_k": "Dataset distillation",
+        "h_def": "is a technique that creates a much smaller training dataset from the original data, designed so that an AI model "
+                 "trained on it performs close to one trained on all the data.",
+        "h_steps": [
+            ("Define the goal", "Agree what the AI must predict or analyze, and the quality it must reach."),
+            ("Distill at the source", "Our software, installed where the data lives, builds a much smaller dataset for that goal. The original data does not move."),
+            ("Check the quality", "The same model is trained on the full and on the distilled data, and the results are compared."),
+            ("Share and train", "Once approved, only the distilled dataset travels through your existing channels, and the AI is trained centrally."),
+        ],
+        "h_where": "Where it runs: on your own servers or private cloud, next to the data. Your data is not sent to GroundTruth AI.",
+        # opportunities
         "h2": "Three business opportunities. One technology.",
         "h2_sub": "All three rest on the same technology: dataset distillation.",
         "opps": [
@@ -180,6 +192,17 @@ T = {
             ("Reentrenamiento constante", "Los modelos de IA deben actualizarse con frecuencia, y cada actualización reprocesa un histórico cada vez mayor."),
         ],
         "w_key": "Resultado: proyectos de IA valiosos se retrasan, se recortan o nunca empiezan.",
+        "hh": "Cómo funciona, en cuatro pasos.",
+        "h_def_k": "La destilación de datos",
+        "h_def": "es una técnica que crea, a partir de los datos originales, un conjunto de entrenamiento mucho más pequeño, diseñado "
+                 "para que un modelo de IA entrenado con él funcione de forma parecida a uno entrenado con todos los datos.",
+        "h_steps": [
+            ("Definir el objetivo", "Se acuerda qué debe predecir o analizar la IA y qué calidad debe alcanzar."),
+            ("Destilar en origen", "Nuestro software, instalado donde están los datos, crea un conjunto mucho más pequeño para ese objetivo. Los datos originales no se mueven."),
+            ("Comprobar la calidad", "Se entrena el mismo modelo con los datos completos y con los destilados, y se comparan los resultados."),
+            ("Compartir y entrenar", "Una vez aprobado, solo el conjunto destilado viaja por los canales que ya existen y la IA se entrena de forma centralizada."),
+        ],
+        "h_where": "Dónde funciona: en tus propios servidores o nube privada, junto a los datos. Tus datos no se envían a GroundTruth AI.",
         "h2": "Tres oportunidades de negocio. Una tecnología.",
         "h2_sub": "Las tres se apoyan en la misma tecnología: la destilación de datos.",
         "opps": [
@@ -252,12 +275,12 @@ def diagram_scenario(t, uid):
     g = []
     for row, y0, label in ((0, 8, d["trad"]), (1, 206, d["gt"])):
         g.append(f'<text class="bd-row" x="6" y="{y0 + 14}">{esc(label.upper())}</text>')
-        ys = [y0 + 32, y0 + 78, y0 + 124]
+        ys = [y0 + 28, y0 + 72, y0 + 132]
         names = [f'{d["plant"]} 1', f'{d["plant"]} 2', f'{d["plant"]} 20']
         for i, (y, nm) in enumerate(zip(ys, names)):
-            g.append(f'<rect class="bd-box" x="6" y="{y}" width="150" height="38" rx="10"/><text class="bd-p" x="20" y="{y + 25}">{esc(nm)}</text>')
+            g.append(f'<rect class="bd-box" x="6" y="{y}" width="150" height="36" rx="10"/><text class="bd-p" x="20" y="{y + 24}">{esc(nm)}</text>')
             if i == 1:
-                g.append(f'<text class="bd-dots" x="81" y="{y + 50}" text-anchor="middle">· · ·</text>')
+                g.append(f'<text class="bd-dots" x="81" y="{y + 54}" text-anchor="middle">⋮</text>')
             if row == 0:
                 g.append(f'<path class="bd-raw" d="M156 {y + 19} C220 {y + 19} 228 {y0 + 97} 268 {y0 + 97}" marker-end="url(#{uid}-ar)"/>')
             else:
@@ -270,7 +293,7 @@ def diagram_scenario(t, uid):
                      f'<path class="bd-raw" d="M404 {y0 + 97} H434" marker-end="url(#{uid}-ar)"/>'
                      f'<text class="bd-vol bd-vol-raw" x="210" y="{y0 + 190}" text-anchor="middle">{esc(d["big"])}</text>')
         else:
-            g.append(f'<text class="bd-vol bd-vol-g" x="400" y="{y0 + 80}" text-anchor="middle">{esc(d["small"])}</text>'
+            g.append(f'<text class="bd-vol bd-vol-g" x="372" y="{y0 + 54}" text-anchor="middle">{esc(d["small"])}</text>'
                      f'<text class="bd-s" x="20" y="{y0 + 186}">{esc(d["stays"])}</text>')
         g.append(f'<circle class="bd-core" cx="488" cy="{y0 + 97}" r="50"/><circle class="bd-ring" cx="488" cy="{y0 + 97}" r="50" stroke="url(#{uid}-g)"/>'
                  f'<text class="bd-ct bd-ct-s" x="488" y="{y0 + 93}" text-anchor="middle">{esc(d["model"][0])}</text>'
@@ -290,6 +313,13 @@ ICONS = [
     '<svg class="op-ic" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M4 14 H18 M4 24 H18 M4 34 H18"/><path d="M18 10 V38 L30 24 Z"/><path d="M30 24 H44 M38 18 44 24 38 30"/></svg>',
 ]
 
+
+HOW_ICONS = [
+    '<circle cx="24" cy="24" r="17"/><circle cx="24" cy="24" r="10"/><circle cx="24" cy="24" r="3"/>',
+    '<path d="M8 8 H40 L28 24 V38 L20 42 V24 Z"/>',
+    '<path d="M24 6 V42 M10 14 H38 M10 14 4 28 H16 Z M38 14 32 28 H44 Z"/>',
+    '<path d="M6 24 H34 M26 16 34 24 26 32"/><rect x="36" y="12" width="8" height="24" rx="2"/>',
+]
 
 WHY_ICONS = [
     '<path d="M24 5 40 11 V23 C40 33 33 40 24 43 15 40 8 33 8 23 V11 Z"/><path d="M17 24 22 29 31 19"/>',
@@ -326,38 +356,46 @@ def slides(t, lang):
         f'<h2 class="sl-h2">{esc(t["hw"])}</h2><p class="sl-lead sl-lead-w">{esc(t["w_lead"])}</p>'
         f'<ul class="obs">{obs}</ul><p class="sl-key sl-key-w">{esc(t["w_key"])}</p>')
 
-    # 3 — three opportunities
+    # 3 — how it works
+    steps = "".join(f'<li class="hw"><span class="hw-n">{i}</span><svg class="op-ic" viewBox="0 0 48 48" aria-hidden="true" focusable="false">{HOW_ICONS[i - 1]}</svg>'
+                    f'<h3>{esc(h)}</h3><p>{esc(d)}</p></li>' for i, (h, d) in enumerate(t["h_steps"], 1))
+    sec(3, "s-how",
+        f'<h2 class="sl-h2">{esc(t["hh"])}</h2>'
+        f'<p class="sl-def"><strong>{esc(t["h_def_k"])}</strong> {esc(t["h_def"])}</p>'
+        f'<ol class="hws">{steps}</ol><p class="sl-where">{esc(t["h_where"])}</p>')
+
+    # 4 — three opportunities
     opps = "".join(
         f'<li class="op{" op-main" if i == 0 else ""}">{ICONS[i]}'
         + (f'<p class="op-tag">{esc(t["opp_tag"])}</p>' if i == 0 else "")
         + f'<h3>{esc(h)}</h3><p class="op-d">{esc(dsc)}</p><ul>' + "".join(f"<li>{esc(x)}</li>" for x in ex) + "</ul></li>"
         for i, (h, dsc, ex) in enumerate(t["opps"]))
-    sec(3, "s2", f'<h2 class="sl-h2">{esc(t["h2"])}</h2><p class="sl-sub">{esc(t["h2_sub"])}</p><ol class="ops">{opps}</ol>')
+    sec(4, "s2", f'<h2 class="sl-h2">{esc(t["h2"])}</h2><p class="sl-sub">{esc(t["h2_sub"])}</p><ol class="ops">{opps}</ol>')
 
-    # 4 — business cases
+    # 5 — business cases
     cols = []
     for i, (gen, ges, items) in enumerate(CASES):
         lis = "".join(
             f'<li><a href="{S.BASE_URL}/business-cases/{slug}/">{esc(ten if lang == "en" else tes)}</a>'
             f'<span>{esc(den if lang == "en" else des)}</span></li>' for slug, ten, den, tes, des in items)
         cols.append(f'<div class="cs-col{" cs-main" if i == 0 else ""}"><h3>{ICONS[i]}{esc(gen if lang == "en" else ges)}</h3><ul>{lis}</ul></div>')
-    sec(4, "s-cases",
+    sec(5, "s-cases",
         f'<h2 class="sl-h2">{esc(t["hc"])}</h2><p class="sl-lead sl-lead-c">{esc(t["c_lead"])} '
         f'<a href="{S.BASE_URL}/business-cases/">{esc(t["c_more"])}</a></p>'
         f'<div class="cs-grid">{"".join(cols)}</div><p class="sl-inds">{esc(t["inds"])}</p>')
 
-    # 5 — scenario
+    # 6 — scenario
     figs = "".join(f'<div><dt>{esc(lbl)}</dt><dd{" class=\"g\"" if k >= 2 else ""}>{esc(v)}</dd></div>' for k, (v, lbl) in enumerate(t["figs"]))
-    sec(5, "s3",
+    sec(6, "s3",
         f'<div class="s-grid s-grid-3"><div class="s-text"><h2 class="sl-h2">{esc(t["h3"])}</h2>'
         f'<p class="sl-lead">{esc(t["s3_lead"])}</p><p class="sl-key">{esc(t["s3_key"])}</p>'
         f'<h3 class="sl-mini">{esc(t["s3_approach"])}</h3><ol class="sl-steps">' + "".join(f"<li>{esc(x)}</li>" for x in t["s3_steps"]) + "</ol></div>"
-        f'<div class="s-art">{diagram_scenario(t, u(5))}<dl class="sl-figs">{figs}</dl>'
+        f'<div class="s-art">{diagram_scenario(t, u(6))}<dl class="sl-figs">{figs}</dl>'
         f'<p class="sl-qual">{esc(t["s3_qual"])}</p></div></div>')
 
-    # 6 — call to action
+    # 7 — call to action
     mail = S.CONTACT_EMAIL
-    sec(6, "s4",
+    sec(7, "s4",
         f'<div class="s-grid s-grid-4"><div class="s-text"><h2 class="sl-h2">{esc(t["h4"])}</h2><p class="sl-lead">{esc(t["s4_lead"])}</p>'
         '<ol class="sl-qs">' + "".join(f"<li>{esc(q)}</li>" for q in t["qs"]) + "</ol></div>"
         f'<div class="s-cta"><a class="sl-btn" href="{esc(CONTACT)}">{esc(t["cta"])}</a>'

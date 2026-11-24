@@ -2,6 +2,16 @@
    Reuses site.css tokens and fonts. Slides are 16:9 containers; sizes use container units (cqw) so the
    same layout scales on screen and prints at 13.333 × 7.5 in. Phones get a reflowed, readable layout. */
 
+/* Static font instances used only when printing (PDF): embedded as TrueType, not Type 3 */
+@font-face{font-family:"GT Print Sans";src:url(/assets/fonts/static/Inter-400.woff) format("woff");font-weight:400;font-display:block}
+@font-face{font-family:"GT Print Sans";src:url(/assets/fonts/static/Inter-500.woff) format("woff");font-weight:500;font-display:block}
+@font-face{font-family:"GT Print Sans";src:url(/assets/fonts/static/Inter-600.woff) format("woff");font-weight:600;font-display:block}
+@font-face{font-family:"GT Print Sans";src:url(/assets/fonts/static/Inter-700.woff) format("woff");font-weight:700;font-display:block}
+@font-face{font-family:"GT Print Sans";src:url(/assets/fonts/static/Inter-800.woff) format("woff");font-weight:800;font-display:block}
+@font-face{font-family:"GT Print Display";src:url(/assets/fonts/static/PlusJakartaSans-600.woff) format("woff");font-weight:600;font-display:block}
+@font-face{font-family:"GT Print Display";src:url(/assets/fonts/static/PlusJakartaSans-700.woff) format("woff");font-weight:700;font-display:block}
+@font-face{font-family:"GT Print Display";src:url(/assets/fonts/static/PlusJakartaSans-800.woff) format("woff");font-weight:800;font-display:block}
+
 .deck-body{min-height:100vh;display:flex;flex-direction:column}
 .deck-bar{display:flex;align-items:center;justify-content:space-between;gap:12px 20px;flex-wrap:wrap;padding:12px var(--gut);border-bottom:1px solid var(--stroke)}
 .deck-nav{display:flex;align-items:center;gap:6px 14px;flex-wrap:wrap}
@@ -151,6 +161,24 @@
 .cs-col li span{display:block;font-size:calc(var(--u)*1.08);line-height:1.35;color:var(--muted);margin-top:calc(var(--u)*.2)}
 .sl-inds{margin:auto 0 calc(var(--u)*2.4);font-size:calc(var(--u)*.92);color:var(--dim)}
 
+/* how it works */
+.s-how{display:flex;flex-direction:column}
+.s-how .sl-h2{margin-top:calc(var(--u)*2.4)}
+.sl-def{max-width:82%;margin:0 0 calc(var(--u)*2);padding:calc(var(--u)*1.1) calc(var(--u)*1.4);border-left:3px solid var(--cyan);
+  background:rgba(60,200,245,.08);border-radius:0 calc(var(--u)*.8) calc(var(--u)*.8) 0;font-size:calc(var(--u)*1.35);line-height:1.45;color:var(--text)}
+.sl-def strong{color:var(--cyan)}
+.hws{list-style:none;padding:0;margin:auto 0;display:grid;grid-template-columns:repeat(4,1fr);gap:calc(var(--u)*2.2)}
+.hw{position:relative;margin:0;padding:calc(var(--u)*2.2);border-radius:calc(var(--u)*1.4);border:1px solid var(--stroke);
+  background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.02))}
+.hw:nth-child(2){border-color:rgba(46,230,166,.5);background:linear-gradient(180deg,rgba(46,230,166,.13),rgba(46,230,166,.02))}
+.hw:not(:last-child)::after{content:"→";position:absolute;right:calc(var(--u)*-1.75);top:50%;transform:translateY(-50%);
+  font:700 calc(var(--u)*1.6) var(--sans);color:var(--save)}
+.hw-n{position:absolute;top:calc(var(--u)*1.6);right:calc(var(--u)*1.6);font:700 calc(var(--u)*1.1) var(--mono);color:var(--dim)}
+.hw .op-ic{stroke:var(--save)}
+.hw h3{font:800 calc(var(--u)*1.85)/1.2 var(--display);margin:calc(var(--u)*1) 0 calc(var(--u)*.6)}
+.hw p{margin:0;font-size:calc(var(--u)*1.32);line-height:1.45;color:var(--muted)}
+.sl-where{margin:0 0 calc(var(--u)*2.6);font:600 calc(var(--u)*1.3)/1.4 var(--sans);color:var(--text)}
+
 /* ---------- diagrams ---------- */
 .bd{width:100%;height:auto;display:block}
 .bd text{fill:var(--text);font-family:var(--sans)}
@@ -221,13 +249,20 @@
   .sl-sub{font-size:1rem;margin:0 0 16px}
   .sl-how{font-size:1.15rem;padding:8px 12px}
   .sl-lead-c a{white-space:normal;overflow-wrap:anywhere}
+  .hws{grid-template-columns:1fr;gap:14px;margin:0}
+  .hw:not(:last-child)::after{content:"↓";right:auto;left:50%;top:auto;bottom:-15px;transform:translateX(-50%);font-size:14px}
+  .sl-def{max-width:none;font-size:.98rem}
+  .hw h3{font-size:1.1rem}
+  .hw p,.sl-where{font-size:.92rem}
+  .sl-where{margin:16px 0 0}
 }
 
 /* ---------- print / PDF: one 16:9 page per slide, no viewer controls ---------- */
 @page{size:13.333in 7.5in;margin:0}
 @media print{
-  :root{--bg:#05080F;--bg-2:#0A111E;--bg-3:#0E1726;--line:rgba(255,255,255,.10);--line-2:rgba(255,255,255,.18);
+  :root{--sans:"GT Print Sans",Helvetica,Arial,sans-serif;--display:"GT Print Display","GT Print Sans",Helvetica,Arial,sans-serif;--bg:#05080F;--bg-2:#0A111E;--bg-3:#0E1726;--line:rgba(255,255,255,.10);--line-2:rgba(255,255,255,.18);
     --text:#EAF0F8;--muted:#A6B4C8;--dim:#8494AC;--save:#2EE6A6;--cyan:#3CC8F5;--violet:#A79BFF;--raw:#FF9466;--amber:#FFC857;color-scheme:dark}
+  *{font-synthesis:none!important}
   html,body{margin:0;padding:0;background:#05080F!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   body::before{display:none}
   .deck-bar,.deck-ui,.deck-note,.skip{display:none!important}
@@ -238,7 +273,7 @@
     break-after:page;page-break-after:always;break-inside:avoid}
   .slide:last-child{break-after:auto;page-break-after:auto}
   .slide .s-grid{display:grid}
-  .slide.s2,.js-deck .slide.s2[hidden],.slide.s-why,.js-deck .slide.s-why[hidden],.slide.s-cases,.js-deck .slide.s-cases[hidden]{display:flex!important}
+  .slide.s-how,.js-deck .slide.s-how[hidden],.slide.s2,.js-deck .slide.s2[hidden],.slide.s-why,.js-deck .slide.s-why[hidden],.slide.s-cases,.js-deck .slide.s-cases[hidden]{display:flex!important}
   .s2 .ops{display:grid}
   .slide .g{background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;color:var(--save)!important}
   .sl-contact a,.sl-btn{text-decoration:none}

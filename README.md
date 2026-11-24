@@ -46,7 +46,7 @@ the simulator run entirely in the browser.
 
 ## Executive brief
 
-`/resources/executive-brief/` (English) and `es.html` (Spanish) are six-slide presentations generated from
+`/resources/executive-brief/` (English) and `es.html` (Spanish) are seven-slide presentations generated from
 `tools/sitegen/pages_brief.py` with `assets/css/brief.css` and `assets/js/brief.js`. The downloadable PDFs in the same
 folder are printed from those same pages by `tools/build_pdf.py` (headless Chrome, one 13.333 × 7.5 in page per slide,
 vector text and links, metadata added). `build.py` never deletes them; `verify.py` checks the slide count, matching PDF page count and 16:9 size,
