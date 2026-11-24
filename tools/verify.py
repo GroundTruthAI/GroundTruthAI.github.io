@@ -265,13 +265,10 @@ for u, pdf in ((BRIEF_URL["en"], BRIEF_PDF["en"]), (BRIEF_URL["es"], BRIEF_PDF["
         warn("pdfinfo not available: PDF page count and size not checked")
     if os.path.getmtime(path) < os.path.getmtime(os.path.join(ROOT, "tools/sitegen/pages_brief.py")):
         warn(f"{pdf} is older than the presentation source: rerun tools/build_pdf.py")
-# slide-6 economics must use the same example unit costs as the ROI calculator
-from sitegen.pages_brief import ECON
-roi_src = open(os.path.join(ROOT, "roi/index.html"), encoding="utf-8").read()
-for fid, key in (("t_ctr", "transfer"), ("t_cing", "ingest"), ("t_cproc", "process"), ("t_cst", "storage_month"),
-                 ("t_ret", "retention_months"), ("t_over", "distill_per_tb")):
-    m = re.search(rf'id="{fid}" name="{fid}" value="([0-9.]+)"', roi_src)
-    if not m or float(m.group(1)) != float(ECON[key]): err(f"executive brief economics: {key} differs from ROI calculator default {fid}")
+# slide-6 economics: net = sum of line savings − distillation/validation costs
+from sitegen.pages_brief import economics
+_ec = economics()
+if abs(_ec["net"] - (sum(_ec["lines"].values()) - _ec["costs"])) > 1e-6: err("executive brief economics do not add up")
 sim = by_url.get("/simulator/")
 if not sim: err("missing page /simulator/")
 else:
